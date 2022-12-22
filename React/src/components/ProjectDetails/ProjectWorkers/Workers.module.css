@@ -1,0 +1,14 @@
+.workers_display {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn {
+  margin-right: 1rem;
+}
+
+a {
+  text-decoration: none;
+}

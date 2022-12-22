@@ -1,0 +1,25 @@
+.image_input_panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.image_preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  align-self: center;
+  width: 8rem;
+  height: 8rem;
+  border: 0.1rem dotted black;
+}
+
+.image_input_icon {
+  font-size: 2rem;
+}
+
+.image {
+  width: 8rem;
+  height: 8rem;
+  border: 0.1rem dotted black;
+}

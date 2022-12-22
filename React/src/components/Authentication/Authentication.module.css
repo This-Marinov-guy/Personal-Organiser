@@ -1,0 +1,25 @@
+.authenticate_display {
+  width: 30%;
+  padding: 3em;
+  margin: 7rem auto;
+  border: 1px groove grey;
+  box-shadow: 3px 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth_btns {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  height: 6rem;
+  justify-content: space-between;
+  width: auto;
+  align-items: center;
+}
+
+@media (max-width: 750px) {
+  .authenticate_display {
+    width: 60%;
+  }
+}

@@ -1,0 +1,24 @@
+.message_sender {
+  font-size: 0.8em;
+}
+
+.message_content {
+  color: white;
+  background-color: #7392d6;
+  border-radius: 30px;
+  padding: 1rem;
+  box-shadow: 4px 3px 8px 1px #383a36;
+}
+
+.sent_message {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+}
+
+.received_message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: flex-start;
+}

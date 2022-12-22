@@ -1,0 +1,10 @@
+.projects_display {
+  width: 80%;
+  margin: 5rem auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn{
+  margin-left: 6rem;
+}

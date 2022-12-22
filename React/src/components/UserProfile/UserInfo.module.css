@@ -1,0 +1,39 @@
+.cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10rem;
+  background-color: lightblue;
+}
+
+.user_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+}
+.user_img {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  z-index: 10;
+  margin: 7rem auto;
+}
+
+.text {
+  width: 20rem;
+  text-align: center;
+  z-index: 10;
+  padding: 2rem;
+  border: 0.1rem groove;
+  background-color: #7392d6;
+  box-shadow: 0.3rem 0.3rem 0.3rem lightblue;
+}
+
+@media (max-width: 1000) {
+  .user_info {
+    flex-direction: column;
+  }
+}

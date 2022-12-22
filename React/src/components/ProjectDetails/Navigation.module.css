@@ -1,0 +1,7 @@
+.navigation_buttons{
+    width: 30rem;
+    display: flex;
+    flex-direction: row;
+    margin: 5rem auto;
+    justify-content: space-around;
+}

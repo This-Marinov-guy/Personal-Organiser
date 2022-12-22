@@ -1,0 +1,29 @@
+.info_panel{
+    margin: 0 auto 20rem;
+    padding: 1rem;
+    height: auto;
+    width: 80%;
+    background-color: white;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+}   
+
+.info_divider{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.info_points{
+    margin: 2rem;
+}
+
+h2{
+    margin: 2rem auto;
+}
+
+h4{
+    text-align: center;
+    margin: 1rem auto;
+}

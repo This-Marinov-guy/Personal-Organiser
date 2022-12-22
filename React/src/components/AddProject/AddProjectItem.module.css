@@ -1,0 +1,15 @@
+.form_display {
+  width: 80%;
+  padding: 3em;
+  margin: 7rem auto;
+  border: 0.1rem groove;
+  box-shadow: 0.3rem 0.3rem 0.3rem lightblue;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.form_btn {
+  width: 8rem;
+  margin: 1rem auto;
+}

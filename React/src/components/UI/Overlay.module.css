@@ -1,0 +1,55 @@
+.overlay_backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal_overlay_panel {
+  position: fixed;
+  top: 15vh;
+  left: 5%;
+  height: 30rem;
+  z-index: 100000;
+  animation: slide-down 300ms ease-out forwards;
+  overflow: auto;
+}
+
+.error_overlay_panel {
+  position: fixed;
+  top: 5vh;
+  left: 5vh;
+  z-index: 100000;
+  animation: slide-down 300ms ease-out forwards;
+}
+
+
+.action_btns {
+  display: flex;
+  justify-content: space-between;
+  width: 10%;
+  margin: 1rem auto;
+  background-color: white;
+}
+
+@media (max-width: 1000px) {
+  .modal_panel {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

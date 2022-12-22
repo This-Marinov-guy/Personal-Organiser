@@ -1,0 +1,29 @@
+.panel {
+  position: relative;
+  height: 20rem;
+  width: 60%;
+  margin: 15% auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.buttons {
+  width: 15rem;
+  margin: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 500px) {
+  .buttons {
+    flex-direction: column;
+    height: 5rem;
+    width: 8rem;
+  }
+}

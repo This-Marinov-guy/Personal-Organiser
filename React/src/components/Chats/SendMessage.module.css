@@ -1,0 +1,9 @@
+.send_message_display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: auto;
+  height: 4rem;
+  width: 100%;
+}

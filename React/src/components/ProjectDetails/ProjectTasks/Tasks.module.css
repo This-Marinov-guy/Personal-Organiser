@@ -1,0 +1,27 @@
+.tasks_display {
+  width: 80%;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.task_buttons {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.edit_window {
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+@media (max-width: 500px) {
+  .edit_window {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,32 @@
+.main_form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.left_panel {
+  margin-top: 10rem;
+  width: 50%;
+}
+
+.right_panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+}
+
+@media (max-width: 900px) {
+  .main_form {
+    flex-direction: column;
+    align-items: center;
+  }
+  .left_panel {
+    width: 100%;
+  }
+  .right_panel {
+    width: 100%;
+  }
+}

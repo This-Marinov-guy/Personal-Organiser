@@ -1,0 +1,13 @@
+.chat_bubble{
+    background-color: white;
+    margin: 0.8rem;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.chat_bubble:hover {
+    transform: scale(1.4);
+  }
+
+
