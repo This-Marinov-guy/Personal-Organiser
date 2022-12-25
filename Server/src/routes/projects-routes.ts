@@ -15,9 +15,12 @@ import {
   postAddTask,
 } from "../controllers/tasks-controllers.js";
 import fileUpload from "../middleware/file-upload.js";
+import authRequest from "../middleware/check-auth.js";
 
 
 const projectRouter = express.Router();
+projectRouter.use(authRequest);
+//routes with token protection
 
 projectRouter.get("/:pid", getProjectById);
 projectRouter.get("/:pid", getProjectByUserId);

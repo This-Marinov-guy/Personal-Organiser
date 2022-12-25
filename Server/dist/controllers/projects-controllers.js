@@ -1,4 +1,5 @@
 import { validationResult } from "express-validator";
+import fs from "fs";
 import mongoose from "mongoose";
 import HttpError from "../models/Http-error.js";
 import Project from "../models/Project.js";
@@ -110,6 +111,7 @@ const deleteProject = async (req, res, next) => {
         const sess = await mongoose.startSession();
         sess.startTransaction();
         await project.remove({ session: sess });
+        fs.unlinkSync("./public/uploads/" + project.image);
         project.creator.projects.pull(project);
         await project.creator.save({ session: sess });
         await sess.commitTransaction();

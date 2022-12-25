@@ -28,6 +28,13 @@ app.use((req, res, next) => {
     return next(error);
 });
 // error handling
+app.use((error, req, res, next) => {
+    console.log(error);
+    const status = error.statusCode || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({ message: message, data: data });
+});
 //db connection
 mongoose
     .connect("mongodb+srv://vlady:vlady10029011@test4.twugcuc.mongodb.net/?retryWrites=true&w=majority")

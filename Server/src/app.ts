@@ -1,4 +1,6 @@
 import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import path from "path";
@@ -54,9 +56,7 @@ app.use((error, req, res, next) => {
 
 //db connection
 mongoose
-  .connect(
-    "mongodb+srv://vlady:vlady10029011@test4.twugcuc.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.DB_CONNECTION)
   .then(() => {
     console.log("Connected to DB");
     app.listen(5000);
