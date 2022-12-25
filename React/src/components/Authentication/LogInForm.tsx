@@ -38,7 +38,7 @@ const LogInForm = () => {
       <Form
         className={classes.authenticate_display}
         onSubmit={async (event) => {
-          event.preventDefault()
+          event.preventDefault();
           try {
             const responseData = await sendRequest(
               "http://localhost:5000/api/user/login",
@@ -51,7 +51,9 @@ const LogInForm = () => {
                 "Content-Type": "application/json",
               }
             );
-            dispatch(login(responseData))
+            dispatch(
+              login({ userId: responseData.userId, token: responseData.token })
+            );
           } catch (err) {}
         }}
       >

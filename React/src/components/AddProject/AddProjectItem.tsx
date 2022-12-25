@@ -13,7 +13,9 @@ const schema = yup.object().shape({
 });
 
 const AddProjectItem = () => {
-  const submitHandler = () => {};
+  const submitHandler = () => {
+    //header must include this for authorization of request {Authorixation: 'Bearer ' + auth.token}
+  };
 
   return (
     <Fragment>

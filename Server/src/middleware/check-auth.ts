@@ -1,9 +1,13 @@
-import HttpError from "../models/Http-error";
+import HttpError from "../models/Http-error.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
 const authRequest = (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+
   try {
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {

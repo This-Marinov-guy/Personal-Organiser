@@ -1,6 +1,9 @@
 import express from "express";
 import { deleteChat, getChatMessages, patchAddChatMessage, postAddChat, } from "../controllers/chats-controllers.js";
+import authRequest from "../middleware/check-auth.js";
 const chatRouter = express.Router();
+chatRouter.use(authRequest);
+//routes with token protection
 chatRouter.get("/chats/:uid", getChatMessages);
 //check the route
 chatRouter.post("/:pid", postAddChat);

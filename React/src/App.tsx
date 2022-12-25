@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import NavBar from "./components/UI/NavBar";
@@ -11,16 +11,49 @@ import Chats from "./pages/Chats";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserProfile from "./pages/UserProfile";
 import { useSelector } from "react-redux";
-import { selectLogged } from "./redux/user";
+import { login, logout, selectUser } from "./redux/user";
+import { useDispatch } from "react-redux";
 
 const App = () => {
-  const logged = useSelector(selectLogged);
-  let routes;
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
-  if (logged) {
+  let routes;
+  let logoutTimer;
+
+  useEffect(() => {
+    if (user.token && user.expiration) {
+      const remainingTime = user.expiration.getTime() - new Date().getTime();
+      logoutTimer = setTimeout(handler, remainingTime);
+      function handler() {
+        dispatch(logout());
+      }
+    } else {
+      clearTimeout(logoutTimer);
+    }
+  }, [user.token, logout, user.expiration]);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (
+      storedData &&
+      storedData.token &&
+      new Date(storedData.expiration) > new Date()
+    ) {
+      dispatch(
+        login({
+          userId: storedData.userId,
+          token: storedData.token,
+          expiration: new Date(storedData.expiration),
+        })
+      );
+    }
+  }, [login]);
+
+  if (user.token) {
     routes = (
       <Switch>
-        <Route path="/" exact>
+        <Route path={["/", "/projects"]} exact>
           <Projects />
         </Route>
         <Route path="/projects/:projectId" exact>
@@ -35,7 +68,9 @@ const App = () => {
         <Route path="/user/:uid" exact>
           <UserProfile />
         </Route>
-        <Redirect to="/" />
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
       </Switch>
     );
   } else {
@@ -50,7 +85,9 @@ const App = () => {
         <Route path="/signup" exact>
           <SignUp />
         </Route>
-        <Redirect to="/" />
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
       </Switch>
     );
   }

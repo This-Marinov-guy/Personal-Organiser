@@ -66,7 +66,9 @@ const SignUpForm = () => {
               formData
             );
 
-            dispatch(login(responseData.userId));
+            dispatch(
+              login({ userId: responseData.userId, token: responseData.token })
+            );
             console.log("responseData ", responseData);
           } catch (err) {}
         }}
