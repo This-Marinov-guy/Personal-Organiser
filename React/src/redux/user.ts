@@ -5,21 +5,19 @@ export const userSlice = createSlice({
   initialState: {
     userId: null,
     token: null,
-    expiration: null,
   },
   reducers: {
     login: {
       reducer(state, action: any) {
-        const { userId, token } = action.payload;
+        const { userId, token, expiration } = action.payload;
         state.userId = userId;
         state.token = token;
-        state.expiration = new Date(new Date().getTime() + 1000 * 60 * 60);
         localStorage.setItem(
           "userData",
           JSON.stringify({
             userId: userId,
             token: token,
-            expiration: state.expiration.toISOString(),
+            expiration: expiration.toISOString(),
           })
         );
       },
@@ -34,7 +32,6 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.userId = null;
       state.token = null;
-      state.expiration = null;
       localStorage.removeItem("userData");
     },
   },

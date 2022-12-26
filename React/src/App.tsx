@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import NavBar from "./components/UI/NavBar";
@@ -8,22 +8,30 @@ import AddProject from "./pages/AddProject";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import Chats from "./pages/Chats";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Error from "./components/UI/Error";
 import UserProfile from "./pages/UserProfile";
 import { useSelector } from "react-redux";
 import { login, logout, selectUser } from "./redux/user";
 import { useDispatch } from "react-redux";
+import { useHttpClient } from "./hooks/http-hook";
+import { selectErrorMsg } from "./redux/error";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
+  const [storedData, setStoredData] = useState(JSON.parse(localStorage.getItem("userData")))
+
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const errorMsg = useSelector(selectErrorMsg);
+
+  const { error } = useHttpClient();
 
   let routes;
   let logoutTimer;
 
   useEffect(() => {
-    if (user.token && user.expiration) {
-      const remainingTime = user.expiration.getTime() - new Date().getTime();
+    if (user.token && storedData.expiration) {
+      const remainingTime = storedData.expiration.getTime() - new Date().getTime();
       logoutTimer = setTimeout(handler, remainingTime);
       function handler() {
         dispatch(logout());
@@ -31,10 +39,9 @@ const App = () => {
     } else {
       clearTimeout(logoutTimer);
     }
-  }, [user.token, logout, user.expiration]);
+  }, [user.token, logout, storedData.expiration]);
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("userData"));
     if (
       storedData &&
       storedData.token &&
@@ -44,7 +51,7 @@ const App = () => {
         login({
           userId: storedData.userId,
           token: storedData.token,
-          expiration: new Date(storedData.expiration),
+          expiration: new Date(new Date().getTime() + 1000 * 60 * 60),
         })
       );
     }
@@ -95,6 +102,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <NavBar />
+      {error && <Error errorMessage={errorMsg}/>}
       {routes}
     </BrowserRouter>
   );

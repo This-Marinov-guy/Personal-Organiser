@@ -9,9 +9,6 @@ import Row from "react-bootstrap/Row";
 import { Heading } from "../UI/Heading";
 import classes from "./Authentication.module.css";
 import Loader from "../UI/Loader";
-import Error from "../UI/Error";
-import { useSelector } from "react-redux";
-import { selectErrorMsg } from "src/redux/error";
 import ImageInput from "../UI/ImageInput";
 import { useDispatch } from "react-redux";
 import { login } from "src/redux/user";
@@ -37,15 +34,12 @@ const schema = yup.object().shape({
 });
 
 const SignUpForm = () => {
-  const { loading, error, sendRequest } = useHttpClient();
+  const { loading, sendRequest } = useHttpClient();
 
   const dispatch = useDispatch();
 
-  const errorMsg = useSelector(selectErrorMsg);
-  
   return (
     <Fragment>
-      {error && <Error errorMessage={errorMsg} />}
       <Heading>Welcome new user</Heading>
       <Formik
         validationSchema={schema}
@@ -67,7 +61,11 @@ const SignUpForm = () => {
             );
 
             dispatch(
-              login({ userId: responseData.userId, token: responseData.token })
+              login({
+                userId: responseData.userId,
+                token: responseData.token,
+                expiration: new Date(new Date().getTime() + 1000 * 60 * 60),
+              })
             );
             console.log("responseData ", responseData);
           } catch (err) {}

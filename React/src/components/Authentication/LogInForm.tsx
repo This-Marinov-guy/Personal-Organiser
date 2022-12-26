@@ -4,10 +4,7 @@ import Button from "react-bootstrap/Button";
 import Input from "../UI/Input";
 import { Heading } from "../UI/Heading";
 import { useHttpClient } from "src/hooks/http-hook";
-import { useSelector } from "react-redux";
-import { selectErrorMsg } from "src/redux/error";
 import Loader from "../UI/Loader";
-import Error from "../UI/Error";
 import classes from "./Authentication.module.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -25,15 +22,12 @@ const LogInForm = () => {
     });
   };
 
-  const { loading, error, sendRequest } = useHttpClient();
+  const { loading, sendRequest } = useHttpClient();
 
   const dispatch = useDispatch();
 
-  const errorMsg = useSelector(selectErrorMsg);
-
   return (
     <Fragment>
-      {error && <Error errorMessage={errorMsg} />}
       <Heading>Log in your account</Heading>
       <Form
         className={classes.authenticate_display}
@@ -52,7 +46,11 @@ const LogInForm = () => {
               }
             );
             dispatch(
-              login({ userId: responseData.userId, token: responseData.token })
+              login({
+                userId: responseData.userId,
+                token: responseData.token,
+                expiration: new Date(new Date().getTime() + 1000 * 60 * 60),
+              })
             );
           } catch (err) {}
         }}

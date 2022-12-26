@@ -5,6 +5,18 @@ import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import HttpError from "../models/Http-error.js";
 import User from "../models/User.js";
+const getCurrentUser = async (req, res, next) => {
+    const userId = req.params.uid;
+    let user;
+    try {
+        user = await User.findById(userId);
+    }
+    catch (err) {
+        const error = new HttpError("Could not fetch user", 500);
+        return next(error);
+    }
+    res.json({ user: user.toObject({ getters: true }) });
+};
 const getUsers = async (req, res, next) => {
     let users;
     try {
@@ -109,5 +121,5 @@ const login = async (req, res, next) => {
         .status(201)
         .json({ userId: existingUser.id, email: existingUser.email, token: token });
 };
-export { signup, login, getUsers };
+export { signup, login, getUsers, getCurrentUser };
 //# sourceMappingURL=users-controllers.js.map

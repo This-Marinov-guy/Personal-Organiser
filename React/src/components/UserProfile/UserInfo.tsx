@@ -1,7 +1,28 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useHttpClient } from "src/hooks/http-hook";
 import classes from "./UserInfo.module.css";
 
 const UserInfo = () => {
+  const [currentUser, setCurrentUser] = useState();
+
+  const { sendRequest } = useHttpClient();
+
+  const userId = useParams();
+  console.log(userId);
+  
+  // useEffect(() => {
+  //   const fetchCurrentUser = async () => {
+  //     try {
+  //       const responseData = await sendRequest(
+  //         `http://localhost:5000/api/users/${userId}`
+  //       );
+  //       setCurrentUser(responseData.user);
+  //     } catch (err) {}
+  //   };
+  //   fetchCurrentUser();
+  // }, [sendRequest, userId]);
+
   return (
     <Fragment>
       <div className={classes.cover} />

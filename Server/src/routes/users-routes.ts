@@ -1,11 +1,12 @@
 import express from "express";
 import { check } from "express-validator";
 import { getTasksByUser } from "../controllers/tasks-controllers.js";
-import { signup, login, getUsers } from "../controllers/users-controllers.js";
+import { signup, login, getUsers, getCurrentUser } from "../controllers/users-controllers.js";
 import fileUpload from "../middleware/file-upload.js";
 
 const userRouter = express.Router();
 
+userRouter.get("/:uid", getCurrentUser);
 userRouter.get("/users", getUsers);
 userRouter.get("/:uid", getTasksByUser);
 
