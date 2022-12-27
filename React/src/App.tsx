@@ -30,7 +30,7 @@ const App = () => {
   useEffect(() => {
     if (user.token && user.expirationDate) {
       let remainingTime =
-       new Date(user.expirationDate).getTime() - new Date().getTime();
+        new Date(user.expirationDate).getTime() - new Date().getTime();
       logoutTimer = setTimeout(handler, remainingTime);
       function handler() {
         dispatch(logout());
@@ -76,6 +76,9 @@ const App = () => {
         <Route path="/user/:uid" exact>
           <UserProfile />
         </Route>
+        <Route path="*">
+          <Projects />
+        </Route>
       </Switch>
     );
   } else {
@@ -89,6 +92,9 @@ const App = () => {
         </Route>
         <Route path="/signup" exact>
           <SignUp />
+        </Route>
+        <Route path="*">
+          <Home />
         </Route>
       </Switch>
     );
