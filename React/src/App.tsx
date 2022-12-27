@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import NavBar from "./components/UI/NavBar";
@@ -18,8 +18,6 @@ import { selectErrorMsg } from "./redux/error";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
-  const [storedData, setStoredData] = useState(JSON.parse(localStorage.getItem("userData")))
-
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const errorMsg = useSelector(selectErrorMsg);
@@ -30,8 +28,9 @@ const App = () => {
   let logoutTimer;
 
   useEffect(() => {
-    if (user.token && storedData.expiration) {
-      const remainingTime = storedData.expiration.getTime() - new Date().getTime();
+    if (user.token && user.expirationDate) {
+      let remainingTime =
+       new Date(user.expirationDate).getTime() - new Date().getTime();
       logoutTimer = setTimeout(handler, remainingTime);
       function handler() {
         dispatch(logout());
@@ -39,19 +38,21 @@ const App = () => {
     } else {
       clearTimeout(logoutTimer);
     }
-  }, [user.token, logout, storedData.expiration]);
+  }, [user.token, logout, user.expirationDate]);
 
   useEffect(() => {
+    let storedData = JSON.parse(localStorage.getItem("userData"));
+    console.log("storedData", storedData);
     if (
       storedData &&
       storedData.token &&
-      new Date(storedData.expiration) > new Date()
+      new Date(storedData.expirationDate) > new Date()
     ) {
       dispatch(
         login({
           userId: storedData.userId,
           token: storedData.token,
-          expiration: new Date(new Date().getTime() + 1000 * 60 * 60),
+          expirationDate: new Date(new Date().getTime() + 10000).toISOString(),
         })
       );
     }
@@ -75,9 +76,6 @@ const App = () => {
         <Route path="/user/:uid" exact>
           <UserProfile />
         </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
       </Switch>
     );
   } else {
@@ -92,9 +90,6 @@ const App = () => {
         <Route path="/signup" exact>
           <SignUp />
         </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
       </Switch>
     );
   }
@@ -102,7 +97,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <NavBar />
-      {error && <Error errorMessage={errorMsg}/>}
+      {error && <Error errorMessage={errorMsg} />}
       {routes}
     </BrowserRouter>
   );

@@ -49,7 +49,7 @@ const LogInForm = () => {
               login({
                 userId: responseData.userId,
                 token: responseData.token,
-                expiration: new Date(new Date().getTime() + 1000 * 60 * 60),
+                expirationDate: new Date(new Date().getTime() + 10000).toISOString()
               })
             );
           } catch (err) {}
