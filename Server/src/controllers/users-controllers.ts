@@ -13,7 +13,7 @@ const getCurrentUser = async (
   next: express.NextFunction
 ) => {
   const userId = req.params.userId;
-  
+
   let user;
   try {
     user = await User.findById(userId);
@@ -75,7 +75,7 @@ const signup = async (
     name,
     surname,
     age,
-    image: req.file.path,
+    image: "http://localhost:5000/" + req.file.path,
     email,
     password: hashedPassword,
     projects: [],
