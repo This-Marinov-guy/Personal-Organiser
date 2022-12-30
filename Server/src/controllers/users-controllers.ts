@@ -12,8 +12,8 @@ const getCurrentUser = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const userId = req.params.uid;
-
+  const userId = req.params.userId;
+  
   let user;
   try {
     user = await User.findById(userId);

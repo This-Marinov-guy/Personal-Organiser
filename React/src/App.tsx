@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import NavBar from "./components/UI/NavBar";
 import Projects from "./pages/Projects";
@@ -25,9 +25,9 @@ const App = () => {
   const { error } = useHttpClient();
 
   let routes;
-  let logoutTimer;
 
   useEffect(() => {
+    let logoutTimer;
     if (user.token && user.expirationDate) {
       let remainingTime =
         new Date(user.expirationDate).getTime() - new Date().getTime();
@@ -42,7 +42,6 @@ const App = () => {
 
   useEffect(() => {
     let storedData = JSON.parse(localStorage.getItem("userData"));
-    console.log("storedData", storedData);
     if (
       storedData &&
       storedData.token &&
@@ -56,7 +55,7 @@ const App = () => {
         })
       );
     }
-  }, [login]);
+  }, [dispatch]);
 
   if (user.token) {
     routes = (
@@ -73,7 +72,7 @@ const App = () => {
         <Route path="/chats" exact>
           <Chats />
         </Route>
-        <Route path="/user/:uid" exact>
+        <Route path="/user/:userId" exact>
           <UserProfile />
         </Route>
         <Route path="*">

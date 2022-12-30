@@ -12,13 +12,13 @@ const chatRouter = express.Router();
 chatRouter.use(authRequest);
 //routes with token protection
 
-chatRouter.get("/chats/:uid", getChatMessages);
+chatRouter.get("/chats/:userId", getChatMessages);
 
 //check the route
-chatRouter.post("/:pid", postAddChat);
+chatRouter.post("/:projectId", postAddChat);
 
-chatRouter.patch("/chats/:uid/:cid", patchAddChatMessage);
+chatRouter.patch("/chats/:userId/:chatId", patchAddChatMessage);
 
-chatRouter.delete("/chats/:uid/:cid", deleteChat);
+chatRouter.delete("/chats/:userId/:chatId", deleteChat);
 
 export default chatRouter;

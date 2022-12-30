@@ -22,19 +22,19 @@ const projectRouter = express.Router();
 projectRouter.use(authRequest);
 //routes with token protection
 
-projectRouter.get("/:pid", getProjectById);
-projectRouter.get("/:pid", getProjectByUserId);
-projectRouter.get("/:pid", getTasksByProject);
+projectRouter.get("/:projectId", getProjectById);
+projectRouter.get("/:projectId", getProjectByUserId);
+projectRouter.get("/:projectId", getTasksByProject);
 
 projectRouter.post("/add-project", fileUpload.single('image'), postAddProject);
-projectRouter.post("/:pid/add-task", postAddTask);
-projectRouter.post("/:pid/:tid", postAddSubtask);
+projectRouter.post("/:projectId/add-task", postAddTask);
+projectRouter.post("/:projectId/:tid", postAddSubtask);
 
-projectRouter.patch("/:pid", patchUpdateProject);
-projectRouter.patch("/:pid/:tid", patchUpdateTask);
-projectRouter.patch("/:pid/:tid", putUpdateSubtasks);
+projectRouter.patch("/:projectId", patchUpdateProject);
+projectRouter.patch("/:projectId/:tid", patchUpdateTask);
+projectRouter.patch("/:projectId/:tid", putUpdateSubtasks);
 
-projectRouter.delete("/:pid", deleteProject);
-projectRouter.delete("/:pid", deleteTask);
+projectRouter.delete("/:projectId", deleteProject);
+projectRouter.delete("/:projectId", deleteTask);
 
 export default projectRouter;

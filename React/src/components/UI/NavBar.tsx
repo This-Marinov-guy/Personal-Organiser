@@ -12,7 +12,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
-
+  
   const logoutHandler = () => {
     dispatch(logout())
   }  
@@ -27,7 +27,7 @@ const NavBar = () => {
             <Nav.Link href="/projects">Projects</Nav.Link>
             <Nav.Link href="/add-project">Add Project</Nav.Link>
             <NavDropdown title="User" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="/user/:uid">Profile</NavDropdown.Item>
+              <NavDropdown.Item href={`/user/${user.userId}`}>Profile</NavDropdown.Item>
               <NavDropdown.Item href="/chats">Chats</NavDropdown.Item>
             </NavDropdown>
           </Nav>}

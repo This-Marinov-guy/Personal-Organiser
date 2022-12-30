@@ -4,40 +4,44 @@ import { useHttpClient } from "src/hooks/http-hook";
 import classes from "./UserInfo.module.css";
 
 const UserInfo = () => {
-  const [currentUser, setCurrentUser] = useState();
-
   const { sendRequest } = useHttpClient();
+  const [currentUser, setCurrentUser] = useState<any>();
 
-  const userId = useParams();
-  console.log(userId);
+  const userId = useParams<any>().userId;
   
-  // useEffect(() => {
-  //   const fetchCurrentUser = async () => {
-  //     try {
-  //       const responseData = await sendRequest(
-  //         `http://localhost:5000/api/users/${userId}`
-  //       );
-  //       setCurrentUser(responseData.user);
-  //     } catch (err) {}
-  //   };
-  //   fetchCurrentUser();
-  // }, [sendRequest, userId]);
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/user/${userId}`
+        );
+        setCurrentUser(responseData.user);
+        console.log("currentUser ", currentUser);
+      } catch (err) {}
+    };
+    fetchCurrentUser();
+  }, [sendRequest ,userId]);
 
-  return (
+  return currentUser ? (
     <Fragment>
       <div className={classes.cover} />
       <div className={classes.user_info}>
         <img
-          src="https://fossbytes.com/wp-content/uploads/2021/06/rick-and-morty-s5-5.jpg"
+          alt="user_img"
+          src={`http://localhost:5000/${currentUser.image}`}
           className={classes.user_img}
         />
         <div className={classes.text}>
-          <p>Name: Ivan Madakov</p>
-          <p>Email: Ivan@test.com</p>
-          <p>Age: 22</p>
+          <p>
+            Name: {currentUser.name} {currentUser.surname}
+          </p>
+          <p>Email: {currentUser.email}</p>
+          <p>Age: {currentUser.age}</p>
         </div>
-      </div>
+      </div>{" "}
     </Fragment>
+  ) : (
+    <p>No current user</p>
   );
 };
 

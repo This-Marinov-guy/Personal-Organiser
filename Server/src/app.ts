@@ -13,7 +13,6 @@ import chatRouter from "./routes/chats-routes.js";
 const app = express();
 
 //external packages setup
-
 app.use(bodyParser.json());
 
 app.use(
@@ -45,7 +44,6 @@ app.use((req, res, next) => {
 });
 
 // error handling
-
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;

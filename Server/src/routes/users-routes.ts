@@ -6,9 +6,9 @@ import fileUpload from "../middleware/file-upload.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/:uid", getCurrentUser);
+userRouter.get("/:userId", getCurrentUser);
 userRouter.get("/users", getUsers);
-userRouter.get("/:uid", getTasksByUser);
+// userRouter.get("/:userId", getTasksByUser);
 
 userRouter.post(
   "/signup",
