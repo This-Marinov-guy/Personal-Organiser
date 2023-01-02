@@ -1,12 +1,11 @@
 import express from "express";
 import { check } from "express-validator";
-import { getTasksByUser } from "../controllers/tasks-controllers.js";
 import { signup, login, getUsers, getCurrentUser } from "../controllers/users-controllers.js";
 import fileUpload from "../middleware/file-upload.js";
 const userRouter = express.Router();
-userRouter.get("/:uid", getCurrentUser);
+userRouter.get("/:userId", getCurrentUser);
 userRouter.get("/users", getUsers);
-userRouter.get("/:uid", getTasksByUser);
+// userRouter.get("/:userId", getTasksByUser);
 userRouter.post("/signup", fileUpload.single("image"), [
     check("name").notEmpty(),
     check("surname").notEmpty(),

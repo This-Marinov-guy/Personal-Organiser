@@ -44,7 +44,7 @@ const postAddProject = async (req, res, next) => {
         creator,
         title,
         description,
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg",
+        image: "http://localhost:5000/" + req.file.path,
         tasks: [],
         workers: [],
     });

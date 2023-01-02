@@ -51,7 +51,7 @@ const App = () => {
         login({
           userId: storedData.userId,
           token: storedData.token,
-          expirationDate: new Date(new Date().getTime() + 10000).toISOString(),
+          expirationDate: new Date(new Date().getTime() + 36000000).toISOString(),
         })
       );
     }

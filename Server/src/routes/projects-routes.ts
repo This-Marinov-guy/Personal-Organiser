@@ -23,7 +23,7 @@ projectRouter.use(authRequest);
 //routes with token protection
 
 projectRouter.get("/:projectId", getProjectById);
-projectRouter.get("/:projectId", getProjectByUserId);
+projectRouter.get("/:userId", getProjectByUserId);
 projectRouter.get("/:projectId", getTasksByProject);
 
 projectRouter.post("/add-project", fileUpload.single('image'), postAddProject);

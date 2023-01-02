@@ -6,7 +6,7 @@ import { validationResult } from "express-validator";
 import HttpError from "../models/Http-error.js";
 import User from "../models/User.js";
 const getCurrentUser = async (req, res, next) => {
-    const userId = req.params.uid;
+    const userId = req.params.userId;
     let user;
     try {
         user = await User.findById(userId);
@@ -59,7 +59,7 @@ const signup = async (req, res, next) => {
         name,
         surname,
         age,
-        image: req.file.path,
+        image: "http://localhost:5000/" + req.file.path,
         email,
         password: hashedPassword,
         projects: [],

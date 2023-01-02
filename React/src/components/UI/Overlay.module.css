@@ -9,11 +9,14 @@
 }
 
 .modal_overlay_panel {
-  position: fixed;
+  position: absolute;
+  display: flex;
+  align-items: center;
   top: 15vh;
-  left: 5%;
-  height: 30rem;
-  z-index: 100000;
+  left: 25%;
+  height: auto;
+  width: auto;
+  z-index: 1000000;
   animation: slide-down 300ms ease-out forwards;
   overflow: auto;
 }
@@ -36,9 +39,7 @@
 }
 
 @media (max-width: 1000px) {
-  .modal_panel {
-    width: 100%;
-    height: 100%;
+  .modal_overlay_panel {
     flex-direction: column;
   }
 }

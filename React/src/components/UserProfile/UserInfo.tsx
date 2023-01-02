@@ -8,7 +8,7 @@ const UserInfo = () => {
   const [currentUser, setCurrentUser] = useState<any>();
 
   const userId = useParams<any>().userId;
-  
+
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -17,10 +17,12 @@ const UserInfo = () => {
         );
         setCurrentUser(responseData.user);
         console.log("currentUser ", currentUser);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchCurrentUser();
-  }, [sendRequest ,userId]);
+  }, [sendRequest, userId]);
 
   return currentUser ? (
     <Fragment>
@@ -28,7 +30,7 @@ const UserInfo = () => {
       <div className={classes.user_info}>
         <img
           alt="user_img"
-          src={`http://localhost:5000/${currentUser.image}`}
+          src={currentUser.image}
           className={classes.user_img}
         />
         <div className={classes.text}>
