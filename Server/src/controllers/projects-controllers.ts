@@ -104,7 +104,46 @@ const postAddProject = async (
     );
   }
 
-  res.status(201).json({ project: createdProject });
+  res.status(201).json({ projectId: createdProject._id });
+  
+};
+
+const postAddWorkers = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const { projectId, workers } = req.body;
+
+  if (!projectId) {
+    return next(
+      new HttpError("Please create a project and then assign it workers", 500)
+    );
+  }
+ 
+  let projectOfTask: any;
+  try {
+    projectOfTask = await Project.findById(projectId);
+  } catch (err) {
+    return next(new HttpError("Adding workers failed, please try again", 500));
+  }
+
+  if (!projectOfTask) {
+    return next(
+      new HttpError("Could not find a project with provided id", 404)
+    );
+  }
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    projectOfTask.workers.push(workers);
+    await projectOfTask.save({ session: sess });
+    await sess.commitTransaction();
+  } catch (err) {
+    return next(new HttpError("Creating task failed, please try again", 500));
+  }
+  res.status(201).json({ workers: workers });
 };
 
 const patchUpdateProject = async (
@@ -179,6 +218,7 @@ export {
   getProjectById,
   getProjectByUserId,
   postAddProject,
+  postAddWorkers,
   patchUpdateProject,
   deleteProject,
 };

@@ -19,7 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser);  
   const errorMsg = useSelector(selectErrorMsg);
 
   const { error } = useHttpClient();

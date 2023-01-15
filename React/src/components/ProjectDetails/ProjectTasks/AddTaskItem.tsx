@@ -3,19 +3,24 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Input from "src/components/UI/Input";
+import { v4 as uuidv4 } from "uuid";
 import classes from "./AddTaskItem.module.css";
 import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
 
-const AddTaskItem = (props : {projectId?:string}) => {
+const AddTaskItem = (props: { projectId?: string }) => {
+  console.log(props.projectId);
+
   const { loading, sendRequest } = useHttpClient();
 
-  const [inputs, setInputs] = useState([
+  const [title, setTitle] = useState("Nameless task");
+
+  const [subtasks, setSubtasks] = useState([
     {
       id: 1,
-      task: "",
+      subtask: "",
     },
   ]);
 
@@ -23,32 +28,41 @@ const AddTaskItem = (props : {projectId?:string}) => {
 
   const user = useSelector(selectUser);
 
-  const taskChangeHandler = (i: any, event: any) => {
-    const values: any = [...inputs];
-    values[i][event.target.name] = event.target.value;
-    setInputs(values);
+  const titleChangeHandler = (event) => {
+    setTitle(event.target.value);
   };
 
-  const addTaskHandler = () => {
-    setInputs([...inputs, { id: Math.random(), task: "" }]);
+  const taskChangeHandler = (i: any, event: any) => {
+    const values: any = [...subtasks];
+    values[i][event.target.name] = event.target.value;
+    setSubtasks(values);
+  };
+
+  const addSubTaskHandler = () => {
+    setSubtasks([...subtasks, { id: uuidv4(), subtask: "" }]);
   };
 
   const deleteTaskHandler = (i: any) => {
-    const values: any = [...inputs];
+    const values: any = [...subtasks];
     values.splice(i, 1);
-    setInputs(values);
+    setSubtasks(values);
   };
 
-  const submitHandler = async () => {
+  const submitHandler = async (event) => {
+    event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/project//add-task",
+        "http://localhost:5000/api/project/add-task",
         "POST",
         JSON.stringify({
           projectId: props.projectId,
-          task: inputs
+          creator: user.id,
+          title: title,
+          subtasks: subtasks,
         }),
-        { Authorization: "Bearer " + user.token }
+        {
+          "Content-Type": "application/json",
+        }
       );
       setisSubmitted(true);
     } catch (err) {}
@@ -61,7 +75,12 @@ const AddTaskItem = (props : {projectId?:string}) => {
           <i className={classes.icon + " fa-solid fa-check"}></i>
         ) : (
           <Fragment>
-            <Input label="Title" type="text" name="title" />
+            <Input
+              label="Title"
+              type="text"
+              name="title"
+              onChange={titleChangeHandler}
+            />
             <div className={classes.notes}>
               <Form.Label>Sub-tasks</Form.Label>
               <Button
@@ -69,30 +88,29 @@ const AddTaskItem = (props : {projectId?:string}) => {
                 variant="outline-success"
                 className={classes.notes_btn}
                 onClick={() => {
-                  addTaskHandler();
+                  addSubTaskHandler();
                 }}
               >
                 Add Note
               </Button>
             </div>
             <br />
-            {inputs.map((input, i) => {
+            {subtasks.map((subtask, i) => {
               return (
-                <div key={input.id} className={classes.extra_tasks}>
+                <div key={subtask.id} className={classes.extra_tasks}>
                   <InputGroup size="sm" className="mb-3">
                     <InputGroup.Text id="inputGroup-sizing-sm">
                       <i className="fa-solid fa-thumbtack"></i>
                     </InputGroup.Text>
                     <Form.Control
-                      name="task"
-                      value={input.task}
+                      name="subtask"
                       onChange={(event) => taskChangeHandler(i, event)}
                       aria-label="Small"
                       aria-describedby="inputGroup-sizing-sm"
                     />
                   </InputGroup>
                   <Button
-                    disabled={input.id === 1}
+                    disabled={subtask.id === 1}
                     onClick={() => {
                       deleteTaskHandler(i);
                     }}

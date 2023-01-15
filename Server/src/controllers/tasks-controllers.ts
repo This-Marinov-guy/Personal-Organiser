@@ -65,13 +65,13 @@ const postAddTask = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  //if you have not validation on this remove it
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(new HttpError("Invalid inputs, please check your data", 422));
-  }
-
   const { creator, projectId, title, subtasks } = req.body;
+  
+  if (!projectId) {
+    return next(
+      new HttpError("Please create a project and then assign it tasks", 500)
+    );
+  }
 
   const createdTask = new Task({
     creator,
@@ -97,7 +97,7 @@ const postAddTask = async (
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await createdTask.save({ session: sess });
-    projectOfTask.push(createdTask);
+    projectOfTask.tasks.push(createdTask);
     await projectOfTask.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {

@@ -70,7 +70,34 @@ const postAddProject = async (req, res, next) => {
     catch (err) {
         return next(new HttpError("Creating project failed, please try again", 500));
     }
-    res.status(201).json({ project: createdProject });
+    res.status(201).json({ projectId: createdProject._id });
+};
+const postAddWorkers = async (req, res, next) => {
+    const { projectId, workers } = req.body;
+    if (!projectId) {
+        return next(new HttpError("Please create a project and then assign it workers", 500));
+    }
+    let projectOfTask;
+    try {
+        projectOfTask = await Project.findById(projectId);
+    }
+    catch (err) {
+        return next(new HttpError("Adding workers failed, please try again", 500));
+    }
+    if (!projectOfTask) {
+        return next(new HttpError("Could not find a project with provided id", 404));
+    }
+    try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        projectOfTask.workers.push(workers);
+        await projectOfTask.save({ session: sess });
+        await sess.commitTransaction();
+    }
+    catch (err) {
+        return next(new HttpError("Creating task failed, please try again", 500));
+    }
+    res.status(201).json({ workers: workers });
 };
 const patchUpdateProject = async (req, res, next) => {
     const errors = validationResult(req);
@@ -122,5 +149,5 @@ const deleteProject = async (req, res, next) => {
     res.status(200).json({ message: "Project deleted" });
 };
 // request to add workers
-export { getProjectById, getProjectByUserId, postAddProject, patchUpdateProject, deleteProject, };
+export { getProjectById, getProjectByUserId, postAddProject, postAddWorkers, patchUpdateProject, deleteProject, };
 //# sourceMappingURL=projects-controllers.js.map

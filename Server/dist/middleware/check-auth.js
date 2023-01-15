@@ -9,7 +9,7 @@ const authRequest = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];
         if (!token) {
-            throw new Error("Authentication failed");
+            throw new Error("Authentication failed due to lack of token");
         }
         const decodedToken = jwt.verify(token, process.env.JWT_STRING);
         req.userData = { userId: decodedToken.userId };

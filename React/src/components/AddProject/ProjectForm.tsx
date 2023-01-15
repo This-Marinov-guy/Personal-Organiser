@@ -9,7 +9,8 @@ import classes from "./ProjectForm.module.css";
 
 const ProjectForm = () => {
   const [projectId, setProjectId] = useState();
-
+  console.log('projectId ', projectId);
+  
   return (
     <div className={classes.main_form}>
       <div className={classes.left_panel}>

@@ -32,6 +32,7 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
         onSubmit={async (values) => {
           try {
             const formData = new FormData();
+            formData.append('creator', user.userId)
             formData.append("title", values.title);
             formData.append("description", values.description);
             formData.append("image", values.image);
@@ -42,6 +43,7 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
               formData,
               { Authorization: "Bearer " + user.token }
             );
+            console.log(responseData);
             props.setProjectId(responseData.projectId);
             setisSubmitted(true);
           } catch (err) {}

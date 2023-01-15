@@ -42,21 +42,19 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
   const { loading, sendRequest } = useHttpClient();
 
   const [searchResults, setSeachResults] = useState([]);
-
   const [isSubmitted, setisSubmitted] = useState(false);
 
   const user = useSelector(selectUser);
-
-  console.log("searchResults ", searchResults);
 
   const removeWorkerHandler = (event) => {
     setSeachResults(searchResults.filter((id) => id !== event.target.id));
   };
 
-  const submitHandler = async () => {
+  const submitHandler = async (event) => {
+    event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/project/:projectId/add-task",
+        "http://localhost:5000/api/project/add-workers",
         "POST",
         JSON.stringify({
           projectId: props.projectId,
