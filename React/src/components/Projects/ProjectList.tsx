@@ -11,52 +11,12 @@ import Error from "../UI/Error";
 import AddProjectItem from "../AddProject/AddProjectItem";
 import { selectError } from "src/redux/error";
 
-const DUMMY_PROJECTS = [
-  {
-    id: "p1",
-    title: "My bug business",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p2",
-    title: "My bug business",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p3",
-    title: "Lovely",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p4",
-    title: "Hello",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p5",
-    title: "Hello",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p6",
-    title: "Lovely",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-];
+interface ProjectListprops {
+  heading: string
+  target: Array<any>,
+}
 
-const ProjectList = () => {
+const ProjectList = (props:ProjectListprops) => {
   const [filter, setFilter] = useState('');
 
   const modal = useSelector(selectModal);
@@ -65,12 +25,13 @@ const ProjectList = () => {
 
   return (
     <Fragment>
-      <Heading>Your projects</Heading>
+      <Heading>{props.heading}</Heading>
       {modal && <Modal>
         <AddProjectItem/></Modal>}
         {error && <Error errorMessage="Be careful"/>}
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.projects_display}>
+     {props.target.length > 0 ? 
         <Row
           xs={1}
           sm={2}
@@ -79,7 +40,7 @@ const ProjectList = () => {
           xll={5}
           className={classes.projects_display + " g-4"}
         >
-          {DUMMY_PROJECTS.filter((value: any) => {
+          {props.target.filter((value: any) => {
             return value.title.toLowerCase().includes(filter.toLowerCase());
           }).map((project) => {
             return (
@@ -93,7 +54,8 @@ const ProjectList = () => {
             );
           })}
         </Row>
-      </div>
+      : <p style={{textAlign: 'center'}}>No Projects exist under this criteria</p> }
+       </div>
     </Fragment>
   );
 };

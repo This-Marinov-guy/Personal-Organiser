@@ -8,47 +8,14 @@ import Modal from "src/components/UI/Modal";
 import AddTaskItem from "./AddTaskItem";
 import AddWorkersPanel from "../ProjectWorkers/AddWorkersPanel";
 import { selectModal, showModal } from "src/redux/modal";
+import { Heading } from "src/components/UI/Heading";
 
-const DUMMY_TASKS = [
-  {
-    id: "t1",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t2",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t3",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t1",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t2",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t3",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-];
+interface TaskListprops {
+  heading: string
+  target: Array<any>,
+}
 
-const TaskList = () => {
+const TaskList = (props: TaskListprops) => {
   const [filter, setFilter] = useState("");
 
   const modal = useSelector(selectModal);
@@ -63,9 +30,10 @@ const TaskList = () => {
         <AddTaskItem/>
         <AddWorkersPanel/>
       </Modal>}
+      <Heading>{props.heading}</Heading>
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.tasks_display}>
-        <Row
+        {props.target.length > 0 ? <Row
           xs={1}
           sm={2}
           md={3}
@@ -73,7 +41,7 @@ const TaskList = () => {
           xll={5}
           className={classes.tasks_display + " g-4"}
         >
-          {DUMMY_TASKS.filter((value: any) => {
+          {props.target.filter((value: any) => {
             return value.title.toLowerCase().includes(filter.toLowerCase());
           }).map((task) => {
             return (
@@ -87,7 +55,7 @@ const TaskList = () => {
               />
             );
           })}
-        </Row>
+        </Row> : <p style={{textAlign : 'center'}}>No tasks with such criteria</p>}
       </div>
     </Fragment>
   );

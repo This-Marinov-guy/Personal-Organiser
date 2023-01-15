@@ -29,6 +29,7 @@ projectRouter.get("/:projectId", getTasksByProject);
 projectRouter.post("/add-project", fileUpload.single('image'), postAddProject);
 projectRouter.post("/:projectId/add-task", postAddTask);
 projectRouter.post("/:projectId/:tid", postAddSubtask);
+//post request for adding workers
 
 projectRouter.patch("/:projectId", patchUpdateProject);
 projectRouter.patch("/:projectId/:tid", patchUpdateTask);

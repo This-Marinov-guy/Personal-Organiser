@@ -30,6 +30,11 @@
   cursor: pointer;
 }
 
+.icon {
+  font-size: 7rem;
+  margin: auto;
+}
+
 @media (max-width: 500px) {
   .search_results {
     grid-template-columns: 1fr;

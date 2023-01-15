@@ -35,6 +35,13 @@
   margin: 1rem auto;
 }
 
+.icon {
+  text-align: center;
+  font-size: 7rem;
+  margin: auto;
+
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

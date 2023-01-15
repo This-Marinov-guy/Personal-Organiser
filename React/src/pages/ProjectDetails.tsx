@@ -3,17 +3,50 @@ import Navigation from "src/components/ProjectDetails/Navigation";
 import TaskList from "src/components/ProjectDetails/ProjectTasks/TaskList";
 import WorkerList from "src/components/ProjectDetails/ProjectWorkers/WorkerList";
 
+const DUMMY_TASKS = [
+  {
+    id: "t1",
+    title: "Emergency meeting",
+    notes: ["do this", "then do this"],
+    participants: ["Ivan", "Gosho", "Niki"],
+  },
+  {
+    id: "t2",
+    title: "Emergency meeting",
+    notes: ["do this", "then do this"],
+    participants: ["Ivan", "Gosho", "Niki"],
+  },
+  {
+    id: "t3",
+    title: "Emergency meeting",
+    notes: ["do this", "then do this"],
+    participants: ["Ivan", "Gosho", "Niki"],
+  },
+  {
+    id: "t1",
+    title: "Emergency meeting",
+    notes: ["do this", "then do this"],
+    participants: ["Ivan", "Gosho", "Niki"],
+  },
+  {
+    id: "t2",
+    title: "Emergency meeting",
+    notes: ["do this", "then do this"],
+    participants: ["Ivan", "Gosho", "Niki"],
+  },
+  {
+    id: "t3",
+    title: "Emergency meeting",
+    notes: ["do this", "then do this"],
+    participants: ["Ivan", "Gosho", "Niki"],
+  },
+];
+
 const ProjectTasks = (
-  <Fragment>
-    <TaskList />
-  </Fragment>
+  <TaskList heading={"Project Tasks"} target={DUMMY_TASKS} />
 );
 
-const ProjectWorkers = (
-  <Fragment>
-    <WorkerList />
-  </Fragment>
-);
+const ProjectWorkers = <WorkerList />;
 
 const ProjectDetails = () => {
   const [currentPage, setCurrentPage] = useState("ProjectTasks");

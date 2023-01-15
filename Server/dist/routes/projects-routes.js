@@ -7,11 +7,12 @@ const projectRouter = express.Router();
 projectRouter.use(authRequest);
 //routes with token protection
 projectRouter.get("/:projectId", getProjectById);
-projectRouter.get("/:projectId", getProjectByUserId);
+projectRouter.get("/:userId", getProjectByUserId);
 projectRouter.get("/:projectId", getTasksByProject);
 projectRouter.post("/add-project", fileUpload.single('image'), postAddProject);
 projectRouter.post("/:projectId/add-task", postAddTask);
 projectRouter.post("/:projectId/:tid", postAddSubtask);
+//post request for adding workers
 projectRouter.patch("/:projectId", patchUpdateProject);
 projectRouter.patch("/:projectId/:tid", patchUpdateTask);
 projectRouter.patch("/:projectId/:tid", putUpdateSubtasks);

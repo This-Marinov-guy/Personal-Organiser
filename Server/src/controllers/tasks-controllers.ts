@@ -71,26 +71,20 @@ const postAddTask = async (
     return next(new HttpError("Invalid inputs, please check your data", 422));
   }
 
-  const { creator, project, title, subtasks } = req.body;
+  const { creator, projectId, title, subtasks } = req.body;
 
   const createdTask = new Task({
     creator,
-    project,
+    projectId,
     title,
     subtasks,
   });
 
-  let user;
   let projectOfTask: any;
   try {
-    user = await User.findById(creator);
-    projectOfTask = await Project.findById(project);
+    projectOfTask = await Project.findById(projectId);
   } catch (err) {
     return next(new HttpError("Creating task failed, please try again", 500));
-  }
-
-  if (!user) {
-    return next(new HttpError("Could not find a user with provided id", 404));
   }
 
   if (!projectOfTask) {

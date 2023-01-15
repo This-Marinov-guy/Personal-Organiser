@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHttpClient } from "src/hooks/http-hook";
+import TaskList from "../ProjectDetails/ProjectTasks/TaskList";
+import ProjectList from "../Projects/ProjectList";
 import classes from "./UserInfo.module.css";
 
 const UserInfo = () => {
@@ -40,7 +42,9 @@ const UserInfo = () => {
           <p>Email: {currentUser.email}</p>
           <p>Age: {currentUser.age}</p>
         </div>
-      </div>{" "}
+      </div>
+      <ProjectList heading={`${currentUser.name}'s projects`} target={[]}/>
+      <TaskList heading={`${currentUser.name}'s tasks`} target={[]}/>
     </Fragment>
   ) : (
     <p>No current user</p>
