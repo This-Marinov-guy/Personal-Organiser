@@ -1,6 +1,7 @@
 import express from "express";
 import { validationResult } from "express-validator";
 import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 import HttpError from "../models/Http-error.js";
 import Project from "../models/Project.js";
@@ -62,7 +63,10 @@ const getTasksByProject = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const projectId = req.params.pid;
+
+  const projectId = req.params.projectId;
+  console.log(projectId);
+  
 
   let projectWithTasks;
   try {
@@ -71,8 +75,8 @@ const getTasksByProject = async (
     return next(new HttpError("Fetching tasks failed", 500));
   }
 
-  if (!projectWithTasks || projectWithTasks.tasks.length === 0) {
-    return next(new HttpError("Project has no tasks", 404));
+  if (!projectWithTasks) {
+    return next(new HttpError("Error with finding project", 404));
   }
 
   res.json({
@@ -234,6 +238,7 @@ const postAddTask = async (
   }
 
   const createdTask = {
+    id: uuidv4(),
     creator,
     title,
     subtasks,

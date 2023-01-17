@@ -33,7 +33,7 @@ const TaskList = (props: TaskListprops) => {
       <Heading>{props.heading}</Heading>
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.tasks_display}>
-        {props.target.length > 0 ? <Row
+        {props.target ? <Row
           xs={1}
           sm={2}
           md={3}
@@ -49,8 +49,8 @@ const TaskList = (props: TaskListprops) => {
                 key={task.id}
                 id={task.id}
                 title={task.title}
-                notes={task.notes}
-                participants={task.participants}
+                subtasks={task.subtasks}
+                participants={['me','you','them']}
                 editHandler={editHandler}
               />
             );

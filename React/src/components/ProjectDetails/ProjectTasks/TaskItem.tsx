@@ -8,7 +8,7 @@ import classes from "./Tasks.module.css";
 interface TaskProps {
   id: string;
   title: string;
-  notes: string[];
+  subtasks: string[];
   participants: string[];
   onClick?:any;
   editHandler?:any;
@@ -23,7 +23,7 @@ const TaskItem = (props: TaskProps) => {
         <br/>
         <Card.Subtitle>Sub-tasks</Card.Subtitle>
         <ListGroup className="list-group-flush">
-          {props.notes.map((note) => {
+          {props.subtasks.map((note) => {
             return <ListGroup.Item>{note}</ListGroup.Item>;
           })}
         </ListGroup>

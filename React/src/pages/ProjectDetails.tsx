@@ -1,69 +1,42 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Navigation from "src/components/ProjectDetails/Navigation";
 import TaskList from "src/components/ProjectDetails/ProjectTasks/TaskList";
 import WorkerList from "src/components/ProjectDetails/ProjectWorkers/WorkerList";
-
-const DUMMY_TASKS = [
-  {
-    id: "t1",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t2",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t3",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t1",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t2",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-  {
-    id: "t3",
-    title: "Emergency meeting",
-    notes: ["do this", "then do this"],
-    participants: ["Ivan", "Gosho", "Niki"],
-  },
-];
-
-const ProjectTasks = (
-  <TaskList heading={"Project Tasks"} target={DUMMY_TASKS} />
-);
-
-const ProjectWorkers = <WorkerList />;
+import { useHttpClient } from "src/hooks/http-hook";
 
 const ProjectDetails = () => {
   const [currentPage, setCurrentPage] = useState("ProjectTasks");
+  const [projectTasks, setProjectTasks] = useState();
+
+  const { sendRequest } = useHttpClient();
+
+  const projectId = useParams<any>().projectId;
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/projects/tasks/${projectId}`
+        );
+        setProjectTasks(responseData.tasks);
+      } catch (err) {}
+    };
+    fetchTasks();
+  }, []);
 
   const pageModifierHandler = (event: any) => {
-    console.log(event.target.name);
     setCurrentPage(event.target.name);
   };
 
   const renderSwitch = () => {
     switch (currentPage) {
       case "ProjectTasks":
-        return ProjectTasks;
+        return <TaskList heading={"Project Tasks"} target={projectTasks} />;
       case "ProjectWorkers":
-        return ProjectWorkers;
+        return <WorkerList />;
       default:
-        return ProjectTasks;
+        return <p>Nothing to see</p>;
     }
   };
 

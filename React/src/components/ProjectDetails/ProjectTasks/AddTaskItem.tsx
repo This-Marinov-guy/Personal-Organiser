@@ -11,8 +11,6 @@ import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
 
 const AddTaskItem = (props: { projectId?: string }) => {
-  console.log(props.projectId);
-
   const { loading, sendRequest } = useHttpClient();
 
   const [title, setTitle] = useState("Nameless task");
