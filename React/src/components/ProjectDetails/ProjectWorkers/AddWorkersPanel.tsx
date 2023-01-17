@@ -60,7 +60,8 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
           projectId: props.projectId,
           workers: searchResults,
         }),
-        { Authorization: "Bearer " + user.token }
+        { 
+          "Content-Type": "application/json", }
       );
       setisSubmitted(true);
     } catch (err) {}

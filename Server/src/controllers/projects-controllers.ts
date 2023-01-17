@@ -127,6 +127,7 @@ const postAddWorkers = async (
   } catch (err) {
     return next(new HttpError("Adding workers failed, please try again", 500));
   }
+  
 
   if (!projectOfTask) {
     return next(
@@ -141,7 +142,7 @@ const postAddWorkers = async (
     await projectOfTask.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
-    return next(new HttpError("Creating task failed, please try again", 500));
+    return next(new HttpError("Adding workers failed, please try again", 500));
   }
   res.status(201).json({ workers: workers });
 };
