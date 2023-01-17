@@ -21,6 +21,11 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
   const { loading, sendRequest } = useHttpClient();
 
   const [isSubmitted, setisSubmitted] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+
+  const clickHandler = () => {
+    setIsButtonClicked(true);
+  };
 
   const user = useSelector(selectUser);
 
@@ -32,7 +37,7 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
         onSubmit={async (values) => {
           try {
             const formData = new FormData();
-            formData.append('creator', user.userId)
+            formData.append("creator", user.userId);
             formData.append("title", values.title);
             formData.append("description", values.description);
             formData.append("image", values.image);
@@ -103,10 +108,14 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
                   errorMessage={errors.description}
                   onChange={handleChange}
                 />
-                {loading ? (
+                {loading && isButtonClicked ? (
                   <Loader />
                 ) : (
-                  <Button className={classes.form_btn} type="submit">
+                  <Button
+                    className={classes.form_btn}
+                    onClick={clickHandler}
+                    type="submit"
+                  >
                     Submit form
                   </Button>
                 )}

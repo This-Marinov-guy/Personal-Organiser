@@ -1,41 +1,38 @@
 import express from "express";
 import {
-  deleteProject,
   getProjectById,
   getProjectByUserId,
-  patchUpdateProject,
+  getTasksByProject,
   postAddProject,
   postAddWorkers,
-} from "../controllers/projects-controllers.js";
-import {
-  deleteTask,
-  getTasksByProject,
-  putUpdateSubtasks,
-  patchUpdateTask,
-  postAddSubtask,
+  // postAddSubtask,
   postAddTask,
-} from "../controllers/tasks-controllers.js";
+  patchUpdateProject,
+  // putUpdateSubtasks,
+  // patchUpdateTask,
+  deleteProject,
+  // deleteTask
+} from "../controllers/projects-controllers.js";
 import fileUpload from "../middleware/file-upload.js";
 import authRequest from "../middleware/check-auth.js";
-
 
 const projectRouter = express.Router();
 // projectRouter.use(authRequest);
 //routes with token protection
 
 projectRouter.get("/:projectId", getProjectById);
-projectRouter.get("/:userId", getProjectByUserId);
-projectRouter.get("/:projectId", getTasksByProject);
+projectRouter.get("/my-projects/:userId", getProjectByUserId);
+projectRouter.get("/tasks/:projectId", getTasksByProject);
 
 projectRouter.post("/add-project", fileUpload.single('image'), postAddProject);
 projectRouter.post("/add-task", postAddTask);
 projectRouter.post("/add-workers", postAddWorkers);
 
 projectRouter.patch("/:projectId", patchUpdateProject);
-projectRouter.patch("/:projectId/:tid", patchUpdateTask);
-projectRouter.patch("/:projectId/:tid", putUpdateSubtasks);
+// projectRouter.patch("/:projectId/:tid", patchUpdateTask);
+// projectRouter.patch("/:projectId/:tid", putUpdateSubtasks);
 
-projectRouter.delete("/:projectId", deleteProject);
-projectRouter.delete("/:projectId", deleteTask);
+// projectRouter.delete("/:projectId", deleteProject);
+// projectRouter.delete("/:projectId", deleteTask);
 
 export default projectRouter;

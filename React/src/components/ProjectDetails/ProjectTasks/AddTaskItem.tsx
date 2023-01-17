@@ -25,6 +25,11 @@ const AddTaskItem = (props: { projectId?: string }) => {
   ]);
 
   const [isSubmitted, setisSubmitted] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+
+  const clickHandler = () => {
+    setIsButtonClicked(true);
+  };
 
   const user = useSelector(selectUser);
 
@@ -56,7 +61,7 @@ const AddTaskItem = (props: { projectId?: string }) => {
         "POST",
         JSON.stringify({
           projectId: props.projectId,
-          creator: user.id,
+          creator: user.userId,
           title: title,
           subtasks: subtasks,
         }),
@@ -122,10 +127,10 @@ const AddTaskItem = (props: { projectId?: string }) => {
                 </div>
               );
             })}
-            {loading ? (
+            {loading && isButtonClicked ? (
               <Loader />
             ) : (
-              <Button className={classes.form_btn} type="submit">
+              <Button className={classes.form_btn} onClick={clickHandler} type="submit">
                 Add Task
               </Button>
             )}

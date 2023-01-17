@@ -1,6 +1,5 @@
 import express from "express";
 import { check } from "express-validator";
-import { getTasksByUser } from "../controllers/tasks-controllers.js";
 import { signup, login, getUsers, getCurrentUser } from "../controllers/users-controllers.js";
 import fileUpload from "../middleware/file-upload.js";
 

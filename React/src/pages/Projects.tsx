@@ -1,55 +1,29 @@
-import React from 'react'
-import ProjectList from '../components/Projects/ProjectList'
-
-const DUMMY_PROJECTS = [
-  {
-    id: "p1",
-    title: "My bug business",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p2",
-    title: "My bug business",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p3",
-    title: "Lovely",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p4",
-    title: "Hello",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p5",
-    title: "Hello",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-  {
-    id: "p6",
-    title: "Lovely",
-    description: "A very cool and stinky one",
-    image:
-      "https://i.pinimg.com/originals/61/e3/55/61e3552467f1f697195b9ea9b07c9cd5.jpg",
-  },
-];
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useHttpClient } from "src/hooks/http-hook";
+import { selectUser } from "src/redux/user";
+import ProjectList from "../components/Projects/ProjectList";
 
 const Projects = () => {
-  return (
-    <ProjectList target={DUMMY_PROJECTS} heading={'All Projects'}/>
-  )
-}
+  const [userProjects, setUserProjects] = useState();
+  const { sendRequest } = useHttpClient();
 
-export default Projects
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/projects/my-projects/${user.userId}`
+        );
+        setUserProjects(responseData.projects);
+      } catch (err) {        
+      }
+    };
+    fetchPlaces();
+  }, []);
+  return <ProjectList target={userProjects} heading={"All Projects"} />;
+};
+
+export default Projects;

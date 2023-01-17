@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/user", userRouter);
-app.use("/api/project", projectRouter);
+app.use("/api/projects", projectRouter);
 app.use("/api/chat", chatRouter);
 
 //no page found

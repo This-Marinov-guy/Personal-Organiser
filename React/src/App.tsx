@@ -60,7 +60,7 @@ const App = () => {
   if (user.token) {
     routes = (
       <Switch>
-        <Route path={["/", "/projects"]} exact>
+        <Route path={["/", "/my-projects/:userId"]} exact>
           <Projects />
         </Route>
         <Route path="/projects/:projectId" exact>

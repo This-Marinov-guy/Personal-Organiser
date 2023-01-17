@@ -43,6 +43,11 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
 
   const [searchResults, setSeachResults] = useState([]);
   const [isSubmitted, setisSubmitted] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+
+  const clickHandler = () => {
+    setIsButtonClicked(true);
+  };
 
   const user = useSelector(selectUser);
 
@@ -113,10 +118,10 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
                 );
               })}
             </div>
-            {loading ? (
+            {loading && isButtonClicked ? (
               <Loader />
             ) : (
-              <Button size="sm" className={classes.form_btn} type="submit">
+              <Button size="sm" className={classes.form_btn} onClick={clickHandler} type="submit">
                 Add Workers
               </Button>
             )}

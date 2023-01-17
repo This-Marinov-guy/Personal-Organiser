@@ -34,8 +34,9 @@ const getProjectByUserId = async (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const userId = req.params.uid;
-
+  const userId = req.params.userId;
+  console.log(userId);
+  
   let userWithProjects;
   try {
     userWithProjects = await User.findById(userId).populate("projects");
@@ -52,6 +53,60 @@ const getProjectByUserId = async (
   res.json({
     projects: userWithProjects.projects.map((p: any) =>
       p.toObject({ getters: true })
+    ),
+  });
+};
+
+const getTasksByProject = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const projectId = req.params.pid;
+
+  let projectWithTasks;
+  try {
+    projectWithTasks = await Project.findById(projectId).populate("tasks");
+  } catch (err) {
+    return next(new HttpError("Fetching tasks failed", 500));
+  }
+
+  if (!projectWithTasks || projectWithTasks.tasks.length === 0) {
+    return next(new HttpError("Project has no tasks", 404));
+  }
+
+  res.json({
+    tasks: projectWithTasks.tasks.map((t: any) =>
+      t.toObject({ getters: true })
+    ),
+  });
+};
+
+const getTasksByUser = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const userId = req.params.uid;
+
+  let userWithTasks: any;
+  try {
+    userWithTasks = await User.findById(userId).populate({
+      path: "projects",
+      model: "Project",
+      populate: { path: "tasks", model: "Task" },
+    });
+  } catch (err) {
+    return next(new HttpError("Fetching tasks failed", 500));
+  }
+
+  if (!userWithTasks || userWithTasks.projects.tasks.length === 0) {
+    return next(new HttpError("User has no tasks", 404));
+  }
+
+  res.json({
+    tasks: userWithTasks.projects.tasks.map((t: any) =>
+      t.toObject({ getters: true })
     ),
   });
 };
@@ -105,7 +160,6 @@ const postAddProject = async (
   }
 
   res.status(201).json({ projectId: createdProject._id });
-  
 };
 
 const postAddWorkers = async (
@@ -120,14 +174,13 @@ const postAddWorkers = async (
       new HttpError("Please create a project and then assign it workers", 500)
     );
   }
- 
+
   let projectOfTask: any;
   try {
     projectOfTask = await Project.findById(projectId);
   } catch (err) {
     return next(new HttpError("Adding workers failed, please try again", 500));
   }
-  
 
   if (!projectOfTask) {
     return next(
@@ -135,10 +188,26 @@ const postAddWorkers = async (
     );
   }
 
+  let listOfWorkers: any;
+  for (let i = 0; i < workers.length; i++) {
+    let workerId: any;
+    try {
+      workerId = await (
+        await User.findOne({
+          name: workers[i].split(" ")[0],
+          surname: workers[i].split(" ")[1],
+        })
+      )._id;
+      listOfWorkers.push(workerId);
+    } catch (err) {
+      return next(new HttpError("Could not find one of the users", 500));
+    }
+  }
+
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    projectOfTask.workers.push(workers);
+    projectOfTask.workers.push(listOfWorkers);
     await projectOfTask.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
@@ -146,6 +215,89 @@ const postAddWorkers = async (
   }
   res.status(201).json({ workers: workers });
 };
+
+const postAddTask = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  let { creator, projectId, title, subtasks } = req.body;
+
+  if (!title) {
+    title = "Nameless";
+  }
+
+  if (!projectId) {
+    return next(
+      new HttpError("Please create a project and then assign it tasks", 500)
+    );
+  }
+
+  const createdTask = {
+    creator,
+    title,
+    subtasks,
+  };
+
+  let projectOfTask: any;
+  try {
+    projectOfTask = await Project.findById(projectId);
+  } catch (err) {
+    return next(new HttpError("Creating task failed, please try again", 500));
+  }
+
+  if (!projectOfTask) {
+    return next(
+      new HttpError("Could not find a project with provided id", 404)
+    );
+  }
+
+  console.log(projectOfTask);
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    console.log("tasks", projectOfTask.tasks);
+    projectOfTask.tasks.push(createdTask);
+    await projectOfTask.save();
+    await sess.commitTransaction();
+  } catch (err) {
+    return next(new HttpError("Creating task failed, please try again", 500));
+  }
+  res.status(201).json({ task: createdTask });
+};
+
+// const postAddSubtask = async (
+//   req: express.Request,
+//   res: express.Response,
+//   next: express.NextFunction
+// ) => {
+//   const { tid, subtasks } = req.body;
+
+//   let task: any;
+//   try {
+//     task = await Task.findById(tid);
+//   } catch (err) {
+//     return next(
+//       new HttpError("Creating subtask failed, please try again", 500)
+//     );
+//   }
+
+//   if (!task) {
+//     return next(new HttpError("Could not find task", 404));
+//   }
+
+//   try {
+//     const sess = await mongoose.startSession();
+//     sess.startTransaction();
+//     task.push(subtasks);
+//     await task.save({ session: sess });
+//     await sess.commitTransaction();
+//   } catch (err) {
+//     return next(new HttpError("Adding subtasks failed", 500));
+//   }
+//   res.status(201).json({ subtasks: subtasks });
+// };
 
 const patchUpdateProject = async (
   req: express.Request,
@@ -180,6 +332,64 @@ const patchUpdateProject = async (
   res.status(200).json({ project: project.toObject({ getters: true }) });
 };
 
+// const patchUpdateTask = async (
+//   req: express.Request,
+//   res: express.Response,
+//   next: express.NextFunction
+// ) => {
+//   //remove this if you dont have validation
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     return next(new HttpError("Invalid inputs", 422));
+//   }
+
+//   const { tid, title, subtasks } = req.body;
+
+//   let task: any;
+//   try {
+//     task = await Task.findById(tid);
+//   } catch (err) {
+//     return next(new HttpError("Something went wrong, please try again", 500));
+//   }
+
+//   task.title = title;
+//   task.subtasks = subtasks;
+
+//   try {
+//     await task.save();
+//   } catch (err) {
+//     return next(new HttpError("Something went wrong, please try again", 500));
+//   }
+
+//   res.status(200).json({ task: task.toObject({ getters: true }) });
+// };
+
+// const putUpdateSubtasks = async (
+//   req: express.Request,
+//   res: express.Response,
+//   next: express.NextFunction
+// ) => {
+//   const { taskId, subtasks } = req.body;
+
+//   let task: any;
+//   try {
+//     task = await Task.findById(taskId);
+//   } catch (err) {
+//     return next(
+//       new HttpError("Creating subtask failed, please try again", 500)
+//     );
+//   }
+
+//   task.subtasks = subtasks;
+
+//   try {
+//     await task.save();
+//   } catch (err) {
+//     return next(new HttpError("Something went wrong", 500));
+//   }
+//   res.status(200).json({ subtasks: subtasks.toObject({ getters: true }) });
+// };
+
 const deleteProject = async (
   req: express.Request,
   res: express.Response,
@@ -213,13 +423,49 @@ const deleteProject = async (
   res.status(200).json({ message: "Project deleted" });
 };
 
-// request to add workers
+// const deleteTask = async (
+//   req: express.Request,
+//   res: express.Response,
+//   next: express.NextFunction
+// ) => {
+//   const taskid = req.params.tid;
+
+//   let task: any;
+//   try {
+//     task = await Task.findById(taskid).populate("project");
+//   } catch (err) {
+//     return next(new HttpError("Something went wrong", 500));
+//   }
+
+//   if (!task) {
+//     return next(new HttpError("Could not find a task", 404));
+//   }
+
+//   try {
+//     const sess = await mongoose.startSession();
+//     sess.startTransaction();
+//     await task.remove({ session: sess });
+//     task.project.tasks.pull(task);
+//     await task.project.save({ session: sess });
+//     await sess.commitTransaction();
+//   } catch (err) {
+//     return next(new HttpError("Something went wrong, please try again", 500));
+//   }
+
+//   res.status(200).json({ message: "Task deleted" });
+// };
 
 export {
   getProjectById,
   getProjectByUserId,
+  getTasksByProject,
   postAddProject,
   postAddWorkers,
+  // postAddSubtask,
+  postAddTask,
   patchUpdateProject,
+  // putUpdateSubtasks,
+  // patchUpdateTask,
   deleteProject,
+  // deleteTask
 };

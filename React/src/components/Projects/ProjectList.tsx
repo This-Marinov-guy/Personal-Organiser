@@ -31,7 +31,7 @@ const ProjectList = (props:ProjectListprops) => {
         {error && <Error errorMessage="Be careful"/>}
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.projects_display}>
-     {props.target.length > 0 ? 
+     {props.target ? 
         <Row
           xs={1}
           sm={2}

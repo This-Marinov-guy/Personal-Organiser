@@ -42,7 +42,6 @@ const getTasksByUser = async (req, res, next) => {
 };
 const postAddTask = async (req, res, next) => {
     const { creator, projectId, title, subtasks } = req.body;
-    console.log('body', req.body);
     if (!projectId) {
         return next(new HttpError("Please create a project and then assign it tasks", 500));
     }
