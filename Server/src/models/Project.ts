@@ -14,7 +14,7 @@ const projectSchema = new Schema({
       subtasks: [
         {
           id: { type: String, required: true },
-          subtask: { type: String, required: true },
+          subtask: [{ type: String, required: true }],
         },
       ],
     },

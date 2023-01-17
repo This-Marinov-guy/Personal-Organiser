@@ -55,7 +55,7 @@ const AddTaskItem = (props: { projectId?: string }) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/project/add-task",
+        "http://localhost:5000/api/projects/add-task",
         "POST",
         JSON.stringify({
           projectId: props.projectId,
