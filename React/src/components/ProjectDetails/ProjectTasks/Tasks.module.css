@@ -5,6 +5,12 @@
   justify-content: space-around;
 }
 
+.task_status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .task_buttons {
   width: 100%;
   margin: auto;

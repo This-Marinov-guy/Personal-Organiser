@@ -39,7 +39,13 @@
   text-align: center;
   font-size: 7rem;
   margin: auto;
+}
 
+.importancy_options {
+  display: flex;
+  align-items: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
 ::-webkit-scrollbar {

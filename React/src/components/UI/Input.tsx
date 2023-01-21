@@ -9,6 +9,8 @@ interface InputProps {
   id?: string;
   name?: string;
   type: string;
+  min?: string;
+  max?: string;
   value?: string;
   defaultValue?: string;
   placeholder?: string;
@@ -34,6 +36,8 @@ const Input = (props: InputProps) => {
         as={props.as}
         name={props.name}
         type={props.type}
+        min={props.min}
+        max={props.max}
         value={props.value}
         defaultValue={props.defaultValue}
         placeholder={props.placeholder}

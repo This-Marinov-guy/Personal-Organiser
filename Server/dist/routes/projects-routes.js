@@ -9,8 +9,8 @@ const projectRouter = express.Router();
 // projectRouter.use(authRequest);
 //routes with token protection
 projectRouter.get("/:projectId", getProjectById);
-projectRouter.get("/:userId", getProjectByUserId);
-projectRouter.get("/:projectId", getTasksByProject);
+projectRouter.get("/my-projects/:userId", getProjectByUserId);
+projectRouter.get("/tasks/:projectId", getTasksByProject);
 projectRouter.post("/add-project", fileUpload.single('image'), postAddProject);
 projectRouter.post("/add-task", postAddTask);
 projectRouter.post("/add-workers", postAddWorkers);

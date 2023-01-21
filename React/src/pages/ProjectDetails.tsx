@@ -19,7 +19,7 @@ const ProjectDetails = () => {
         const responseData = await sendRequest(
           `http://localhost:5000/api/projects/tasks/${projectId}`
         );
-        setProjectTasks(responseData.tasks);
+        setProjectTasks(responseData.tasks.sort((a, b) => b.level - a.level));
       } catch (err) {}
     };
     fetchTasks();

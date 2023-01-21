@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Input from "src/components/UI/Input";
 import { v4 as uuidv4 } from "uuid";
@@ -9,18 +8,16 @@ import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
+import Status from "src/components/UI/Status";
 
 const AddTaskItem = (props: { projectId?: string }) => {
   const { loading, sendRequest } = useHttpClient();
 
-  const [title, setTitle] = useState("Nameless task");
-
-  const [subtasks, setSubtasks] = useState([
-    {
-      id: 1,
-      subtask: "",
-    },
-  ]);
+  const [inputs, setInputs] = useState({
+    title: "",
+    content: "",
+    level: "1",
+  });
 
   const [isSubmitted, setisSubmitted] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -31,24 +28,13 @@ const AddTaskItem = (props: { projectId?: string }) => {
 
   const user = useSelector(selectUser);
 
-  const titleChangeHandler = (event) => {
-    setTitle(event.target.value);
-  };
-
-  const taskChangeHandler = (i: any, event: any) => {
-    const values: any = [...subtasks];
-    values[i][event.target.name] = event.target.value;
-    setSubtasks(values);
-  };
-
-  const addSubTaskHandler = () => {
-    setSubtasks([...subtasks, { id: uuidv4(), subtask: "" }]);
-  };
-
-  const deleteTaskHandler = (i: any) => {
-    const values: any = [...subtasks];
-    values.splice(i, 1);
-    setSubtasks(values);
+  const changeFormInputHandler = (event) => {
+    setInputs((prevState) => {
+      return {
+        ...prevState,
+        [event.target.name]: event.target.value,
+      };
+    });
   };
 
   const submitHandler = async (event) => {
@@ -60,8 +46,9 @@ const AddTaskItem = (props: { projectId?: string }) => {
         JSON.stringify({
           projectId: props.projectId,
           creator: user.userId,
-          title: title,
-          subtasks: subtasks,
+          title: inputs.title,
+          content: inputs.content,
+          level: inputs.level,
         }),
         {
           "Content-Type": "application/json",
@@ -82,53 +69,35 @@ const AddTaskItem = (props: { projectId?: string }) => {
               label="Title"
               type="text"
               name="title"
-              onChange={titleChangeHandler}
+              onChange={changeFormInputHandler}
             />
-            <div className={classes.notes}>
-              <Form.Label>Sub-tasks</Form.Label>
-              <Button
-                size="sm"
-                variant="outline-success"
-                className={classes.notes_btn}
-                onClick={() => {
-                  addSubTaskHandler();
-                }}
-              >
-                Add Note
-              </Button>
+            <Input
+              as="textarea"
+              label="Task"
+              type="description"
+              name="content"
+              onChange={changeFormInputHandler}
+            />
+            <div className={classes.importancy_options}>
+              <Input
+                label="Level of Importancy"
+                type="number"
+                min="1"
+                max="5"
+                placeholder="between 1-5"
+                name="level"
+                onChange={changeFormInputHandler}
+              />
+              <Status level={inputs.level}/>
             </div>
-            <br />
-            {subtasks.map((subtask, i) => {
-              return (
-                <div key={subtask.id} className={classes.extra_tasks}>
-                  <InputGroup size="sm" className="mb-3">
-                    <InputGroup.Text id="inputGroup-sizing-sm">
-                      <i className="fa-solid fa-thumbtack"></i>
-                    </InputGroup.Text>
-                    <Form.Control
-                      name="subtask"
-                      onChange={(event) => taskChangeHandler(i, event)}
-                      aria-label="Small"
-                      aria-describedby="inputGroup-sizing-sm"
-                    />
-                  </InputGroup>
-                  <Button
-                    disabled={subtask.id === 1}
-                    onClick={() => {
-                      deleteTaskHandler(i);
-                    }}
-                    size="sm"
-                    variant="outline-danger"
-                  >
-                    <i className="fa-solid fa-xmark"></i>
-                  </Button>
-                </div>
-              );
-            })}
             {loading && isButtonClicked ? (
               <Loader />
             ) : (
-              <Button className={classes.form_btn} onClick={clickHandler} type="submit">
+              <Button
+                className={classes.form_btn}
+                onClick={clickHandler}
+                type="submit"
+              >
                 Add Task
               </Button>
             )}

@@ -12,50 +12,60 @@ import AddProjectItem from "../AddProject/AddProjectItem";
 import { selectError } from "src/redux/error";
 
 interface ProjectListprops {
-  heading: string
-  target: Array<any>,
+  heading: string;
+  target: Array<any>;
 }
 
-const ProjectList = (props:ProjectListprops) => {
-  const [filter, setFilter] = useState('');
+const ProjectList = (props: ProjectListprops) => {
+  const [filter, setFilter] = useState("");
 
   const modal = useSelector(selectModal);
   const error = useSelector(selectError);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <Fragment>
       <Heading>{props.heading}</Heading>
-      {modal && <Modal>
-        <AddProjectItem/></Modal>}
-        {error && <Error errorMessage="Be careful"/>}
+      {modal && (
+        <Modal>
+          <AddProjectItem />
+        </Modal>
+      )}
+      {error && <Error errorMessage="Be careful" />}
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.projects_display}>
-     {props.target ? 
-        <Row
-          xs={1}
-          sm={2}
-          md={3}
-          lg={4}
-          xll={5}
-          className={classes.projects_display + " g-4"}
-        >
-          {props.target.filter((value: any) => {
-            return value.title.toLowerCase().includes(filter.toLowerCase());
-          }).map((project) => {
-            return (
-              <ProjectItem
-                key={project.id}
-                id={project.id}
-                title={project.title}
-                description={project.description}
-                image={project.image}
-              />
-            );
-          })}
-        </Row>
-      : <p style={{textAlign: 'center'}}>No Projects exist under this criteria</p> }
-       </div>
+        {props.target ? (
+          <Row
+            xs={1}
+            sm={2}
+            md={3}
+            lg={4}
+            xll={5}
+            className={classes.projects_display + " g-4"}
+          >
+            {props.target
+              .filter((value: any) => {
+                return value.title.toLowerCase().includes(filter.toLowerCase());
+              })
+              .map((project) => {
+                return (
+                  <ProjectItem
+                    key={project.id}
+                    id={project.id}
+                    title={project.title}
+                    description={project.description}
+                    image={project.image}
+                    workers={project.workers}
+                  />
+                );
+              })}
+          </Row>
+        ) : (
+          <p style={{ textAlign: "center" }}>
+            No Projects exist under this criteria
+          </p>
+        )}
+      </div>
     </Fragment>
   );
 };

@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 import mongoose from "mongoose";
 import HttpError from "../models/Http-error.js";
 import Project from "../models/Project.js";
@@ -20,6 +21,7 @@ const getProjectById = async (req, res, next) => {
 };
 const getProjectByUserId = async (req, res, next) => {
     const userId = req.params.userId;
+    console.log(userId);
     let userWithProjects;
     try {
         userWithProjects = await User.findById(userId).populate("projects");
@@ -35,7 +37,8 @@ const getProjectByUserId = async (req, res, next) => {
     });
 };
 const getTasksByProject = async (req, res, next) => {
-    const projectId = req.params.pid;
+    const projectId = req.params.projectId;
+    console.log(projectId);
     let projectWithTasks;
     try {
         projectWithTasks = await Project.findById(projectId).populate("tasks");
@@ -43,8 +46,8 @@ const getTasksByProject = async (req, res, next) => {
     catch (err) {
         return next(new HttpError("Fetching tasks failed", 500));
     }
-    if (!projectWithTasks || projectWithTasks.tasks.length === 0) {
-        return next(new HttpError("Project has no tasks", 404));
+    if (!projectWithTasks) {
+        return next(new HttpError("Error with finding project", 404));
     }
     res.json({
         tasks: projectWithTasks.tasks.map((t) => t.toObject({ getters: true })),
@@ -158,6 +161,7 @@ const postAddTask = async (req, res, next) => {
         return next(new HttpError("Please create a project and then assign it tasks", 500));
     }
     const createdTask = {
+        id: uuidv4(),
         creator,
         title,
         subtasks,

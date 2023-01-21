@@ -86,34 +86,6 @@ const getTasksByProject = async (
   });
 };
 
-const getTasksByUser = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  const userId = req.params.uid;
-
-  let userWithTasks: any;
-  try {
-    userWithTasks = await User.findById(userId).populate({
-      path: "projects",
-      model: "Project",
-      populate: { path: "tasks", model: "Task" },
-    });
-  } catch (err) {
-    return next(new HttpError("Fetching tasks failed", 500));
-  }
-
-  if (!userWithTasks || userWithTasks.projects.tasks.length === 0) {
-    return next(new HttpError("User has no tasks", 404));
-  }
-
-  res.json({
-    tasks: userWithTasks.projects.tasks.map((t: any) =>
-      t.toObject({ getters: true })
-    ),
-  });
-};
 
 const postAddProject = async (
   req: express.Request,
@@ -272,37 +244,6 @@ const postAddTask = async (
   res.status(201).json({ task: createdTask });
 };
 
-// const postAddSubtask = async (
-//   req: express.Request,
-//   res: express.Response,
-//   next: express.NextFunction
-// ) => {
-//   const { tid, subtasks } = req.body;
-
-//   let task: any;
-//   try {
-//     task = await Task.findById(tid);
-//   } catch (err) {
-//     return next(
-//       new HttpError("Creating subtask failed, please try again", 500)
-//     );
-//   }
-
-//   if (!task) {
-//     return next(new HttpError("Could not find task", 404));
-//   }
-
-//   try {
-//     const sess = await mongoose.startSession();
-//     sess.startTransaction();
-//     task.push(subtasks);
-//     await task.save({ session: sess });
-//     await sess.commitTransaction();
-//   } catch (err) {
-//     return next(new HttpError("Adding subtasks failed", 500));
-//   }
-//   res.status(201).json({ subtasks: subtasks });
-// };
 
 const patchUpdateProject = async (
   req: express.Request,
@@ -466,7 +407,6 @@ export {
   getTasksByProject,
   postAddProject,
   postAddWorkers,
-  // postAddSubtask,
   postAddTask,
   patchUpdateProject,
   // putUpdateSubtasks,

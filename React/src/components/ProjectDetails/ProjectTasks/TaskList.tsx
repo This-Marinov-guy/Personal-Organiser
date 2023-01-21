@@ -49,8 +49,8 @@ const TaskList = (props: TaskListprops) => {
                 key={task.id}
                 id={task.id}
                 title={task.title}
-                subtasks={task.subtasks}
-                participants={['me','you','them']}
+                content={task.content}
+                level={task.level}
                 editHandler={editHandler}
               />
             );
