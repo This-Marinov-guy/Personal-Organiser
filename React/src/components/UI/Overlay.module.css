@@ -16,7 +16,8 @@
   left: 25%;
   height: auto;
   width: auto;
-  z-index: 1000000;
+  color: white;
+  z-index: 100000;
   animation: slide-down 300ms ease-out forwards;
   overflow: auto;
 }

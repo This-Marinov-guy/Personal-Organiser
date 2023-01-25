@@ -10,7 +10,13 @@ import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
 import Status from "src/components/UI/Status";
 
-const AddTaskItem = (props: { projectId?: string }) => {
+interface AddTaskItemProps {
+  projectId: string;
+  editMode?: boolean;
+  addMode?: boolean;
+}
+
+const AddTaskItem = (props) => {
   const { loading, sendRequest } = useHttpClient();
 
   const [inputs, setInputs] = useState({
@@ -37,8 +43,7 @@ const AddTaskItem = (props: { projectId?: string }) => {
     });
   };
 
-  const submitHandler = async (event) => {
-    event.preventDefault();
+  const addTaskSubmitHandler = async () => {
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/projects/add-task",
@@ -57,6 +62,20 @@ const AddTaskItem = (props: { projectId?: string }) => {
       setisSubmitted(true);
     } catch (err) {}
   };
+
+  const editTaskSubmitHandler = async () => {};
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    switch (props.addMode && props.editMode) {
+      case true && false:
+        return addTaskSubmitHandler();
+      case false && true:
+        return editTaskSubmitHandler();
+      default:
+        addTaskSubmitHandler();
+    }
+  }
 
   return (
     <Fragment>
@@ -88,7 +107,7 @@ const AddTaskItem = (props: { projectId?: string }) => {
                 name="level"
                 onChange={changeFormInputHandler}
               />
-              <Status level={inputs.level}/>
+              <Status level={inputs.level} />
             </div>
             {loading && isButtonClicked ? (
               <Loader />

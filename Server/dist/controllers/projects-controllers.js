@@ -53,26 +53,6 @@ const getTasksByProject = async (req, res, next) => {
         tasks: projectWithTasks.tasks.map((t) => t.toObject({ getters: true })),
     });
 };
-const getTasksByUser = async (req, res, next) => {
-    const userId = req.params.uid;
-    let userWithTasks;
-    try {
-        userWithTasks = await User.findById(userId).populate({
-            path: "projects",
-            model: "Project",
-            populate: { path: "tasks", model: "Task" },
-        });
-    }
-    catch (err) {
-        return next(new HttpError("Fetching tasks failed", 500));
-    }
-    if (!userWithTasks || userWithTasks.projects.tasks.length === 0) {
-        return next(new HttpError("User has no tasks", 404));
-    }
-    res.json({
-        tasks: userWithTasks.projects.tasks.map((t) => t.toObject({ getters: true })),
-    });
-};
 const postAddProject = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -190,34 +170,6 @@ const postAddTask = async (req, res, next) => {
     }
     res.status(201).json({ task: createdTask });
 };
-// const postAddSubtask = async (
-//   req: express.Request,
-//   res: express.Response,
-//   next: express.NextFunction
-// ) => {
-//   const { tid, subtasks } = req.body;
-//   let task: any;
-//   try {
-//     task = await Task.findById(tid);
-//   } catch (err) {
-//     return next(
-//       new HttpError("Creating subtask failed, please try again", 500)
-//     );
-//   }
-//   if (!task) {
-//     return next(new HttpError("Could not find task", 404));
-//   }
-//   try {
-//     const sess = await mongoose.startSession();
-//     sess.startTransaction();
-//     task.push(subtasks);
-//     await task.save({ session: sess });
-//     await sess.commitTransaction();
-//   } catch (err) {
-//     return next(new HttpError("Adding subtasks failed", 500));
-//   }
-//   res.status(201).json({ subtasks: subtasks });
-// };
 const patchUpdateProject = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -342,9 +294,7 @@ const deleteProject = async (req, res, next) => {
 //   }
 //   res.status(200).json({ message: "Task deleted" });
 // };
-export { getProjectById, getProjectByUserId, getTasksByProject, postAddProject, postAddWorkers, 
-// postAddSubtask,
-postAddTask, patchUpdateProject, 
+export { getProjectById, getProjectByUserId, getTasksByProject, postAddProject, postAddWorkers, postAddTask, patchUpdateProject, 
 // putUpdateSubtasks,
 // patchUpdateTask,
 deleteProject,
