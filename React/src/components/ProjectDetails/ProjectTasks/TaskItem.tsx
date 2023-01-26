@@ -19,7 +19,7 @@ const TaskItem = (props: TaskProps) => {
       <Card.Body>
         <div className={classes.task_status}>
         <Card.Title>{props.title}</Card.Title>
-        <Status level={props.level}>{props.level}</Status>
+        <Status level={props.level}></Status>
         </div>
         <br />
         <Card.Subtitle>Objectives</Card.Subtitle>
@@ -27,7 +27,7 @@ const TaskItem = (props: TaskProps) => {
         <br />
         <div className={classes.task_buttons}>
           <Button variant="outline-success">Done</Button>
-          <Button onClick={props.editHandler} variant="outline-info">
+          <Button id={props.id} onClick={props.editHandler} variant="outline-info">
             Edit
           </Button>
           <Button variant="outline-danger">Abort</Button>

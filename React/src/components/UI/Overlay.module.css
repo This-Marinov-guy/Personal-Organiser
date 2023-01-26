@@ -1,22 +1,27 @@
+.modal {
+  display: flex;
+}
+
+
 .overlay_backdrop {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   z-index: 10000;
   background-color: rgba(0, 0, 0, 0.75);
 }
 
 .modal_overlay_panel {
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: center;
-  top: 15vh;
-  left: 25%;
+  justify-content: center;
+  top: 15%;
+  left: 35%;
   height: auto;
-  width: auto;
-  color: white;
+  width: 30rem;
   z-index: 100000;
   animation: slide-down 300ms ease-out forwards;
   overflow: auto;

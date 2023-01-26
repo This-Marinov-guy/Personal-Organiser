@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import TaskItem from "./TaskItem";
 import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
 import { SearchBarAuto } from "../../UI/SearchBar";
 import { useSelector, useDispatch } from "react-redux";
 import classes from "./Tasks.module.css";
@@ -21,7 +22,7 @@ const TaskList = (props: TaskListprops) => {
   const [filter, setFilter] = useState("");
   const [addMode, setAddMode] = useState(false);
   const [editMode, setEditMode] = useState(false);
-
+  const [taskId, setTaskId] = useState();
 
   const modal = useSelector(selectModal);
   const dispatch = useDispatch();
@@ -34,7 +35,8 @@ const TaskList = (props: TaskListprops) => {
     dispatch(showModal());
   };
 
-  const editHandler = () => {
+  const editHandler = (event) => {
+    setTaskId(event.target.id)
     setEditMode(true)
     setAddMode(false)
     dispatch(showModal());
@@ -43,7 +45,7 @@ const TaskList = (props: TaskListprops) => {
     <Fragment>
       {modal && (
         <Modal>
-          <AddTaskItem projectId={projectId} editMode={editMode} addMode={addMode}/>
+          <AddTaskItem projectId={projectId} taskId={taskId} editMode={editMode} addMode={addMode}/>
         </Modal>
       )}
       <Heading>{props.heading}</Heading>
@@ -74,9 +76,9 @@ const TaskList = (props: TaskListprops) => {
                   />
                 );
               })}
-            <div className={classes.icon}>
+            <Card className={classes.icon}>
               <i className={"fa-solid fa-plus"} onClick={addHandler}></i>
-            </div>
+            </Card>
           </Row>
         ) : (
           <p style={{ textAlign: "center" }}>No tasks with such criteria</p>

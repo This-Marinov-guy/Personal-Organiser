@@ -2,7 +2,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 const Loader = () => {
   return (
-    <Spinner animation="border" role="status">
+    <Spinner style={{margin: 'auto'}} animation="border" role="status">
       <span className="visually-hidden">Loading...</span>
     </Spinner>
   );

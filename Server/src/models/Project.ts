@@ -11,7 +11,8 @@ const projectSchema = new Schema({
     {
       creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
       title: { type: String, required: true },
-      content: { type: String, required: true }
+      content: { type: String, required: true },
+      level: { type: String, required: true }
     },
   ],
   workers: [{ type: mongoose.Types.ObjectId, ref: "User" }],

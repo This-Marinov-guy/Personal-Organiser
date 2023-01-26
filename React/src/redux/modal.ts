@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const bodyStyle = document.body.style;
+
 export const modalSlice = createSlice({
   name: "modal",
   initialState: {
@@ -8,9 +10,11 @@ export const modalSlice = createSlice({
   reducers: {
     showModal: (state) => {
       state.value = true;
+      bodyStyle.overflowY = "hidden"
     },
     removeModal: (state) => {
       state.value = false;
+      bodyStyle.overflowY = "auto"
     },
   },
 });

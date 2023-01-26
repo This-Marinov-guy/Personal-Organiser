@@ -5,8 +5,7 @@
   margin: 4rem 2rem;
   border: 0.1rem groove;
   box-shadow: 0.3rem 0.3rem 0.3rem lightblue;
-  color: white;
-  z-index: 100000;
+  background-color: white;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useCallback, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Input from "src/components/UI/Input";
@@ -9,9 +9,12 @@ import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
 import Status from "src/components/UI/Status";
+import { useDispatch } from "react-redux";
+import { removeModal } from "src/redux/modal";
 
 interface AddTaskItemProps {
   projectId: string;
+  taskId?: string;
   editMode?: boolean;
   addMode?: boolean;
 }
@@ -27,12 +30,19 @@ const AddTaskItem = (props) => {
 
   const [isSubmitted, setisSubmitted] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [placeholders, setPlaceholders] = useState({
+    title: "",
+    content: "",
+    level: "",
+  });
 
   const clickHandler = () => {
     setIsButtonClicked(true);
   };
 
   const user = useSelector(selectUser);
+
+  const dispatch = useDispatch();
 
   const changeFormInputHandler = (event) => {
     setInputs((prevState) => {
@@ -43,7 +53,8 @@ const AddTaskItem = (props) => {
     });
   };
 
-  const addTaskSubmitHandler = async () => {
+  const addFirstTaskSubmitHandler = async (event) => {
+    event.preventDefault();
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/projects/add-task",
@@ -60,22 +71,84 @@ const AddTaskItem = (props) => {
         }
       );
       setisSubmitted(true);
+      dispatch(removeModal());
     } catch (err) {}
   };
 
-  const editTaskSubmitHandler = async () => {};
+  const addDirectTaskSubmitHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/projects/add-task/${props.projectId}`,
+        "POST",
+        JSON.stringify({
+          creator: user.userId,
+          title: inputs.title,
+          content: inputs.content,
+          level: inputs.level,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      setisSubmitted(true);
+      dispatch(removeModal());
+    } catch (err) {}
+  };
+
+  const editTaskSubmitHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/projects/edit-task/${props.projectId}`,
+        "PATCH",
+        JSON.stringify({
+          taskId: props.taskId,
+          title: inputs.title,
+          content: inputs.content,
+          level: inputs.level,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      setisSubmitted(true);
+      dispatch(removeModal());
+    } catch (err) {}
+  };
 
   const submitHandler = (event) => {
-    event.preventDefault();
-    switch (props.addMode && props.editMode) {
-      case true && false:
-        return addTaskSubmitHandler();
-      case false && true:
-        return editTaskSubmitHandler();
-      default:
-        addTaskSubmitHandler();
+    if (props.addMode && !props.editMode) {
+      addDirectTaskSubmitHandler();
+    } else if (!props.addMode && props.editMode) {
+      editTaskSubmitHandler();
+    } else {
+      addFirstTaskSubmitHandler(event);
     }
-  }
+  };
+
+  useEffect(() => {
+    if (props.taskId) {
+      const fetchCurrentTask = async () => {
+        try {
+          const responseData = await sendRequest(
+            `http://localhost:5000/api/projects/fetch-task/${props.projectId}`,
+            "POST",
+            JSON.stringify({
+              taskId: props.taskId,
+            }),
+            {
+              "Content-Type": "application/json",
+            }
+          );
+          setPlaceholders({
+            title: responseData.targetTask.title,
+            content: responseData.targetTask.content,
+            level: responseData.targetTask.level,
+          });
+        } catch (err) {}
+      };
+      fetchCurrentTask();
+    }
+  }, []);
 
   return (
     <Fragment>
@@ -88,6 +161,7 @@ const AddTaskItem = (props) => {
               label="Title"
               type="text"
               name="title"
+              placeholder={props.taskId && placeholders.title}
               onChange={changeFormInputHandler}
             />
             <Input
@@ -95,6 +169,7 @@ const AddTaskItem = (props) => {
               label="Task"
               type="description"
               name="content"
+              placeholder={props.taskId && placeholders.content}
               onChange={changeFormInputHandler}
             />
             <div className={classes.importancy_options}>
@@ -103,7 +178,7 @@ const AddTaskItem = (props) => {
                 type="number"
                 min="1"
                 max="5"
-                placeholder="between 1-5"
+                placeholder={props.taskId ? placeholders.level : "between 1-5"}
                 name="level"
                 onChange={changeFormInputHandler}
               />
@@ -117,7 +192,7 @@ const AddTaskItem = (props) => {
                 onClick={clickHandler}
                 type="submit"
               >
-                Add Task
+                {props.editMode ? "Update Task" : "Add Task"}
               </Button>
             )}
           </Fragment>
