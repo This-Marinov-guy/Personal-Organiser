@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import { useDispatch } from "react-redux";
-import { removeModal } from "src/redux/modal";
+import { removeModal, removeWarning } from "src/redux/modal";
 import classes from "./Overlay.module.css";
 
 const Backdrop = (props) => {
@@ -19,6 +19,7 @@ const Modal = (props) => {
 
   const closeHandler = () => {
     dispatch(removeModal());
+    dispatch(removeWarning());
   };
   return (
     <div className={classes.modal}>

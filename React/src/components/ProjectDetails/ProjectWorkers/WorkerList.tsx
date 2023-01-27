@@ -1,8 +1,14 @@
 import React, { Fragment, useState } from "react";
 import WorkerItem from "./WorkerItem";
+import { Heading } from "src/components/UI/Heading";
 import Row from "react-bootstrap/Row";
 import { SearchBarAuto } from "../../UI/SearchBar";
 import classes from "./Workers.module.css";
+
+interface WrokersListprops {
+  heading: string;
+  target: Array<any>;
+}
 
 const DUMMY_WORKERS = [
   {
@@ -31,11 +37,12 @@ const DUMMY_WORKERS = [
   },
 ];
 
-const WorkerList = () => {
+const WorkerList = (props:WrokersListprops) => {
   const [filter, setFilter] = useState("");
 
   return (
     <Fragment>
+      <Heading>{props.heading}</Heading>
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.workers_display}>
         <Row

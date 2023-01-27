@@ -58,7 +58,6 @@ const postFetchCurrentTask = async (req, res, next) => {
     try {
         project = await Project.findById(projectId);
         targetTask = await project.tasks.find((task) => task.id === taskId);
-        console.log(targetTask.title);
     }
     catch (err) {
         return next(new HttpError("Something went wrong, please try again", 500));
@@ -72,9 +71,10 @@ const postAddProject = async (req, res, next) => {
     if (!errors.isEmpty()) {
         return next(new HttpError("Invalid inputs, please check your data", 422));
     }
-    const { creator, title, description } = req.body;
+    const { creator, title, description, } = req.body;
     const createdProject = new Project({
         creator,
+        status: 'active',
         title,
         description,
         image: "http://localhost:5000/" + req.file.path,
@@ -156,6 +156,7 @@ const postAddFirstTask = async (req, res, next) => {
     }
     const createdTask = {
         creator,
+        status: 'active',
         title,
         content,
         level,
@@ -193,6 +194,7 @@ const postAddDirectTask = async (req, res, next) => {
     }
     const createdTask = {
         creator,
+        status: 'active',
         title,
         content,
         level,
@@ -219,29 +221,6 @@ const postAddDirectTask = async (req, res, next) => {
     }
     res.status(201).json({ task: createdTask });
 };
-const patchUpdateProject = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return next(new HttpError("Invalid inputs passed, please change your data", 422));
-    }
-    const { projectId, title, description } = req.body;
-    let project;
-    try {
-        project = await Project.findById(projectId);
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong, please try again", 500));
-    }
-    project.title = title;
-    project.description = description;
-    try {
-        await project.save();
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong, please try again", 500));
-    }
-    res.status(200).json({ project: project.toObject({ getters: true }) });
-};
 const patchUpdateTask = async (req, res, next) => {
     //remove this if you dont have validation
     const errors = validationResult(req);
@@ -255,7 +234,6 @@ const patchUpdateTask = async (req, res, next) => {
     try {
         project = await Project.findById(projectId);
         targetTask = await project.tasks.find((task) => task.id === taskId);
-        console.log(targetTask.title);
     }
     catch (err) {
         return next(new HttpError("Something went wrong, please try again", 500));
@@ -273,9 +251,10 @@ const patchUpdateTask = async (req, res, next) => {
 };
 const deleteProject = async (req, res, next) => {
     const projectId = req.params.projectId;
+    console.log(projectId);
     let project;
     try {
-        project = await Project.findById(projectId).populate("creator");
+        project = await Project.findByIdAndDelete(projectId);
     }
     catch (err) {
         return next(new HttpError("Something went wrong", 500));
@@ -283,18 +262,9 @@ const deleteProject = async (req, res, next) => {
     if (!project) {
         return next(new HttpError("Could not find a project with such id", 404));
     }
-    try {
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-        await project.remove({ session: sess });
-        fs.unlinkSync("./public/uploads/" + project.image);
-        project.creator.projects.pull(project);
-        await project.creator.save({ session: sess });
-        await sess.commitTransaction();
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong, please try again", 500));
-    }
+    fs.unlink(project.image, (err) => {
+        console.log(err);
+    });
     res.status(200).json({ message: "Project deleted" });
 };
 const deleteTask = async (req, res, next) => {
@@ -324,5 +294,5 @@ const deleteTask = async (req, res, next) => {
     }
     res.status(200).json({ message: "Task deleted" });
 };
-export { getProjectById, getProjectByUserId, getTasksByProject, postFetchCurrentTask, postAddProject, postAddWorkers, postAddFirstTask, postAddDirectTask, patchUpdateProject, patchUpdateTask, deleteProject, deleteTask, };
+export { getProjectById, getProjectByUserId, getTasksByProject, postFetchCurrentTask, postAddProject, postAddWorkers, postAddFirstTask, postAddDirectTask, patchUpdateTask, deleteProject, deleteTask, };
 //# sourceMappingURL=projects-controllers.js.map

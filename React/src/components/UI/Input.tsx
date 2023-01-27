@@ -14,7 +14,7 @@ interface InputProps {
   value?: string;
   defaultValue?: string;
   placeholder?: string;
-  errorMessage?: string;
+  errorMessage?: any;
   isValid?: any;
   isInvalid?: any;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;

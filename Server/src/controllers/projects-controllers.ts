@@ -79,6 +79,7 @@ const getTasksByProject = async (
     tasks: projectWithTasks.tasks.map((t: any) =>
       t.toObject({ getters: true })
     ),
+    projectCreator: projectWithTasks.creator
   });
 };
 
@@ -115,10 +116,11 @@ const postAddProject = async (
     return next(new HttpError("Invalid inputs, please check your data", 422));
   }
 
-  const { creator, title, description } = req.body;
+  const { creator,  title, description, } = req.body;
 
   const createdProject = new Project({
     creator,
+    status : 'active',
     title,
     description,
     image: "http://localhost:5000/" + req.file.path,
@@ -229,6 +231,7 @@ const postAddFirstTask = async (
 
   const createdTask = {
     creator,
+    status : 'active',
     title,
     content,
     level,
@@ -279,6 +282,7 @@ const postAddDirectTask = async (
 
   const createdTask = {
     creator,
+    status : 'active',
     title,
     content,
     level,
@@ -311,37 +315,46 @@ const postAddDirectTask = async (
   res.status(201).json({ task: createdTask });
 };
 
-const patchUpdateProject = async (
+const patchAbortProject = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please change your data", 422)
-    );
-  }
+  const userId = req.body.userId
+  const projectId = req.params.projectId;
 
-  const { projectId, title, description } = req.body;
-
+  let currentUser: any;
   let project: any;
   try {
     project = await Project.findById(projectId);
+    currentUser = await User.findById(userId);
   } catch (err) {
-    return next(new HttpError("Something went wrong, please try again", 500));
+    return next(new HttpError("Something went wrong", 500));
   }
 
-  project.title = title;
-  project.description = description;
+  if (!project) {
+    return next(new HttpError("Could not find a project with such id", 404));
+  }
+
+  if (!currentUser) {
+    return next(new HttpError("Could not find you in the database", 404));
+  }
 
   try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    currentUser.projects.pull(project);
+    project.partcipants.pull(currentUser);
+    await currentUser.save();
     await project.save();
+    await sess.commitTransaction();
   } catch (err) {
-    return next(new HttpError("Something went wrong, please try again", 500));
+    return next(
+      new HttpError("Aborting failed, please try again later", 500)
+    );
   }
-
-  res.status(200).json({ project: project.toObject({ getters: true }) });
+  
+  res.status(200).json({ message: "Project aborted" });
 };
 
 const patchUpdateTask = async (
@@ -387,10 +400,12 @@ const deleteProject = async (
   next: express.NextFunction
 ) => {
   const projectId = req.params.projectId;
+  console.log(projectId);
+  
 
   let project: any;
   try {
-    project = await Project.findById(projectId).populate("creator");
+    project = await Project.findByIdAndDelete(projectId);
   } catch (err) {
     return next(new HttpError("Something went wrong", 500));
   }
@@ -399,17 +414,9 @@ const deleteProject = async (
     return next(new HttpError("Could not find a project with such id", 404));
   }
 
-  try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await project.remove({ session: sess });
-    fs.unlinkSync("./public/uploads/" + project.image);
-    project.creator.projects.pull(project);
-    await project.creator.save({ session: sess });
-    await sess.commitTransaction();
-  } catch (err) {
-    return next(new HttpError("Something went wrong, please try again", 500));
-  }
+  fs.unlink(project.image, (err) => {
+    console.log(err);
+  });
 
   res.status(200).json({ message: "Project deleted" });
 };
@@ -457,7 +464,7 @@ export {
   postAddWorkers,
   postAddFirstTask,
   postAddDirectTask,
-  patchUpdateProject,
+  patchAbortProject,
   patchUpdateTask,
   deleteProject,
   deleteTask,

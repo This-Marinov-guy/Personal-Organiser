@@ -10,6 +10,8 @@ import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import Loader from "../UI/Loader";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Popover from "react-bootstrap/Popover";
 
 const schema = yup.object().shape({
   title: yup.string().required(),
@@ -22,10 +24,7 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
 
   const [isSubmitted, setisSubmitted] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
-
-  const clickHandler = () => {
-    setIsButtonClicked(true);
-  };
+  const [showPopover, setShowPopover] = useState(false);
 
   const user = useSelector(selectUser);
 
@@ -48,7 +47,6 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
               formData,
               { Authorization: "Bearer " + user.token }
             );
-            console.log(responseData);
             props.setProjectId(responseData.projectId);
             setisSubmitted(true);
           } catch (err) {}
@@ -83,6 +81,7 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
                   isInvalid={!!errors.image}
                   errorMessage={errors.image}
                   onChange={(event) => {
+                    setShowPopover(true);
                     handleChange(event);
                     setFieldValue("image", event.target.files[0]);
                   }}
@@ -95,7 +94,10 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
                   isValid={touched.title && !errors.title}
                   isInvalid={!!errors.title}
                   errorMessage={errors.title}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    setShowPopover(true);
+                    handleChange(event);
+                  }}
                 />
                 <Input
                   as="textarea"
@@ -106,18 +108,40 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
                   isValid={touched.description && !errors.description}
                   isInvalid={!!errors.description}
                   errorMessage={errors.description}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    setShowPopover(true);
+                    handleChange(event);
+                  }}
                 />
                 {loading && isButtonClicked ? (
                   <Loader />
                 ) : (
-                  <Button
-                    className={classes.form_btn}
-                    onClick={clickHandler}
-                    type="submit"
+                  <OverlayTrigger
+                    show={showPopover}
+                    placement={"bottom"}
+                    overlay={
+                      <Popover id={"popover-positioned-top"}>
+                        <Popover.Header as="h3">
+                          {"Before Proceeding"}
+                        </Popover.Header>
+                        <Popover.Body>
+                          Be aware that once submitted a project cannot be
+                          edited - only its tasks and participants! This is to
+                          avoid confusion among participants
+                        </Popover.Body>
+                      </Popover>
+                    }
                   >
-                    Submit form
-                  </Button>
+                    <Button
+                      className={classes.form_btn}
+                      type="submit"
+                      onClick={() => {
+                        setShowPopover(false);
+                      }}
+                    >
+                      Submit form
+                    </Button>
+                  </OverlayTrigger>
                 )}
               </Fragment>
             )}

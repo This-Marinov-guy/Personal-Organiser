@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useCallback, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Input from "src/components/UI/Input";
-import { v4 as uuidv4 } from "uuid";
 import classes from "./AddTaskItem.module.css";
 import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
@@ -19,8 +18,11 @@ interface AddTaskItemProps {
   addMode?: boolean;
 }
 
-const AddTaskItem = (props) => {
+const AddTaskItem = (props: AddTaskItemProps) => {
   const { loading, sendRequest } = useHttpClient();
+
+  const [isSubmitted, setisSubmitted] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const [inputs, setInputs] = useState({
     title: "",
@@ -28,13 +30,30 @@ const AddTaskItem = (props) => {
     level: "1",
   });
 
-  const [isSubmitted, setisSubmitted] = useState(false);
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [placeholders, setPlaceholders] = useState({
-    title: "",
-    content: "",
-    level: "",
-  });
+  useEffect(() => {
+    if (props.taskId) {
+      const fetchCurrentTask = async () => {
+        try {
+          const responseData = await sendRequest(
+            `http://localhost:5000/api/projects/fetch-task/${props.projectId}`,
+            "POST",
+            JSON.stringify({
+              taskId: props.taskId,
+            }),
+            {
+              "Content-Type": "application/json",
+            }
+          );
+          setInputs({
+            title: responseData.targetTask.title,
+            content: responseData.targetTask.content,
+            level: responseData.targetTask.level,
+          });
+        } catch (err) {}
+      };
+      fetchCurrentTask();
+    }
+  }, []);
 
   const clickHandler = () => {
     setIsButtonClicked(true);
@@ -125,31 +144,6 @@ const AddTaskItem = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (props.taskId) {
-      const fetchCurrentTask = async () => {
-        try {
-          const responseData = await sendRequest(
-            `http://localhost:5000/api/projects/fetch-task/${props.projectId}`,
-            "POST",
-            JSON.stringify({
-              taskId: props.taskId,
-            }),
-            {
-              "Content-Type": "application/json",
-            }
-          );
-          setPlaceholders({
-            title: responseData.targetTask.title,
-            content: responseData.targetTask.content,
-            level: responseData.targetTask.level,
-          });
-        } catch (err) {}
-      };
-      fetchCurrentTask();
-    }
-  }, []);
-
   return (
     <Fragment>
       <Form onSubmit={submitHandler} className={classes.form_panel}>
@@ -161,7 +155,7 @@ const AddTaskItem = (props) => {
               label="Title"
               type="text"
               name="title"
-              placeholder={props.taskId && placeholders.title}
+              value={inputs.title}
               onChange={changeFormInputHandler}
             />
             <Input
@@ -169,7 +163,7 @@ const AddTaskItem = (props) => {
               label="Task"
               type="description"
               name="content"
-              placeholder={props.taskId && placeholders.content}
+              value={inputs.content}
               onChange={changeFormInputHandler}
             />
             <div className={classes.importancy_options}>
@@ -178,7 +172,8 @@ const AddTaskItem = (props) => {
                 type="number"
                 min="1"
                 max="5"
-                placeholder={props.taskId ? placeholders.level : "between 1-5"}
+                value={inputs.level}
+                placeholder="between 1-5"
                 name="level"
                 onChange={changeFormInputHandler}
               />

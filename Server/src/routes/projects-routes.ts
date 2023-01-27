@@ -8,7 +8,7 @@ import {
   postAddWorkers,
   postAddFirstTask,
   postAddDirectTask,
-  patchUpdateProject,
+  patchAbortProject,
   patchUpdateTask,
   deleteProject,
   deleteTask,
@@ -30,7 +30,7 @@ projectRouter.post("/add-task", postAddFirstTask);
 projectRouter.post("/add-task/:projectId", postAddDirectTask);
 projectRouter.post("/add-workers", postAddWorkers);
 
-projectRouter.patch("/:projectId", patchUpdateProject);
+projectRouter.patch("/abort-project/:projectId", patchAbortProject);
 projectRouter.patch("/edit-task/:projectId", patchUpdateTask);
 
 projectRouter.delete("/delete-project/:projectId", deleteProject);

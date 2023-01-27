@@ -8,6 +8,7 @@ import { useHttpClient } from "src/hooks/http-hook";
 const ProjectDetails = () => {
   const [currentPage, setCurrentPage] = useState("ProjectTasks");
   const [projectTasks, setProjectTasks] = useState();
+  const [projectCreator, setPojectCreator] = useState();
 
   const { sendRequest } = useHttpClient();
 
@@ -20,6 +21,7 @@ const ProjectDetails = () => {
           `http://localhost:5000/api/projects/tasks/${projectId}`
         );
         setProjectTasks(responseData.tasks.sort((a, b) => b.level - a.level));
+        setPojectCreator(responseData.projectCreator);
       } catch (err) {}
     };
     fetchTasks();
@@ -34,7 +36,7 @@ const ProjectDetails = () => {
       case "ProjectTasks":
         return <TaskList heading={"Project Tasks"} target={projectTasks} />;
       case "ProjectWorkers":
-        return <WorkerList />;
+        return <WorkerList heading={'Project Participants'} target={[]}/>;
       default:
         return <p>Nothing to see</p>;
     }
@@ -42,7 +44,7 @@ const ProjectDetails = () => {
 
   return (
     <Fragment>
-      <Navigation onClick={pageModifierHandler} />
+      <Navigation projectCreator={projectCreator} onClick={pageModifierHandler} />
       {renderSwitch()}
     </Fragment>
   );

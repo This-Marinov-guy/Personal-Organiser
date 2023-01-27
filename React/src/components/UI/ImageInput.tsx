@@ -14,7 +14,7 @@ interface ImageInputProps {
   errorMessage?: string;
   isValid?: any;
   isInvalid?: any;
-  onChange?: any;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ImageInput = (props: ImageInputProps) => {
