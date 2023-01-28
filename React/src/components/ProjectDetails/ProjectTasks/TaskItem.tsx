@@ -17,31 +17,32 @@ interface TaskProps {
 
 const TaskItem = (props: TaskProps) => {
   return (
-      <Card style={{ width: "18rem" }}>
-        {(props.status === "aborted" || props.status === "completed") && (
-          <div className={classes.inactive_task}></div>
-        )}
-        {props.status === "aborted" && (
-          <i
-            style={{ color: "#e22440" }}
-            className={"fa-solid fa-ban " + classes.status_icon}
-          ></i>
-        )}
-        {props.status === "completed" && (
-          <i
-            style={{ color: "green" }}
-            className={"fa-solid fa-check " + classes.status_icon}
-          ></i>
-        )}
-        <Card.Body>
-          <div className={classes.task_status}>
-            <Card.Title>{props.title}</Card.Title>
-            <Status level={props.level}></Status>
-          </div>
-          <br />
-          <Card.Subtitle>Objectives</Card.Subtitle>
-          <Card.Text>{props.content}</Card.Text>
-          <br />
+    <Card style={{ width: "18rem" }}>
+      {(props.status === "aborted" || props.status === "completed") && (
+        <div className={classes.inactive_task}></div>
+      )}
+      {props.status === "aborted" && (
+        <i
+          style={{ color: "#e22440" }}
+          className={"fa-solid fa-ban " + classes.status_icon}
+        ></i>
+      )}
+      {props.status === "completed" && (
+        <i
+          style={{ color: "green" }}
+          className={"fa-solid fa-check " + classes.status_icon}
+        ></i>
+      )}
+      <Card.Body>
+        <div className={classes.task_status}>
+          <Card.Title>{props.title}</Card.Title>
+          <Status level={props.level}></Status>
+        </div>
+        <br />
+        <Card.Subtitle>Objectives</Card.Subtitle>
+        <Card.Text>{props.content}</Card.Text>
+        <br />
+        {(props.completeHandler || props.editHandler || props.abortHandler) && (
           <div className={classes.task_buttons}>
             <Button
               id={props.id}
@@ -65,8 +66,9 @@ const TaskItem = (props: TaskProps) => {
               Abort
             </Button>
           </div>
-        </Card.Body>
-      </Card>
+        )}
+      </Card.Body>
+    </Card>
   );
 };
 
