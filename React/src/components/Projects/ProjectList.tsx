@@ -21,7 +21,6 @@ const ProjectList = (props: ProjectListprops) => {
 
   const modal = useSelector(selectModal);
   const error = useSelector(selectError);
-  const dispatch = useDispatch();
 
   return (
     <Fragment>

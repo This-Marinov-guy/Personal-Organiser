@@ -14,8 +14,7 @@ import { removeModal } from "src/redux/modal";
 interface AddTaskItemProps {
   projectId: string;
   taskId?: string;
-  editMode?: boolean;
-  addMode?: boolean;
+  submitAction: string;
 }
 
 const AddTaskItem = (props: AddTaskItemProps) => {
@@ -135,12 +134,12 @@ const AddTaskItem = (props: AddTaskItemProps) => {
   };
 
   const submitHandler = (event) => {
-    if (props.addMode && !props.editMode) {
-      addDirectTaskSubmitHandler();
-    } else if (!props.addMode && props.editMode) {
-      editTaskSubmitHandler();
-    } else {
+    if (props.submitAction === "addFirstTask") {
       addFirstTaskSubmitHandler(event);
+    } else if (props.submitAction === "addDirectTask") {
+      addDirectTaskSubmitHandler();
+    } else if (props.submitAction === 'editTask') {
+      editTaskSubmitHandler();
     }
   };
 
@@ -187,7 +186,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
                 onClick={clickHandler}
                 type="submit"
               >
-                {props.editMode ? "Update Task" : "Add Task"}
+                {props.submitAction === 'editTask' ? "Update Task" : "Add Task"}
               </Button>
             )}
           </Fragment>

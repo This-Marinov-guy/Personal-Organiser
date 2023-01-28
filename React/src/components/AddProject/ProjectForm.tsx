@@ -9,7 +9,6 @@ import classes from "./ProjectForm.module.css";
 
 const ProjectForm = () => {
   const [projectId, setProjectId] = useState();
-  console.log('projectId ', projectId);
   
   return (
     <div className={classes.main_form}>
@@ -19,7 +18,7 @@ const ProjectForm = () => {
       </div>
       <div className={classes.right_panel}>
         <SemiHeading>Add the first task</SemiHeading>
-        <AddTaskItem projectId={projectId}/>
+        <AddTaskItem projectId={projectId} submitAction='addFirstTask'/>
         <SemiHeading>Include people to the project</SemiHeading>
         <AddWorkersPanel projectId={projectId}/>
       </div>

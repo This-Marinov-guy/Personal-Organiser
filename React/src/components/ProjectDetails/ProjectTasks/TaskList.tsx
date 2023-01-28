@@ -4,17 +4,21 @@ import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import { SearchBarAuto } from "../../UI/SearchBar";
 import { useSelector, useDispatch } from "react-redux";
+import { useHttpClient } from "src/hooks/http-hook";
 import classes from "./Tasks.module.css";
+import Warning from "src/components/UI/Warning";
 import Modal from "src/components/UI/Modal";
 import AddTaskItem from "./AddTaskItem";
 import AddWorkersPanel from "../ProjectWorkers/AddWorkersPanel";
 import {
   selectModal,
   showModal,
+  removeWarning,
+  showWarning,
+  selectWarning,
 } from "src/redux/modal";
 import { Heading } from "src/components/UI/Heading";
 import { useParams } from "react-router-dom";
-
 
 interface TaskListprops {
   heading: string;
@@ -23,10 +27,13 @@ interface TaskListprops {
 
 const TaskList = (props: TaskListprops) => {
   const [filter, setFilter] = useState("");
-  const [addMode, setAddMode] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  const [submitAction, setSubmitAction] = useState("");
+  const [taskStatus, setTaskStatus] = useState("");
   const [taskId, setTaskId] = useState();
 
+  const { sendRequest } = useHttpClient();
+
+  const warning = useSelector(selectWarning);
   const modal = useSelector(selectModal);
 
   const dispatch = useDispatch();
@@ -34,31 +41,83 @@ const TaskList = (props: TaskListprops) => {
   const projectId = useParams<any>().projectId;
 
   const addHandler = () => {
-    setAddMode(true);
-    setEditMode(false);
+    setSubmitAction("addDirectTask");
     dispatch(showModal());
   };
 
   const editHandler = (event) => {
     setTaskId(event.target.id);
-    setEditMode(true);
-    setAddMode(false);
+    setSubmitAction("editTask");
     dispatch(showModal());
   };
 
+  const abortTaskHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/tasks/abort-task/${projectId}`,
+        "PATCH",
+        JSON.stringify({
+          taskId: taskId,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      dispatch(removeWarning());
+      window.location.reload();
+    } catch (err) {}
+  };
+
+  const completeTaskHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/tasks/complete-task/${projectId}`,
+        "PATCH",
+        JSON.stringify({
+          taskId: taskId,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      dispatch(removeWarning());
+      window.location.reload();
+    } catch (err) {}
+  };
+
+  let actionWarning;
+  if (taskStatus === "abort") {
+    actionWarning = (
+      <Warning
+        warning="You are about to abort the task! Once aborted, it cannot be reverse!"
+        onClick={abortTaskHandler}
+        submit_message="Abort"
+      />
+    );
+  } else if (taskStatus === "complete") {
+    actionWarning = (
+      <Warning
+        variant="success"
+        warning="You are about to complete the task! Once completed, it cannot be reverse!"
+        onClick={completeTaskHandler}
+        submit_message="Complete"
+      />
+    );
+  }
+
   return (
     <Fragment>
+      {warning && <Modal>{actionWarning}</Modal>}
       {modal && (
         <Modal>
           <AddTaskItem
             projectId={projectId}
             taskId={taskId}
-            editMode={editMode}
-            addMode={addMode}
+            submitAction={submitAction}
           />
         </Modal>
       )}
-     
+
       <Heading>{props.heading}</Heading>
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.tasks_display}>
@@ -85,6 +144,16 @@ const TaskList = (props: TaskListprops) => {
                     level={task.level}
                     status={task.status}
                     editHandler={editHandler}
+                    abortHandler={(event) => {
+                      setTaskId(event.target.id);
+                      setTaskStatus("abort");
+                      dispatch(showWarning());
+                    }}
+                    completeHandler={(event) => {
+                      setTaskId(event.target.id);
+                      setTaskStatus("complete");
+                      dispatch(showWarning());
+                    }}
                   />
                 );
               })}
