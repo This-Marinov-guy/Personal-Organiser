@@ -48,6 +48,7 @@ const getTasksByProject = async (req, res, next) => {
     }
     res.json({
         tasks: projectWithTasks.tasks.map((t) => t.toObject({ getters: true })),
+        projectCreator: projectWithTasks.creator
     });
 };
 const postFetchCurrentTask = async (req, res, next) => {
@@ -221,6 +222,38 @@ const postAddDirectTask = async (req, res, next) => {
     }
     res.status(201).json({ task: createdTask });
 };
+const patchAbortProject = async (req, res, next) => {
+    const userId = req.body.userId;
+    const projectId = req.params.projectId;
+    let currentUser;
+    let project;
+    try {
+        project = await Project.findById(projectId);
+        currentUser = await User.findById(userId);
+    }
+    catch (err) {
+        return next(new HttpError("Something went wrong", 500));
+    }
+    if (!project) {
+        return next(new HttpError("Could not find a project with such id", 404));
+    }
+    if (!currentUser) {
+        return next(new HttpError("Could not find you in the database", 404));
+    }
+    try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        currentUser.projects.pull(project);
+        project.partcipants.pull(currentUser);
+        await currentUser.save();
+        await project.save();
+        await sess.commitTransaction();
+    }
+    catch (err) {
+        return next(new HttpError("Aborting failed, please try again later", 500));
+    }
+    res.status(200).json({ message: "Project aborted" });
+};
 const patchUpdateTask = async (req, res, next) => {
     //remove this if you dont have validation
     const errors = validationResult(req);
@@ -294,5 +327,5 @@ const deleteTask = async (req, res, next) => {
     }
     res.status(200).json({ message: "Task deleted" });
 };
-export { getProjectById, getProjectByUserId, getTasksByProject, postFetchCurrentTask, postAddProject, postAddWorkers, postAddFirstTask, postAddDirectTask, patchUpdateTask, deleteProject, deleteTask, };
+export { getProjectById, getProjectByUserId, getTasksByProject, postFetchCurrentTask, postAddProject, postAddWorkers, postAddFirstTask, postAddDirectTask, patchAbortProject, patchUpdateTask, deleteProject, deleteTask, };
 //# sourceMappingURL=projects-controllers.js.map

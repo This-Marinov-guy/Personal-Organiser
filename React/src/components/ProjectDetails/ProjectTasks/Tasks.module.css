@@ -33,7 +33,28 @@
   font-size: 4rem;
 }
 
-i:hover {
+.status_icon {
+  width: auto;
+  height: auto;
+  top: 25%;
+  left: 35%;
+  position: absolute;
+  z-index: 11;
+  font-size: 5rem;
+}
+
+.inactive_task {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom: 0;
+  z-index: 10;
+  background-color: white;
+  opacity: 70%;
+}
+
+.icon:hover {
   color: lightblue;
 }
 

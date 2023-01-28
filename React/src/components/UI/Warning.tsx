@@ -7,7 +7,7 @@ import Loader from "./Loader";
 interface WarningProps {
   variant?: string;
   warning: string;
-  onClick: () => void;
+  onClick: any;
   submit_message?: string;
 }
 

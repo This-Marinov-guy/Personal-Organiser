@@ -18,7 +18,7 @@ const ProjectDetails = () => {
     const fetchTasks = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/projects/tasks/${projectId}`
+          `http://localhost:5000/api/tasks/${projectId}`
         );
         setProjectTasks(responseData.tasks.sort((a, b) => b.level - a.level));
         setPojectCreator(responseData.projectCreator);

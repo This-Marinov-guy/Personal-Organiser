@@ -17,7 +17,7 @@ const Status = (props: { level: string; children?: string }) => {
       case "5":
         return setimportancyColor("#ff0000");
       default:
-        return setimportancyColor("#00e100");
+        return setimportancyColor("#6f7271");
     }
   }, [props.level]);
 

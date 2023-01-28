@@ -7,11 +7,14 @@ import { useSelector, useDispatch } from "react-redux";
 import classes from "./Tasks.module.css";
 import Modal from "src/components/UI/Modal";
 import AddTaskItem from "./AddTaskItem";
-import { v4 as uuidv4 } from "uuid";
 import AddWorkersPanel from "../ProjectWorkers/AddWorkersPanel";
-import { selectModal, showModal } from "src/redux/modal";
+import {
+  selectModal,
+  showModal,
+} from "src/redux/modal";
 import { Heading } from "src/components/UI/Heading";
 import { useParams } from "react-router-dom";
+
 
 interface TaskListprops {
   heading: string;
@@ -25,29 +28,37 @@ const TaskList = (props: TaskListprops) => {
   const [taskId, setTaskId] = useState();
 
   const modal = useSelector(selectModal);
+
   const dispatch = useDispatch();
 
   const projectId = useParams<any>().projectId;
 
   const addHandler = () => {
-    setAddMode(true)
-    setEditMode(false)
+    setAddMode(true);
+    setEditMode(false);
     dispatch(showModal());
   };
 
   const editHandler = (event) => {
-    setTaskId(event.target.id)
-    setEditMode(true)
-    setAddMode(false)
+    setTaskId(event.target.id);
+    setEditMode(true);
+    setAddMode(false);
     dispatch(showModal());
   };
+
   return (
     <Fragment>
       {modal && (
         <Modal>
-          <AddTaskItem projectId={projectId} taskId={taskId} editMode={editMode} addMode={addMode}/>
+          <AddTaskItem
+            projectId={projectId}
+            taskId={taskId}
+            editMode={editMode}
+            addMode={addMode}
+          />
         </Modal>
       )}
+     
       <Heading>{props.heading}</Heading>
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.tasks_display}>
@@ -72,6 +83,7 @@ const TaskList = (props: TaskListprops) => {
                     title={task.title}
                     content={task.content}
                     level={task.level}
+                    status={task.status}
                     editHandler={editHandler}
                   />
                 );
