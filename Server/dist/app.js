@@ -8,6 +8,7 @@ import HttpError from "./models/Http-error.js";
 import userRouter from "./routes/users-routes.js";
 import projectRouter from "./routes/projects-routes.js";
 import chatRouter from "./routes/chats-routes.js";
+import taskRouter from "./routes/task-routes.js";
 //start with npm start
 const app = express();
 //external packages setup
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 //routes
 app.use("/api/user", userRouter);
 app.use("/api/projects", projectRouter);
+app.use("/api/tasks", taskRouter);
 app.use("/api/chat", chatRouter);
 //no page found
 app.use((req, res, next) => {

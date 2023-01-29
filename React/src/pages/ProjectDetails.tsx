@@ -8,11 +8,25 @@ import { useHttpClient } from "src/hooks/http-hook";
 const ProjectDetails = () => {
   const [currentPage, setCurrentPage] = useState("ProjectTasks");
   const [projectTasks, setProjectTasks] = useState();
+  const [projectParticipants, setProjectParticipants] = useState();
   const [projectCreator, setPojectCreator] = useState();
 
   const { sendRequest } = useHttpClient();
 
   const projectId = useParams<any>().projectId;
+
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/user/project-users/${projectId}`
+        );
+        console.log(responseData);
+       setProjectParticipants(responseData.users)
+      } catch (err) {}
+    };
+    fetchParticipants();
+  }, []);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -36,7 +50,7 @@ const ProjectDetails = () => {
       case "ProjectTasks":
         return <TaskList heading={"Project Tasks"} target={projectTasks} />;
       case "ProjectWorkers":
-        return <WorkerList heading={'Project Participants'} target={[]}/>;
+        return <WorkerList heading={"Project Participants"} target={projectTasks} />;
       default:
         return <p>Nothing to see</p>;
     }
@@ -44,7 +58,10 @@ const ProjectDetails = () => {
 
   return (
     <Fragment>
-      <Navigation projectCreator={projectCreator} onClick={pageModifierHandler} />
+      <Navigation
+        projectCreator={projectCreator}
+        onClick={pageModifierHandler}
+      />
       {renderSwitch()}
     </Fragment>
   );

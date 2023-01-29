@@ -34,48 +34,15 @@ const getProjectByUserId = async (req, res, next) => {
         projects: userWithProjects.projects.map((p) => p.toObject({ getters: true })),
     });
 };
-const getTasksByProject = async (req, res, next) => {
-    const projectId = req.params.projectId;
-    let projectWithTasks;
-    try {
-        projectWithTasks = await Project.findById(projectId).populate("tasks");
-    }
-    catch (err) {
-        return next(new HttpError("Fetching tasks failed", 500));
-    }
-    if (!projectWithTasks) {
-        return next(new HttpError("Error with finding project", 404));
-    }
-    res.json({
-        tasks: projectWithTasks.tasks.map((t) => t.toObject({ getters: true })),
-        projectCreator: projectWithTasks.creator
-    });
-};
-const postFetchCurrentTask = async (req, res, next) => {
-    const taskId = req.body.taskId;
-    const projectId = req.params.projectId;
-    let project;
-    let targetTask;
-    try {
-        project = await Project.findById(projectId);
-        targetTask = await project.tasks.find((task) => task.id === taskId);
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong, please try again", 500));
-    }
-    res.json({
-        targetTask: targetTask.toObject({ getters: true }),
-    });
-};
 const postAddProject = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(new HttpError("Invalid inputs, please check your data", 422));
     }
-    const { creator, title, description, } = req.body;
+    const { creator, title, description } = req.body;
     const createdProject = new Project({
         creator,
-        status: 'active',
+        status: "active",
         title,
         description,
         image: "http://localhost:5000/" + req.file.path,
@@ -147,81 +114,6 @@ const postAddWorkers = async (req, res, next) => {
     }
     res.status(201).json({ workers: workers });
 };
-const postAddFirstTask = async (req, res, next) => {
-    let { creator, projectId, title, content, level } = req.body;
-    if (!title) {
-        title = "Nameless";
-    }
-    if (!projectId) {
-        return next(new HttpError("Please create a project and then assign it tasks", 500));
-    }
-    const createdTask = {
-        creator,
-        status: 'active',
-        title,
-        content,
-        level,
-    };
-    let projectOfTask;
-    try {
-        projectOfTask = await Project.findById(projectId);
-    }
-    catch (err) {
-        return next(new HttpError("Creating task failed, please try again", 500));
-    }
-    if (!projectOfTask) {
-        return next(new HttpError("Could not find a project with provided id", 404));
-    }
-    try {
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-        projectOfTask.tasks.push(createdTask);
-        await projectOfTask.save();
-        await sess.commitTransaction();
-    }
-    catch (err) {
-        return next(new HttpError("Creating task failed, please try again", 500));
-    }
-    res.status(201).json({ task: createdTask });
-};
-const postAddDirectTask = async (req, res, next) => {
-    let { creator, title, content, level } = req.body;
-    const projectId = req.params.projectId;
-    if (!title) {
-        title = "Nameless";
-    }
-    if (!projectId) {
-        return next(new HttpError("Please create a project and then assign it tasks", 500));
-    }
-    const createdTask = {
-        creator,
-        status: 'active',
-        title,
-        content,
-        level,
-    };
-    let projectOfTask;
-    try {
-        projectOfTask = await Project.findById(projectId);
-    }
-    catch (err) {
-        return next(new HttpError("Creating task failed, please try again", 500));
-    }
-    if (!projectOfTask) {
-        return next(new HttpError("Could not find a project with provided id", 404));
-    }
-    try {
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-        projectOfTask.tasks.push(createdTask);
-        await projectOfTask.save();
-        await sess.commitTransaction();
-    }
-    catch (err) {
-        return next(new HttpError("Creating task failed, please try again later", 500));
-    }
-    res.status(201).json({ task: createdTask });
-};
 const patchAbortProject = async (req, res, next) => {
     const userId = req.body.userId;
     const projectId = req.params.projectId;
@@ -254,34 +146,6 @@ const patchAbortProject = async (req, res, next) => {
     }
     res.status(200).json({ message: "Project aborted" });
 };
-const patchUpdateTask = async (req, res, next) => {
-    //remove this if you dont have validation
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return next(new HttpError("Invalid inputs", 422));
-    }
-    const { taskId, title, content, level } = req.body;
-    const projectId = req.params.projectId;
-    let project;
-    let targetTask;
-    try {
-        project = await Project.findById(projectId);
-        targetTask = await project.tasks.find((task) => task.id === taskId);
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong, please try again", 500));
-    }
-    targetTask.title = title;
-    targetTask.content = content;
-    targetTask.level = level;
-    try {
-        await project.save();
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong, please try again", 500));
-    }
-    res.status(200).json({ targetTask: targetTask.toObject({ getters: true }) });
-};
 const deleteProject = async (req, res, next) => {
     const projectId = req.params.projectId;
     console.log(projectId);
@@ -300,32 +164,5 @@ const deleteProject = async (req, res, next) => {
     });
     res.status(200).json({ message: "Project deleted" });
 };
-const deleteTask = async (req, res, next) => {
-    const taskId = req.body.taskId;
-    const projectId = req.params.projectId;
-    let project;
-    let task;
-    try {
-        task = await Project.findById(projectId).populate("tasks");
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong", 500));
-    }
-    if (!task) {
-        return next(new HttpError("Could not find a task", 404));
-    }
-    try {
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-        await task.remove({ session: sess });
-        project.tasks.pull(task);
-        await project.save({ session: sess });
-        await sess.commitTransaction();
-    }
-    catch (err) {
-        return next(new HttpError("Something went wrong, please try again", 500));
-    }
-    res.status(200).json({ message: "Task deleted" });
-};
-export { getProjectById, getProjectByUserId, getTasksByProject, postFetchCurrentTask, postAddProject, postAddWorkers, postAddFirstTask, postAddDirectTask, patchAbortProject, patchUpdateTask, deleteProject, deleteTask, };
+export { getProjectById, getProjectByUserId, postAddProject, postAddWorkers, patchAbortProject, deleteProject, };
 //# sourceMappingURL=projects-controllers.js.map

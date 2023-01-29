@@ -1,12 +1,19 @@
 import express from "express";
 import { check } from "express-validator";
-import { signup, login, getUsers, getCurrentUser } from "../controllers/users-controllers.js";
+import {
+  signup,
+  login,
+  getUsers,
+  getCurrentUser,
+  getUsersByProject,
+} from "../controllers/users-controllers.js";
 import fileUpload from "../middleware/file-upload.js";
 
 const userRouter = express.Router();
 
 userRouter.get("/:userId", getCurrentUser);
 userRouter.get("/users", getUsers);
+userRouter.get("/project-users/:projectId", getUsersByProject);
 // userRouter.get("/:userId", getTasksByUser);
 
 userRouter.post(
