@@ -37,7 +37,7 @@ const getUsers = async (
     const error = new HttpError("Could not fetch users", 500);
     return next(error);
   }
-  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
+  res.json({ users: users.map((user:any) => user.toObject({ getters: true })) });
 };
 
 const getUsersByProject = async (
@@ -57,7 +57,7 @@ const getUsersByProject = async (
     return next(error);
   }
   res.json({
-    users: projectwithUsers.map((user) => user.toObject({ getters: true })),
+    users: projectwithUsers.participants.map((user) => user.toObject({ getters: true })),
   });
 };
 

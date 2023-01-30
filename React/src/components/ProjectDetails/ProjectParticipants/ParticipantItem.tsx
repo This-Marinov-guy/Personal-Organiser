@@ -1,16 +1,16 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import classes from './Workers.module.css'
+import classes from './Participants.module.css'
 
-interface WorkerProps {
+interface ParticipantProps {
   id: string;
   name: string;
   image: string;
   email: string;
 }
 
-const WorkerItem = (props: WorkerProps) => {
+const ParticipantItem = (props: ParticipantProps) => {
 
   return (
     <Card style={{ width: "18rem" }}>
@@ -28,4 +28,4 @@ const WorkerItem = (props: WorkerProps) => {
   );
 };
 
-export default WorkerItem;
+export default ParticipantItem;

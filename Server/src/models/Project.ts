@@ -17,7 +17,7 @@ const projectSchema = new Schema({
     },
   ],
   status: { type: String, required: true },
-  workers: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+  participants: [{ type: mongoose.Types.ObjectId, ref: "User" }],
 });
 
 export default mongoose.model("Project", projectSchema);

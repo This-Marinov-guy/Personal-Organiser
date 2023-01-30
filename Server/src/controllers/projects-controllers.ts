@@ -75,7 +75,7 @@ const postAddProject = async (
     description,
     image: "http://localhost:5000/" + req.file.path,
     tasks: [],
-    workers: [],
+    participants: [],
   });
 
   let user: any;
@@ -108,16 +108,16 @@ const postAddProject = async (
   res.status(201).json({ projectId: createdProject._id });
 };
 
-const postAddWorkers = async (
+const postAddParticipants = async (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
 ) => {
-  const { projectId, workers } = req.body;
+  const { projectId, participants } = req.body;
 
   if (!projectId) {
     return next(
-      new HttpError("Please create a project and then assign it workers", 500)
+      new HttpError("Please create a project and then assign it participants", 500)
     );
   }
 
@@ -125,7 +125,7 @@ const postAddWorkers = async (
   try {
     projectOfTask = await Project.findById(projectId);
   } catch (err) {
-    return next(new HttpError("Adding workers failed, please try again", 500));
+    return next(new HttpError("Adding participants failed, please try again", 500));
   }
 
   if (!projectOfTask) {
@@ -134,17 +134,17 @@ const postAddWorkers = async (
     );
   }
 
-  let listOfWorkers: any;
-  for (let i = 0; i < workers.length; i++) {
+  let listOfparticipants: any;
+  for (let i = 0; i < participants.length; i++) {
     let workerId: any;
     try {
       workerId = await (
         await User.findOne({
-          name: workers[i].split(" ")[0],
-          surname: workers[i].split(" ")[1],
+          name: participants[i].split(" ")[0],
+          surname: participants[i].split(" ")[1],
         })
       )._id;
-      listOfWorkers.push(workerId);
+      listOfparticipants.push(workerId);
     } catch (err) {
       return next(new HttpError("Could not find one of the users", 500));
     }
@@ -153,13 +153,13 @@ const postAddWorkers = async (
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    projectOfTask.workers.push(listOfWorkers);
+    projectOfTask.participants.push(listOfparticipants);
     await projectOfTask.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
-    return next(new HttpError("Adding workers failed, please try again", 500));
+    return next(new HttpError("Adding participants failed, please try again", 500));
   }
-  res.status(201).json({ workers: workers });
+  res.status(201).json({ participants: participants });
 };
 
 const patchAbortProject = async (
@@ -232,7 +232,7 @@ export {
   getProjectById,
   getProjectByUserId,
   postAddProject,
-  postAddWorkers,
+  postAddParticipants,
   patchAbortProject,
   deleteProject,
 };

@@ -52,7 +52,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
       };
       fetchCurrentTask();
     }
-  }, []);
+  }, [sendRequest]);
 
   const clickHandler = () => {
     setIsButtonClicked(true);

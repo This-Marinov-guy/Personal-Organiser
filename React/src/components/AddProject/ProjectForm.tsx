@@ -1,7 +1,6 @@
-import React, { useState, Fragment } from "react";
-import { classicNameResolver } from "typescript";
+import React, { useState } from "react";
 import AddTaskItem from "../ProjectDetails/ProjectTasks/AddTaskItem";
-import AddWorkersPanel from "../ProjectDetails/ProjectWorkers/AddWorkersPanel";
+import AddParticipantsPanel from "../ProjectDetails/ProjectParticipants/AddParticipantsPanel";
 import { Heading } from "../UI/Heading";
 import { SemiHeading } from "../UI/Heading";
 import AddProjectItem from "./AddProjectItem";
@@ -20,7 +19,7 @@ const ProjectForm = () => {
         <SemiHeading>Add the first task</SemiHeading>
         <AddTaskItem projectId={projectId} submitAction='addFirstTask'/>
         <SemiHeading>Include people to the project</SemiHeading>
-        <AddWorkersPanel projectId={projectId}/>
+        <AddParticipantsPanel projectId={projectId}/>
       </div>
     </div>
   );

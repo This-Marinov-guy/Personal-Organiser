@@ -3,44 +3,17 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import { SemiHeading } from "src/components/UI/Heading";
-import classes from "./AddWorkersPanel.module.css";
+import classes from "./AddParticipantsPanel.module.css";
 import { SearchBarClick } from "src/components/UI/SearchBar";
 import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
 
-const DUMMY_WORKERS = [
-  {
-    id: "1",
-    name: "Gosho Mineta",
-  },
-  {
-    id: "2",
-    name: "Ivan",
-  },
-  {
-    id: "3",
-    name: "asda Mineta",
-  },
-  {
-    id: "4",
-    name: "Goskd nskho",
-  },
-  {
-    id: "5",
-    name: "Ivadsadsan Mineta",
-  },
-  {
-    id: "6",
-    name: "Nnsdiki Mineta",
-  },
-];
-
-const AddWorkersPanel = (props: { projectId?: string }) => {
+const AddParticipantsPanel = (props: { projectId?: string }) => {
   const { loading, sendRequest } = useHttpClient();
 
+  const [allUsers, setAllUsers] = useState([]);
   const [searchResults, setSeachResults] = useState([]);
   const [isSubmitted, setisSubmitted] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
@@ -51,7 +24,7 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
 
   const user = useSelector(selectUser);
 
-  const removeWorkerHandler = (event) => {
+  const removeParticipantHandler = (event) => {
     setSeachResults(searchResults.filter((id) => id !== event.target.id));
   };
 
@@ -59,14 +32,15 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/project/add-workers",
+        "http://localhost:5000/api/project/add-participants",
         "POST",
         JSON.stringify({
           projectId: props.projectId,
-          workers: searchResults,
+          participants: searchResults,
         }),
-        { 
-          "Content-Type": "application/json", }
+        {
+          "Content-Type": "application/json",
+        }
       );
       setisSubmitted(true);
     } catch (err) {}
@@ -76,6 +50,19 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
     setSeachResults([user.id]);
     setisSubmitted(true);
   };
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/user/users"
+        );
+        console.log(responseData);
+        setAllUsers(responseData.users);
+      } catch (err) {}
+    };
+    fetchAllUsers();
+  }, [sendRequest]);
 
   return (
     <Fragment>
@@ -93,12 +80,14 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
             </Button>
             <SearchBarClick
               setSeachResults={setSeachResults}
-              searchedValues={DUMMY_WORKERS.map((worker) => {
-                return worker.name;
+              searchedValues={allUsers.map((participant) => {
+                console.log(participant);
+                
+                return participant.name;
               })}
             />
             <div className={classes.search_results}>
-              {searchResults.map((worker) => {
+              {searchResults.map((participant) => {
                 return (
                   <OverlayTrigger
                     key={Math.random()}
@@ -108,11 +97,11 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
                     }
                   >
                     <p
-                      id={`${worker}`}
-                      className={classes.workers}
-                      onClick={removeWorkerHandler}
+                      id={`${participant}`}
+                      className={classes.participants}
+                      onClick={removeParticipantHandler}
                     >
-                      {worker}
+                      {participant}
                     </p>
                   </OverlayTrigger>
                 );
@@ -121,8 +110,13 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
             {loading && isButtonClicked ? (
               <Loader />
             ) : (
-              <Button size="sm" className={classes.form_btn} onClick={clickHandler} type="submit">
-                Add Workers
+              <Button
+                size="sm"
+                className={classes.form_btn}
+                onClick={clickHandler}
+                type="submit"
+              >
+                Add Participant
               </Button>
             )}
           </Fragment>
@@ -132,4 +126,4 @@ const AddWorkersPanel = (props: { projectId?: string }) => {
   );
 };
 
-export default AddWorkersPanel;
+export default AddParticipantsPanel;

@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import HttpError from "../models/Http-error.js";
+import Project from "../models/Project.js";
 import User from "../models/User.js";
 const getCurrentUser = async (req, res, next) => {
     const userId = req.params.userId;
@@ -27,6 +28,20 @@ const getUsers = async (req, res, next) => {
         return next(error);
     }
     res.json({ users: users.map((user) => user.toObject({ getters: true })) });
+};
+const getUsersByProject = async (req, res, next) => {
+    const projectId = req.params.projectId;
+    let projectwithUsers;
+    try {
+        projectwithUsers = await Project.findById(projectId).populate("participants");
+    }
+    catch (err) {
+        const error = new HttpError("Could not find Project", 500);
+        return next(error);
+    }
+    res.json({
+        users: projectwithUsers.map((user) => user.toObject({ getters: true })),
+    });
 };
 const signup = async (req, res, next) => {
     const errors = validationResult(req);
@@ -121,5 +136,5 @@ const login = async (req, res, next) => {
         .status(201)
         .json({ userId: existingUser.id, email: existingUser.email, token: token });
 };
-export { signup, login, getUsers, getCurrentUser };
+export { signup, login, getUsers, getCurrentUser, getUsersByProject };
 //# sourceMappingURL=users-controllers.js.map

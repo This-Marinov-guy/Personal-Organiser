@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Navigation from "src/components/ProjectDetails/Navigation";
 import TaskList from "src/components/ProjectDetails/ProjectTasks/TaskList";
-import WorkerList from "src/components/ProjectDetails/ProjectWorkers/WorkerList";
+import ParticipantsList from "src/components/ProjectDetails/ProjectParticipants/ParticipantsList";
 import { useHttpClient } from "src/hooks/http-hook";
 
 const ProjectDetails = () => {
@@ -26,7 +26,7 @@ const ProjectDetails = () => {
       } catch (err) {}
     };
     fetchParticipants();
-  }, []);
+  }, [sendRequest]);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -39,7 +39,7 @@ const ProjectDetails = () => {
       } catch (err) {}
     };
     fetchTasks();
-  }, []);
+  }, [sendRequest]);
 
   const pageModifierHandler = (event: any) => {
     setCurrentPage(event.target.name);
@@ -50,7 +50,7 @@ const ProjectDetails = () => {
       case "ProjectTasks":
         return <TaskList heading={"Project Tasks"} target={projectTasks} />;
       case "ProjectWorkers":
-        return <WorkerList heading={"Project Participants"} target={projectTasks} />;
+        return <ParticipantsList heading={"Project Participants"} target={projectParticipants} />;
       default:
         return <p>Nothing to see</p>;
     }

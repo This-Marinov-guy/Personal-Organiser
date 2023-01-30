@@ -25,7 +25,7 @@
   overflow-y: auto;
 }
 
-.workers:hover {
+.participants:hover {
   color: red;
   cursor: pointer;
 }
