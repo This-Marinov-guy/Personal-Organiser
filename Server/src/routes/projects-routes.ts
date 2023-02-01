@@ -18,7 +18,6 @@ projectRouter.get("/:projectId", getProjectById);
 projectRouter.get("/my-projects/:userId", getProjectByUserId);
 
 projectRouter.post("/add-project", fileUpload.single("image"), postAddProject);
-
 projectRouter.post("/add-participants", postAddParticipants);
 
 projectRouter.patch("/abort-project/:projectId", patchAbortProject);

@@ -10,7 +10,6 @@ interface ParticipantsListprops {
   target: Array<any>;
 }
 
-
 const ParticipantsList = (props: ParticipantsListprops) => {
   const [filter, setFilter] = useState("");
   

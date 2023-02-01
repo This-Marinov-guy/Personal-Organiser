@@ -4,7 +4,7 @@ import { signup, login, getUsers, getCurrentUser, getUsersByProject, } from "../
 import fileUpload from "../middleware/file-upload.js";
 const userRouter = express.Router();
 userRouter.get("/:userId", getCurrentUser);
-userRouter.get("/users", getUsers);
+userRouter.get("/all-users", getUsers);
 userRouter.get("/project-users/:projectId", getUsersByProject);
 // userRouter.get("/:userId", getTasksByUser);
 userRouter.post("/signup", fileUpload.single("image"), [

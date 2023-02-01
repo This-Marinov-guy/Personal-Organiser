@@ -21,6 +21,7 @@ import { Heading } from "src/components/UI/Heading";
 import { useParams } from "react-router-dom";
 
 interface TaskListprops {
+  viewModeOnly?: boolean;
   heading: string;
   target: Array<any>;
 }
@@ -157,9 +158,9 @@ const TaskList = (props: TaskListprops) => {
                   />
                 );
               })}
-            <Card className={classes.icon}>
+           {!props.viewModeOnly && <Card className={classes.icon}>
               <i className={"fa-solid fa-plus"} onClick={addHandler}></i>
-            </Card>
+            </Card>}
           </Row>
         ) : (
           <p style={{ textAlign: "center" }}>No tasks with such criteria</p>

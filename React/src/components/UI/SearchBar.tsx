@@ -1,20 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHttpClient } from "src/hooks/http-hook";
 import Input from "./Input";
 import classes from "./SearchBar.module.css";
 
 interface SearchBarProps {
-  searchedValues?: any;
-  // searchResults will be returned as set to avoid value dublication so be sure to convert it again into array
   setSeachResults: any;
 }
 
-const SearchBarClick = (props: SearchBarProps) => {
+const SearchBarUsers = (props: SearchBarProps) => {
   const [filterSearches, setFilterSearches] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+
+  const { sendRequest } = useHttpClient();
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/user/search/all-users"
+        );
+        setAllUsers(
+          responseData.users.map((user) => {
+            return {
+              id: user.id,
+              name: user.name + " " + user.surname,
+            };
+          })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAllUsers();
+  }, [sendRequest]);
 
   const filterHandler = (event: any) => {
     const searchWord = event.target.value;
-    const newFilter = props.searchedValues.filter((value: any) => {
-      return value.toLowerCase().includes(searchWord.toLowerCase());
+    const newFilter = allUsers.filter((user: any) => {
+      return user.name.toLowerCase().includes(searchWord.toLowerCase());
     });
     setFilterSearches(newFilter);
   };
@@ -36,20 +59,25 @@ const SearchBarClick = (props: SearchBarProps) => {
       />
       {filterSearches.length != 0 && (
         <div className={classes.search_results}>
-          {filterSearches.slice(0, 15).map((value: string) => {
-            return (
-              <span key={Math.random()} className={classes.search_item}>
-                <p
-                  onClick={() => {
-                    props.setSeachResults((prevState) => [...prevState, value]);
-                    setFilterSearches([]);
-                  }}
-                >
-                  {value}
-                </p>
-              </span>
-            );
-          })}
+          {filterSearches
+            .slice(0, 15)
+            .map((user: { id: string; name: string }) => {
+              return (
+                <span key={user.id} className={classes.search_item}>
+                  <p
+                    onClick={() => {
+                      props.setSeachResults((prevState) => [
+                        ...prevState,
+                        user,
+                      ]);
+                      setFilterSearches([]);
+                    }}
+                  >
+                    {user.name}
+                  </p>
+                </span>
+              );
+            })}
         </div>
       )}
     </div>
@@ -68,4 +96,4 @@ const SearchBarAuto = (props: { setFilter: any }) => {
   );
 };
 
-export { SearchBarClick, SearchBarAuto };
+export { SearchBarUsers, SearchBarAuto };

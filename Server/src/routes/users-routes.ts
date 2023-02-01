@@ -12,7 +12,7 @@ import fileUpload from "../middleware/file-upload.js";
 const userRouter = express.Router();
 
 userRouter.get("/:userId", getCurrentUser);
-userRouter.get("/users", getUsers);
+userRouter.get("/search/all-users", getUsers);
 userRouter.get("/project-users/:projectId", getUsersByProject);
 // userRouter.get("/:userId", getTasksByUser);
 

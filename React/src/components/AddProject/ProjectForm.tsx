@@ -13,13 +13,13 @@ const ProjectForm = () => {
     <div className={classes.main_form}>
       <div className={classes.left_panel}>
         <Heading>Build your new project</Heading>
-        <AddProjectItem setProjectId={setProjectId}/>
+        <AddProjectItem setProjectId={setProjectId} />
       </div>
       <div className={classes.right_panel}>
         <SemiHeading>Add the first task</SemiHeading>
-        <AddTaskItem projectId={projectId} submitAction='addFirstTask'/>
+        <AddTaskItem projectId={projectId} submitAction="addFirstTask" />
         <SemiHeading>Include people to the project</SemiHeading>
-        <AddParticipantsPanel projectId={projectId}/>
+        <AddParticipantsPanel projectId={projectId} workAloneOption={true}/>
       </div>
     </div>
   );

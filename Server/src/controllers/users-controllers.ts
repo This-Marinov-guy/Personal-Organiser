@@ -34,6 +34,8 @@ const getUsers = async (
   try {
     users = await User.find({}, "-password");
   } catch (err) {
+    console.log(err);
+    
     const error = new HttpError("Could not fetch users", 500);
     return next(error);
   }

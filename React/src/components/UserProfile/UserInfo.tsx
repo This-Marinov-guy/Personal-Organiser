@@ -44,7 +44,7 @@ const UserInfo = () => {
         </div>
       </div>
       <ProjectList heading={`${currentUser.name}'s projects`} target={[]}/>
-      <TaskList heading={`${currentUser.name}'s tasks`} target={[]}/>
+      <TaskList viewModeOnly={true} heading={`${currentUser.name}'s tasks`} target={[]}/>
     </Fragment>
   ) : (
     <p>No current user</p>

@@ -47,7 +47,7 @@ const postAddProject = async (req, res, next) => {
         description,
         image: "http://localhost:5000/" + req.file.path,
         tasks: [],
-        workers: [],
+        participants: [],
     });
     let user;
     try {
@@ -73,30 +73,30 @@ const postAddProject = async (req, res, next) => {
     }
     res.status(201).json({ projectId: createdProject._id });
 };
-const postAddWorkers = async (req, res, next) => {
-    const { projectId, workers } = req.body;
+const postAddParticipants = async (req, res, next) => {
+    const { projectId, participants } = req.body;
     if (!projectId) {
-        return next(new HttpError("Please create a project and then assign it workers", 500));
+        return next(new HttpError("Please create a project and then assign it participants", 500));
     }
     let projectOfTask;
     try {
         projectOfTask = await Project.findById(projectId);
     }
     catch (err) {
-        return next(new HttpError("Adding workers failed, please try again", 500));
+        return next(new HttpError("Adding participants failed, please try again", 500));
     }
     if (!projectOfTask) {
         return next(new HttpError("Could not find a project with provided id", 404));
     }
-    let listOfWorkers;
-    for (let i = 0; i < workers.length; i++) {
+    let listOfparticipants;
+    for (let i = 0; i < participants.length; i++) {
         let workerId;
         try {
             workerId = await (await User.findOne({
-                name: workers[i].split(" ")[0],
-                surname: workers[i].split(" ")[1],
+                name: participants[i].split(" ")[0],
+                surname: participants[i].split(" ")[1],
             }))._id;
-            listOfWorkers.push(workerId);
+            listOfparticipants.push(workerId);
         }
         catch (err) {
             return next(new HttpError("Could not find one of the users", 500));
@@ -105,14 +105,14 @@ const postAddWorkers = async (req, res, next) => {
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        projectOfTask.workers.push(listOfWorkers);
+        projectOfTask.participants.push(listOfparticipants);
         await projectOfTask.save({ session: sess });
         await sess.commitTransaction();
     }
     catch (err) {
-        return next(new HttpError("Adding workers failed, please try again", 500));
+        return next(new HttpError("Adding participants failed, please try again", 500));
     }
-    res.status(201).json({ workers: workers });
+    res.status(201).json({ participants: participants });
 };
 const patchAbortProject = async (req, res, next) => {
     const userId = req.body.userId;
@@ -164,5 +164,5 @@ const deleteProject = async (req, res, next) => {
     });
     res.status(200).json({ message: "Project deleted" });
 };
-export { getProjectById, getProjectByUserId, postAddProject, postAddWorkers, patchAbortProject, deleteProject, };
+export { getProjectById, getProjectByUserId, postAddProject, postAddParticipants, patchAbortProject, deleteProject, };
 //# sourceMappingURL=projects-controllers.js.map

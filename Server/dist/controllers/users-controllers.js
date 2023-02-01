@@ -24,6 +24,7 @@ const getUsers = async (req, res, next) => {
         users = await User.find({}, "-password");
     }
     catch (err) {
+        console.log(err);
         const error = new HttpError("Could not fetch users", 500);
         return next(error);
     }
@@ -40,7 +41,7 @@ const getUsersByProject = async (req, res, next) => {
         return next(error);
     }
     res.json({
-        users: projectwithUsers.map((user) => user.toObject({ getters: true })),
+        users: projectwithUsers.participants.map((user) => user.toObject({ getters: true })),
     });
 };
 const signup = async (req, res, next) => {

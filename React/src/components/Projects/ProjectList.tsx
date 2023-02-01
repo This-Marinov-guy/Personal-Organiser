@@ -54,7 +54,7 @@ const ProjectList = (props: ProjectListprops) => {
                     title={project.title}
                     description={project.description}
                     image={project.image}
-                    workers={project.workers}
+                    participants={project.participants}
                   />
                 );
               })}

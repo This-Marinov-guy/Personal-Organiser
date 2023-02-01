@@ -12,17 +12,25 @@
 }
 
 .form_btn {
+  position: absolute;
+  align-self: center;
   width: 8rem;
-  margin: auto;
-  align-self: flex-end;
+  margin: 18rem auto 0;
 }
 
 .search_results {
-  width: 20rem;
-  height: 20rem;
+  position: absolute;
+  z-index: 5;
+  margin-top: 7rem;
+  width: 18rem;
+  height: 10rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   overflow-y: auto;
+}
+
+.participants {
+  height: 2rem;
 }
 
 .participants:hover {
@@ -35,8 +43,9 @@
   margin: auto;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 1300px) {
   .search_results {
     grid-template-columns: 1fr;
+    width: 10rem;
   }
 }
