@@ -14,10 +14,12 @@ import classes from "./AddParticipantsPanel.module.css";
 const AddParticipantsPanel = (props: {
   projectId?: string;
   workAloneOption?: boolean;
+  setFormSubmitted?: Function;
+  formSubmitted?: any;
 }) => {
   const { loading, sendRequest } = useHttpClient();
+
   const [searchResults, setSeachResults] = useState([]);
-  const [isSubmitted, setisSubmitted] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const clickHandler = () => {
@@ -54,19 +56,23 @@ const AddParticipantsPanel = (props: {
           "Content-Type": "application/json",
         }
       );
-      setisSubmitted(true);
+      props.setFormSubmitted((prevState) => {
+        return { ...prevState, participantForm: true };
+      });
     } catch (err) {}
   };
 
   const shortcutHandler = () => {
     setSeachResults([{ id: user.userId }]);
-    setisSubmitted(true);
+    props.setFormSubmitted((prevState) => {
+      return { ...prevState, participantForm: true };
+    });
   };
 
   return (
     <Fragment>
       <Form onSubmit={submitHandler} className={classes.form_panel}>
-        {isSubmitted ? (
+        {props.formSubmitted.participantForm ? (
           <i className={classes.icon + " fa-solid fa-check"}></i>
         ) : (
           <Fragment>

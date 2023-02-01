@@ -19,10 +19,13 @@ const schema = yup.object().shape({
   image: yup.string().required(),
 });
 
-const AddProjectItem = (props: { setProjectId?: Function }) => {
+const AddProjectItem = (props: {
+  setProjectId?: Function;
+  setFormSubmitted?: Function;
+  formSubmitted?: any;
+}) => {
   const { loading, sendRequest } = useHttpClient();
 
-  const [isSubmitted, setisSubmitted] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
 
@@ -48,7 +51,9 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
               { Authorization: "Bearer " + user.token }
             );
             props.setProjectId(responseData.projectId);
-            setisSubmitted(true);
+            props.setFormSubmitted((prevState) => {
+              return { ...prevState, projectForm: true };
+            });
           } catch (err) {}
         }}
         initialValues={{
@@ -71,7 +76,7 @@ const AddProjectItem = (props: { setProjectId?: Function }) => {
             onSubmit={handleSubmit}
             className={classes.form_display}
           >
-            {isSubmitted ? (
+            {props.formSubmitted.projectForm ? (
               <i className={classes.icon + " fa-solid fa-check"}></i>
             ) : (
               <Fragment>

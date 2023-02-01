@@ -15,12 +15,13 @@ interface AddTaskItemProps {
   projectId: string;
   taskId?: string;
   submitAction: string;
+  setFormSubmitted?: Function;
+  formSubmitted?: any;
 }
 
 const AddTaskItem = (props: AddTaskItemProps) => {
   const { loading, sendRequest } = useHttpClient();
 
-  const [isSubmitted, setisSubmitted] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const [inputs, setInputs] = useState({
@@ -88,7 +89,9 @@ const AddTaskItem = (props: AddTaskItemProps) => {
           "Content-Type": "application/json",
         }
       );
-      setisSubmitted(true);
+      props.setFormSubmitted((prevState) => {
+        return { ...prevState, taskForm: true };
+      });
       dispatch(removeModal());
     } catch (err) {}
   };
@@ -108,7 +111,9 @@ const AddTaskItem = (props: AddTaskItemProps) => {
           "Content-Type": "application/json",
         }
       );
-      setisSubmitted(true);
+      props.setFormSubmitted((prevState) => {
+        return { ...prevState, taskForm: true };
+      });
       dispatch(removeModal());
     } catch (err) {}
   };
@@ -128,7 +133,9 @@ const AddTaskItem = (props: AddTaskItemProps) => {
           "Content-Type": "application/json",
         }
       );
-      setisSubmitted(true);
+      props.setFormSubmitted((prevState) => {
+        return { ...prevState, taskForm: true };
+      });
       dispatch(removeModal());
     } catch (err) {}
   };
@@ -138,7 +145,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
       addFirstTaskSubmitHandler(event);
     } else if (props.submitAction === "addDirectTask") {
       addDirectTaskSubmitHandler();
-    } else if (props.submitAction === 'editTask') {
+    } else if (props.submitAction === "editTask") {
       editTaskSubmitHandler();
     }
   };
@@ -146,7 +153,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
   return (
     <Fragment>
       <Form onSubmit={submitHandler} className={classes.form_panel}>
-        {isSubmitted ? (
+        {props.formSubmitted.taskForm ? (
           <i className={classes.icon + " fa-solid fa-check"}></i>
         ) : (
           <Fragment>
@@ -186,7 +193,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
                 onClick={clickHandler}
                 type="submit"
               >
-                {props.submitAction === 'editTask' ? "Update Task" : "Add Task"}
+                {props.submitAction === "editTask" ? "Update Task" : "Add Task"}
               </Button>
             )}
           </Fragment>
