@@ -68,17 +68,6 @@ const postAddProject = async (
 
   const { creator, title, description } = req.body;
 
-  const createdProject = new Project({
-    creator,
-    status: "active",
-    title,
-    description,
-    image: "http://localhost:5000/" + req.file.path,
-    tasks: [],
-    participants: [],
-    chat: {},
-  });
-
   let user: any;
   try {
     user = await User.findById(creator);
@@ -87,6 +76,18 @@ const postAddProject = async (
       new HttpError("Creating project failed, please try again", 500)
     );
   }
+
+  const createdProject = new Project({
+    creator: user,
+    status: "active",
+    title,
+    description,
+    image: "http://localhost:5000/" + req.file.path,
+    tasks: [],
+    participants: [user],
+    chat: [],
+  });
+
 
   if (!user) {
     return next(new HttpError("Could not find user for provided id", 404));

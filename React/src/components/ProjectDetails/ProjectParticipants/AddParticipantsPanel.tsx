@@ -69,7 +69,6 @@ const AddParticipantsPanel = (props: {
   };
 
   const shortcutHandler = () => {
-    setSeachResults([{ id: user.userId }]);
     props.setFormSubmitted((prevState) => {
       return { ...prevState, participantForm: true };
     });

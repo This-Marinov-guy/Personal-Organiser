@@ -1,6 +1,6 @@
 .participants_display {
   width: 80%;
-  margin: auto;
+  margin: 2rem auto;
   display: flex;
   justify-content: space-around;
 }
