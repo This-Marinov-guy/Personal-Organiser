@@ -9,7 +9,6 @@ import classes from "./Tasks.module.css";
 import Warning from "src/components/UI/Warning";
 import Modal from "src/components/UI/Modal";
 import AddTaskItem from "./AddTaskItem";
-import AddWorkersPanel from "../ProjectParticipants/AddParticipantsPanel";
 import {
   selectModal,
   showModal,

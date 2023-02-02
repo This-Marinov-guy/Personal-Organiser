@@ -8,8 +8,9 @@ import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
-import { removeDuplicates } from "src/usefulFunctions/removeDuplicates";
 import classes from "./AddParticipantsPanel.module.css";
+import { useDispatch } from "react-redux";
+import { removeModal } from "src/redux/modal";
 
 const AddParticipantsPanel = (props: {
   projectId?: string;
@@ -27,6 +28,8 @@ const AddParticipantsPanel = (props: {
   };
 
   const user = useSelector(selectUser);
+
+  const dispatch = useDispatch();
 
   const removeParticipantHandler = (event) => {
     setSeachResults(
@@ -56,9 +59,12 @@ const AddParticipantsPanel = (props: {
           "Content-Type": "application/json",
         }
       );
-      props.setFormSubmitted((prevState) => {
-        return { ...prevState, participantForm: true };
-      });
+      if (props.formSubmitted) {
+        props.setFormSubmitted((prevState) => {
+          return { ...prevState, participantForm: true };
+        });
+      }
+      dispatch(removeModal());
     } catch (err) {}
   };
 
@@ -72,7 +78,7 @@ const AddParticipantsPanel = (props: {
   return (
     <Fragment>
       <Form onSubmit={submitHandler} className={classes.form_panel}>
-        {props.formSubmitted.participantForm ? (
+        {props.formSubmitted && props.formSubmitted.participantForm ? (
           <i className={classes.icon + " fa-solid fa-check"}></i>
         ) : (
           <Fragment>

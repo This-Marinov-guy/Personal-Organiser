@@ -89,9 +89,11 @@ const AddTaskItem = (props: AddTaskItemProps) => {
           "Content-Type": "application/json",
         }
       );
-      props.setFormSubmitted((prevState) => {
-        return { ...prevState, taskForm: true };
-      });
+      if (props.formSubmitted) {
+        props.setFormSubmitted((prevState) => {
+          return { ...prevState, taskForm: true };
+        });
+      }
       dispatch(removeModal());
     } catch (err) {}
   };
@@ -111,9 +113,11 @@ const AddTaskItem = (props: AddTaskItemProps) => {
           "Content-Type": "application/json",
         }
       );
-      props.setFormSubmitted((prevState) => {
-        return { ...prevState, taskForm: true };
-      });
+      if (props.formSubmitted) {
+        props.setFormSubmitted((prevState) => {
+          return { ...prevState, taskForm: true };
+        });
+      }
       dispatch(removeModal());
     } catch (err) {}
   };
@@ -133,9 +137,11 @@ const AddTaskItem = (props: AddTaskItemProps) => {
           "Content-Type": "application/json",
         }
       );
-      props.setFormSubmitted((prevState) => {
-        return { ...prevState, taskForm: true };
-      });
+      if (props.formSubmitted) {
+        props.setFormSubmitted((prevState) => {
+          return { ...prevState, taskForm: true };
+        });
+      }
       dispatch(removeModal());
     } catch (err) {}
   };
@@ -153,7 +159,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
   return (
     <Fragment>
       <Form onSubmit={submitHandler} className={classes.form_panel}>
-        {props.formSubmitted.taskForm ? (
+        {props.formSubmitted && props.formSubmitted.taskForm ? (
           <i className={classes.icon + " fa-solid fa-check"}></i>
         ) : (
           <Fragment>

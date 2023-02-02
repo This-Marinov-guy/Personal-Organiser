@@ -88,24 +88,23 @@ const postAddParticipants = async (req, res, next) => {
     if (!projectOfTask) {
         return next(new HttpError("Could not find a project with provided id", 404));
     }
-    let listOfparticipants;
+    let listOfparticipants = [];
     for (let i = 0; i < participants.length; i++) {
-        let workerId;
+        let participant;
         try {
-            workerId = await (await User.findOne({
-                name: participants[i].split(" ")[0],
-                surname: participants[i].split(" ")[1],
-            }))._id;
-            listOfparticipants.push(workerId);
+            participant = await User.findById(participants[i].id);
         }
         catch (err) {
             return next(new HttpError("Could not find one of the users", 500));
         }
+        listOfparticipants.push(participant);
     }
+    //addding participants does not work the way below
     try {
+        console.log("list", listOfparticipants);
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        projectOfTask.participants.push(listOfparticipants);
+        projectOfTask.participants.push(...listOfparticipants);
         await projectOfTask.save({ session: sess });
         await sess.commitTransaction();
     }

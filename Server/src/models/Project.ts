@@ -18,6 +18,14 @@ const projectSchema = new Schema({
   ],
   status: { type: String, required: true },
   participants: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+  chat: {
+    messages: [
+      {
+        sender: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+        text: { type: String, required: true },
+      },
+    ],
+  },
 });
 
 export default mongoose.model("Project", projectSchema);
