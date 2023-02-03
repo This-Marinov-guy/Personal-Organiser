@@ -21,6 +21,7 @@ const projectSchema = new Schema({
   chat: [
     {
       sender: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+      senderName: { type: String, required: true },
       text: { type: String, required: true },
     },
   ],

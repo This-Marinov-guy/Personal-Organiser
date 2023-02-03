@@ -40,15 +40,6 @@ const postAddProject = async (req, res, next) => {
         return next(new HttpError("Invalid inputs, please check your data", 422));
     }
     const { creator, title, description } = req.body;
-    const createdProject = new Project({
-        creator,
-        status: "active",
-        title,
-        description,
-        image: "http://localhost:5000/" + req.file.path,
-        tasks: [],
-        participants: [],
-    });
     let user;
     try {
         user = await User.findById(creator);
@@ -56,6 +47,16 @@ const postAddProject = async (req, res, next) => {
     catch (err) {
         return next(new HttpError("Creating project failed, please try again", 500));
     }
+    const createdProject = new Project({
+        creator: user,
+        status: "active",
+        title,
+        description,
+        image: "http://localhost:5000/" + req.file.path,
+        tasks: [],
+        participants: [user],
+        chat: [],
+    });
     if (!user) {
         return next(new HttpError("Could not find user for provided id", 404));
     }
@@ -78,34 +79,52 @@ const postAddParticipants = async (req, res, next) => {
     if (!projectId) {
         return next(new HttpError("Please create a project and then assign it participants", 500));
     }
-    let projectOfTask;
+    let project;
     try {
-        projectOfTask = await Project.findById(projectId);
+        project = await Project.findById(projectId);
     }
     catch (err) {
         return next(new HttpError("Adding participants failed, please try again", 500));
     }
-    if (!projectOfTask) {
+    if (!project) {
         return next(new HttpError("Could not find a project with provided id", 404));
     }
-    let listOfparticipants = [];
-    for (let i = 0; i < participants.length; i++) {
-        let participant;
-        try {
+    let listOfparticipants = [project.creator];
+    try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        for (let i = 0; i < participants.length; i++) {
+            let participant;
             participant = await User.findById(participants[i].id);
+            participant.projects.push(project);
+            participant.projects = participant.projects.filter((value, index) => {
+                const _value = JSON.stringify(value);
+                return (index ===
+                    participant.projects.findIndex((obj) => {
+                        return JSON.stringify(obj) === _value;
+                    }));
+            });
+            await participant.save({ session: sess });
+            listOfparticipants.push(participant);
         }
-        catch (err) {
-            return next(new HttpError("Could not find one of the users", 500));
-        }
-        listOfparticipants.push(participant);
+        await sess.commitTransaction();
+    }
+    catch (err) {
+        return next(new HttpError("Could not find one of the users", 500));
     }
     //addding participants does not work the way below
     try {
-        console.log("list", listOfparticipants);
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        projectOfTask.participants.push(...listOfparticipants);
-        await projectOfTask.save({ session: sess });
+        project.participants.push(...listOfparticipants);
+        project.participants = project.participants.filter((value, index) => {
+            const _value = JSON.stringify(value);
+            return (index ===
+                project.participants.findIndex((obj) => {
+                    return JSON.stringify(obj) === _value;
+                }));
+        });
+        await project.save({ session: sess });
         await sess.commitTransaction();
     }
     catch (err) {

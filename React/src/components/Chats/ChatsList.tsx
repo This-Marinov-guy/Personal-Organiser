@@ -18,26 +18,27 @@ const ChatsList = () => {
   const projectId = useParams<any>().projectId;
 
   useEffect(() => {
-    const fetchChats = async () => {
+    const fetchProjectBubbles = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/chats/get-chats/${user.userId}`
+          `http://localhost:5000/api/projects/my-projects/${user.userId}`
         );
-        setChatBubbles(responseData.chats);
+        setChatBubbles(responseData.projects);
+        console.log(responseData.projects)
       } catch (err) {}
     };
-    fetchChats();
+    fetchProjectBubbles();
   }, [sendRequest]);
 
   return (
     <div className={classes.chats_display}>
       <Heading>Your chats</Heading>
       <div className={classes.chats_list}>
-        {chatBubbles.map((chat) => (
-          <ChatBubble key={chat.id} src={chat.image} to={`/chats${chat.id}`} />
+        {chatBubbles.map((project) => (
+          <ChatBubble key={project.id} src={project.image} to={`/chats/${project.id}`} />
         ))}
       </div>
-      <PersonalChat projectId={projectId} />
+      <PersonalChat projectId={projectId}/>
     </div>
   );
 };

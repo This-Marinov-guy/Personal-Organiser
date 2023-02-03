@@ -19,7 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);  
+  const user = useSelector(selectUser);
   const errorMsg = useSelector(selectErrorMsg);
 
   const { error } = useHttpClient();
@@ -51,7 +51,9 @@ const App = () => {
         login({
           userId: storedData.userId,
           token: storedData.token,
-          expirationDate: new Date(new Date().getTime() + 36000000).toISOString(),
+          expirationDate: new Date(
+            new Date().getTime() + 36000000
+          ).toISOString(),
         })
       );
     }
@@ -69,7 +71,7 @@ const App = () => {
         <Route path="/add-project" exact>
           <AddProject />
         </Route>
-        <Route path="/chats" exact>
+        <Route path={["/chats", "/chats/:projectId"]} exact>
           <Chats />
         </Route>
         <Route path="/user/:userId" exact>

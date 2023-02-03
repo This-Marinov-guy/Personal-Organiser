@@ -3,10 +3,12 @@ import { useParams } from "react-router-dom";
 import { useHttpClient } from "src/hooks/http-hook";
 import TaskList from "../ProjectDetails/ProjectTasks/TaskList";
 import ProjectList from "../Projects/ProjectList";
+import { SearchBarUsers } from "../UI/SearchBar";
 import classes from "./UserInfo.module.css";
 
 const UserInfo = () => {
   const { sendRequest } = useHttpClient();
+
   const [currentUser, setCurrentUser] = useState<any>();
 
   const userId = useParams<any>().userId;

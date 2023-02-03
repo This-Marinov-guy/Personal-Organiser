@@ -9,7 +9,7 @@ interface ChatBubbleProps {
 
 const ChatBubble = (props: ChatBubbleProps) => {
   return (
-    <Link to={props.to}>
+    <Link style={{ padding: "1rem" }} to={props.to}>
       <img src={props.src} className={classes.chat_bubble}></img>
     </Link>
   );

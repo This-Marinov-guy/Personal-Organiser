@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 app.use("/api/user", userRouter);
 app.use("/api/projects", projectRouter);
 app.use("/api/tasks", taskRouter);
-app.use("/api/chat", chatRouter);
+app.use("/api/chats", chatRouter);
 //no page found
 app.use((req, res, next) => {
     const error = new HttpError("Page not found", 404);

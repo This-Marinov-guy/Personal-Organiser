@@ -5,28 +5,6 @@ import HttpError from "../models/Http-error.js";
 import Project from "../models/Project.js";
 import User from "../models/User.js";
 
-const getChatsByUserId = async (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  const userId = req.params.userId;
-
-  if (!userId) {
-    return next(new HttpError("User not found", 404));
-  }
-
-  let chatsOfUser: any;
-  try {
-    chatsOfUser = await User.findById(userId).populate("projects");
-  } catch (err) {}
-
-  res.json({
-    chats: chatsOfUser.chat.map((c:any) => {
-      c.toObject({ getters: true });
-    }),
-  });
-};
 
 const getChatMessages = async (
   req: express.Request,
@@ -40,18 +18,18 @@ const getChatMessages = async (
 
   const projectId = req.params.projectId;
 
-  let chat: any;
+  let project: any;
   try {
-    chat = await Project.findById(projectId).populate("chat");
+    project = await Project.findById(projectId);
   } catch (err) {
     return next(new HttpError("Fetching failed", 500));
   }
 
-  if (!chat) {
-    return next(new HttpError("Chat does not exist", 500));
+  if (!project) {
+    return next(new HttpError("Project chat does not exist", 500));
   }
 
-  res.json({ chat: chat.toObject({ getters: true }) });
+  res.json({ chat: project.chat.toObject({ getters: true }) });
 };
 
 const patchAddChatMessage = async (
@@ -70,30 +48,30 @@ const patchAddChatMessage = async (
 
   let user: any;
   let project: any;
-  let chat: any;
   try {
     user = await User.findById(senderId);
     project = await Project.findById(projectId);
-    chat = await project.populate("chat");
   } catch (err) {
     return next(new HttpError("Something went wrong, please try again", 500));
   }
 
-  if (!user || !project || !chat) {
+  if (!user || !project) {
     return next(
       new HttpError("Something went wrong, please try again later", 500)
     );
   }
 
   let message = {
-    sender: user.name + " " + user.surname,
+    sender: user,
+    senderName: user.name + " " + user.surname,
     text,
   };
 
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    chat.push(message);
+    console.log('chat', project.chat);
+    project.chat.push(message);
     await project.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
@@ -103,4 +81,4 @@ const patchAddChatMessage = async (
   res.status(200).json({ message: "Message Sent" });
 };
 
-export { getChatsByUserId, getChatMessages, patchAddChatMessage };
+export { getChatMessages, patchAddChatMessage };

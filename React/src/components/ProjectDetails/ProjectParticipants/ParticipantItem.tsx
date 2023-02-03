@@ -20,9 +20,8 @@ const ParticipantItem = (props: ParticipantProps) => {
         <Card.Subtitle>{props.email}</Card.Subtitle>
       </Card.Body>
       <Card.Body>
-        <Button className={classes.btn} variant="outline-primary">Chat</Button>
         <Button className={classes.btn} variant="outline-danger">Remove</Button>
-        <Card.Link href="#">Details</Card.Link>
+        <Card.Link  href="/user/:userId">Details</Card.Link>
       </Card.Body>
     </Card>
   );

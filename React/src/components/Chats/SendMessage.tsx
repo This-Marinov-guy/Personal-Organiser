@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Input from "../UI/Input";
@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import { useHttpClient } from "src/hooks/http-hook";
 
-const SendMessage = (props: { projectId: string }) => {
+const SendMessage = (props: { projectId: string, onSubmit: Function }) => {
   const [message, setMessage] = useState();
 
   const { sendRequest } = useHttpClient();
@@ -24,31 +24,36 @@ const SendMessage = (props: { projectId: string }) => {
       const responseData = await sendRequest(
         `http://localhost:5000/api/chats/add-message/${props.projectId}`,
         "PATCH",
-        {
+        JSON.stringify({
           senderId: user.userId,
           text: message,
-        },
+        }),
         {
           "Content-Type": "application/json",
         }
       );
+      props.onSubmit();
     } catch (err) {}
   };
 
   return (
-    <Form className={classes.send_message_display} onSubmit={submitHandler}>
-      <div style={{ width: "80%" }}>
-        <Input
-          type="text"
-          name="text"
-          placeholder="Message"
-          onChange={changeHandler}
-        />
-      </div>
-      <Button type="submit" variant="primary">
-        Send
-      </Button>
-    </Form>
+    <Fragment>
+      {props.projectId && (
+        <Form className={classes.send_message_display} onSubmit={submitHandler}>
+          <div style={{ width: "80%" }}>
+            <Input
+              type="text"
+              name="text"
+              placeholder="Message"
+              onChange={changeHandler}
+            />
+          </div>
+          <Button type="submit" variant="primary">
+            Send
+          </Button>
+        </Form>
+      )}
+    </Fragment>
   );
 };
 
