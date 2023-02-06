@@ -19,18 +19,9 @@ interface ProjectListprops {
 const ProjectList = (props: ProjectListprops) => {
   const [filter, setFilter] = useState("");
 
-  const modal = useSelector(selectModal);
-  const error = useSelector(selectError);
-
   return (
     <Fragment>
       <Heading>{props.heading}</Heading>
-      {modal && (
-        <Modal>
-          <AddProjectItem />
-        </Modal>
-      )}
-      {error && <Error errorMessage="Be careful" />}
       <SearchBarAuto setFilter={setFilter} />
       <div className={classes.projects_display}>
         {props.target ? (

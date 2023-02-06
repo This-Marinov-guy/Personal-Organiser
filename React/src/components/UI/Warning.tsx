@@ -23,7 +23,7 @@ const Warning = (props: WarningProps) => {
         {loading ? (
           <Loader />
         ) : (
-          <Button onClick={props.onClick} variant={`outline-${props.variant ? props.variant : 'dangervlady2001'}`}>
+          <Button onClick={props.onClick} variant={`outline-${props.variant ? props.variant : 'danger'}`}>
             {props.submit_message ? props.submit_message : "Continue"}
           </Button>
         )}
