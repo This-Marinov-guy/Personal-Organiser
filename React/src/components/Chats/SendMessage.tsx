@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import { useHttpClient } from "src/hooks/http-hook";
 
-const SendMessage = (props: { projectId: string, onSubmit: Function }) => {
+const SendMessage = (props: { projectId: string; onSubmit: Function }) => {
   const [message, setMessage] = useState();
 
   const { sendRequest } = useHttpClient();
@@ -30,6 +30,7 @@ const SendMessage = (props: { projectId: string, onSubmit: Function }) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + user.userId,
         }
       );
       props.onSubmit();

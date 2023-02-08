@@ -33,7 +33,7 @@ const Navigation = (props: NavigationProps) => {
 
   const openWarningHandler = (event) => {
     setUserAction(event.target.id);
-    dispatch(showWarning())
+    dispatch(showWarning());
   };
 
   const abortprojectHandler = async () => {
@@ -46,6 +46,7 @@ const Navigation = (props: NavigationProps) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + user.userId,
         }
       );
       history.push("/");
@@ -56,7 +57,9 @@ const Navigation = (props: NavigationProps) => {
     try {
       const responseData = await sendRequest(
         `http://localhost:5000/api/projects/delete-project/${projectId}`,
-        "DELETE"
+        "DELETE",
+        {},
+        { Authorization: "Bearer " + user.userId }
       );
       history.push("/");
     } catch (err) {}

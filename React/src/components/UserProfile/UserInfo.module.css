@@ -33,7 +33,11 @@
   box-shadow: 0.3rem 0.3rem 0.3rem lightblue;
 }
 
-.searchbar, .icon {
+.searchbar {
+  z-index: 10;
+}
+
+.icon {
   font-size: 3rem;
   z-index: 10;
 }

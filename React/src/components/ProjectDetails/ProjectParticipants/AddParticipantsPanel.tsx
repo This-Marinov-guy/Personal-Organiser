@@ -57,6 +57,7 @@ const AddParticipantsPanel = (props: {
         }),
         {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + user.userId,
         }
       );
       if (props.formSubmitted) {
