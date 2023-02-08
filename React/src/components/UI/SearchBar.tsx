@@ -4,7 +4,8 @@ import Input from "./Input";
 import classes from "./SearchBar.module.css";
 
 interface SearchBarProps {
-  setSeachResults: any;
+  setSeachResults?: any;
+  className?: any;
 }
 
 const SearchBarUsers = (props: SearchBarProps) => {
@@ -50,7 +51,7 @@ const SearchBarUsers = (props: SearchBarProps) => {
   };
 
   return (
-    <div>
+    <div className={props.className}>
       <Input
         type="text"
         placeholder="Search..."

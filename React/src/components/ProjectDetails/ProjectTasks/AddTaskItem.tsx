@@ -42,6 +42,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
             }),
             {
               "Content-Type": "application/json",
+              Authorization : "Bearer " + user.token
             }
           );
           setInputs({
@@ -87,6 +88,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization : "Bearer " + user.token
         }
       );
       if (props.formSubmitted) {
@@ -111,6 +113,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization : "Bearer " + user.token
         }
       );
       if (props.formSubmitted) {
@@ -135,6 +138,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization : "Bearer " + user.token,
         }
       );
       if (props.formSubmitted) {

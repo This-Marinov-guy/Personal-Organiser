@@ -22,7 +22,7 @@ const Projects = () => {
       }
     };
     fetchPlaces();
-  }, []);
+  }, [sendRequest]);
   return <ProjectList target={userProjects} heading={"All Projects"} />;
 };
 

@@ -103,7 +103,6 @@ const AddParticipantsPanel = (props: {
                   );
                 })
                 .map((participant) => {
-                  console.log("searchResults", searchResults);
                   return (
                     <OverlayTrigger
                       key={Math.random()}

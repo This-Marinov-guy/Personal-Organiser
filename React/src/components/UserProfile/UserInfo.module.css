@@ -9,21 +9,22 @@
 
 .user_info {
   display: flex;
+  margin-top: 7rem;
+  margin-left: -7rem;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  width: 60%;
+  justify-content: space-around;
 }
+
 .user_img {
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
   z-index: 10;
-  margin: 7rem auto;
 }
 
 .text {
-  width: 20rem;
+  width: 22rem;
   text-align: center;
   z-index: 10;
   padding: 2rem;
@@ -32,8 +33,15 @@
   box-shadow: 0.3rem 0.3rem 0.3rem lightblue;
 }
 
-@media (max-width: 1000) {
+.searchbar, .icon {
+  font-size: 3rem;
+  z-index: 10;
+}
+
+@media (max-width: 900px) {
   .user_info {
     flex-direction: column;
+    margin: 7rem auto;
+    height: 36rem;
   }
 }

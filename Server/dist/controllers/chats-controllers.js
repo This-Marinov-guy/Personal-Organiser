@@ -3,40 +3,23 @@ import mongoose from "mongoose";
 import HttpError from "../models/Http-error.js";
 import Project from "../models/Project.js";
 import User from "../models/User.js";
-const getChatsByUserId = async (req, res, next) => {
-    const userId = req.params.userId;
-    if (!userId) {
-        return next(new HttpError("User not found", 404));
-    }
-    let projectsOfUser;
-    try {
-        projectsOfUser = await User.findById(userId);
-        console.log('chats', projectsOfUser);
-    }
-    catch (err) { }
-    res.json({
-        chats: projectsOfUser.projects.map((p) => {
-            p.chat.toObject({ getters: true });
-        }),
-    });
-};
 const getChatMessages = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(new HttpError("Invalid inputs, please check your data", 422));
     }
     const projectId = req.params.projectId;
-    let chat;
+    let project;
     try {
-        chat = await Project.findById(projectId).populate("chat");
+        project = await Project.findById(projectId);
     }
     catch (err) {
         return next(new HttpError("Fetching failed", 500));
     }
-    if (!chat) {
-        return next(new HttpError("Chat does not exist", 500));
+    if (!project) {
+        return next(new HttpError("Project chat does not exist", 500));
     }
-    res.json({ chat: chat.toObject({ getters: true }) });
+    res.json({ chat: project.chat.toObject({ getters: true }) });
 };
 const patchAddChatMessage = async (req, res, next) => {
     //remove this if you dont have validation
@@ -48,26 +31,26 @@ const patchAddChatMessage = async (req, res, next) => {
     const { senderId, text } = req.body;
     let user;
     let project;
-    let chat;
     try {
         user = await User.findById(senderId);
         project = await Project.findById(projectId);
-        chat = await project.populate("chat");
     }
     catch (err) {
         return next(new HttpError("Something went wrong, please try again", 500));
     }
-    if (!user || !project || !chat) {
+    if (!user || !project) {
         return next(new HttpError("Something went wrong, please try again later", 500));
     }
     let message = {
-        sender: user.name + " " + user.surname,
+        sender: user,
+        senderName: user.name + " " + user.surname,
         text,
     };
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
-        chat.push(message);
+        console.log('chat', project.chat);
+        project.chat.push(message);
         await project.save({ session: sess });
         await sess.commitTransaction();
     }
@@ -76,5 +59,5 @@ const patchAddChatMessage = async (req, res, next) => {
     }
     res.status(200).json({ message: "Message Sent" });
 };
-export { getChatsByUserId, getChatMessages, patchAddChatMessage };
+export { getChatMessages, patchAddChatMessage };
 //# sourceMappingURL=chats-controllers.js.map

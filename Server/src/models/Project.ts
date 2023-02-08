@@ -17,7 +17,7 @@ const projectSchema = new Schema({
     },
   ],
   status: { type: String, required: true },
-  participants: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+  participants: [{ type: mongoose.Types.ObjectId, required: true, ref: "User" }],
   chat: [
     {
       sender: { type: mongoose.Types.ObjectId, required: true, ref: "User" },

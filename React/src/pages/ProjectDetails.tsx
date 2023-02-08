@@ -50,7 +50,7 @@ const ProjectDetails = () => {
       case "ProjectTasks":
         return <TaskList heading={"Project Tasks"} target={projectTasks} />;
       case "ProjectWorkers":
-        return <ParticipantsList heading={"Project Participants"} target={projectParticipants} />;
+        return <ParticipantsList heading={"Project Participants"} target={projectParticipants} projectCreator={projectCreator}/>;
       default:
         return <p>Nothing to see</p>;
     }

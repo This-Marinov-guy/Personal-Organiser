@@ -11,11 +11,12 @@ import fileUpload from "../middleware/file-upload.js";
 import authRequest from "../middleware/check-auth.js";
 
 const projectRouter = express.Router();
-// projectRouter.use(authRequest);
-//routes with token protection
 
 projectRouter.get("/:projectId", getProjectById);
 projectRouter.get("/my-projects/:userId", getProjectByUserId);
+
+projectRouter.use(authRequest);
+//routes with token protection
 
 projectRouter.post("/add-project", fileUpload.single("image"), postAddProject);
 projectRouter.post("/add-participants", postAddParticipants);

@@ -35,7 +35,7 @@ const ChatsList = () => {
       <Heading>Your chats</Heading>
       <div className={classes.chats_list}>
         {chatBubbles.map((project) => (
-          <ChatBubble key={project.id} src={project.image} to={`/chats/${project.id}`} />
+          <ChatBubble key={project.id} name={project.title} src={project.image} to={`/chats/${project.id}`} />
         ))}
       </div>
       <PersonalChat projectId={projectId}/>

@@ -18,6 +18,7 @@ import {
 } from "src/redux/modal";
 import { Heading } from "src/components/UI/Heading";
 import { useParams } from "react-router-dom";
+import { selectUser } from "src/redux/user";
 
 interface TaskListprops {
   viewModeOnly?: boolean;
@@ -32,6 +33,8 @@ const TaskList = (props: TaskListprops) => {
   const [taskId, setTaskId] = useState();
 
   const { sendRequest } = useHttpClient();
+
+  const user = useSelector(selectUser);
 
   const warning = useSelector(selectWarning);
   const modal = useSelector(selectModal);
@@ -61,9 +64,9 @@ const TaskList = (props: TaskListprops) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization : "Bearer " + user.token
         }
       );
-      dispatch(removeWarning());
       window.location.reload();
     } catch (err) {}
   };
@@ -78,9 +81,9 @@ const TaskList = (props: TaskListprops) => {
         }),
         {
           "Content-Type": "application/json",
+          Authorization : "Bearer " + user.token
         }
       );
-      dispatch(removeWarning());
       window.location.reload();
     } catch (err) {}
   };

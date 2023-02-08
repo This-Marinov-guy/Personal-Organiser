@@ -12,6 +12,7 @@ import {
   selectModal,
   selectWarning,
   showModal,
+  showWarning,
 } from "src/redux/modal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -22,12 +23,14 @@ import { useHttpClient } from "src/hooks/http-hook";
 interface ParticipantsListprops {
   heading: string;
   target: Array<any>;
+  projectCreator: any;
 }
 
 const ParticipantsList = (props: ParticipantsListprops) => {
   const { sendRequest } = useHttpClient();
 
   const [filter, setFilter] = useState("");
+  const [participantId, setParticipantId] = useState();
 
   const projectId = useParams<any>().projectId;
 
@@ -40,19 +43,20 @@ const ParticipantsList = (props: ParticipantsListprops) => {
     dispatch(showModal());
   };
 
-  const removeParticipantHandler = async (event) => {
+  const removeParticipantHandler = async () => {
     try {
+      console.log(participantId)
       const responseData = await sendRequest(
         `http://localhost:5000/api/projects/abort-project/${projectId}`,
         "PATCH",
-        {
-          userId: event.target.id,
-        },
+        JSON.stringify({
+          userId: participantId,
+        }),
         {
           "Content-Type": "application/json",
         }
       );
-      dispatch(removeWarning());
+      window.location.reload()
     } catch (err) {}
   };
 
@@ -95,6 +99,11 @@ const ParticipantsList = (props: ParticipantsListprops) => {
                     name={participant.name + " " + participant.surname}
                     image={participant.image}
                     email={participant.email}
+                    onRemoveParticipant={(event) => {
+                      setParticipantId(event.target.id);
+                      dispatch(showWarning());
+                    }}
+                    projectCreator={props.projectCreator}
                   />
                 );
               })}

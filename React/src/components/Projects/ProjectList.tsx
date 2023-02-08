@@ -1,17 +1,12 @@
 import React, { Fragment, useState } from "react";
 import ProjectItem from "./ProjectItem";
 import Row from "react-bootstrap/Row";
-import { selectModal, showModal } from "src/redux/modal";
-import { useSelector, useDispatch } from "react-redux";
 import { Heading } from "../UI/Heading";
 import { SearchBarAuto } from "../UI/SearchBar";
 import classes from "./Project.module.css";
-import Modal from "../UI/Modal";
-import Error from "../UI/Error";
-import AddProjectItem from "../AddProject/AddProjectItem";
-import { selectError } from "src/redux/error";
 
 interface ProjectListprops {
+  viewMode?: boolean;
   heading: string;
   target: Array<any>;
 }
@@ -26,11 +21,11 @@ const ProjectList = (props: ProjectListprops) => {
       <div className={classes.projects_display}>
         {props.target ? (
           <Row
-            xs={1}
-            sm={2}
-            md={3}
-            lg={4}
-            xll={5}
+            xs={props.viewMode ? 2 : 1}
+            sm={props.viewMode ? 4 : 2}
+            md={props.viewMode ? 6 : 3}
+            lg={props.viewMode ? 8 : 4}
+            xll={props.viewMode ? 10 : 5}
             className={classes.projects_display + " g-4"}
           >
             {props.target
@@ -40,6 +35,7 @@ const ProjectList = (props: ProjectListprops) => {
               .map((project) => {
                 return (
                   <ProjectItem
+                    viewMode={props.viewMode}
                     key={project.id}
                     id={project.id}
                     title={project.title}

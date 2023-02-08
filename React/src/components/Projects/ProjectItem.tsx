@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 import classes from "./Project.module.css";
 
 interface ProjectProps {
+  viewMode?: boolean;
   id: string;
   title: string;
   description: string;
@@ -13,14 +14,16 @@ interface ProjectProps {
 
 const ProjectItem: React.FC<ProjectProps> = (props: ProjectProps) => {
   return (
-    <Card style={{ width: "18rem" }}>
+    <Card style={{ width: props.viewMode ? "10rem" : "18rem" }}>
       <Card.Img variant="top" src={props.image} />
       <Card.Body>
         <Card.Title>{props.title}</Card.Title>
         <Card.Text>{props.description}</Card.Text>
-        <Button variant="primary" href={`/projects/${props.id}`}>
-          Details
-        </Button>
+        {!props.viewMode && (
+          <Button variant="primary" href={`/projects/${props.id}`}>
+            Details
+          </Button>
+        )}
       </Card.Body>
     </Card>
   );

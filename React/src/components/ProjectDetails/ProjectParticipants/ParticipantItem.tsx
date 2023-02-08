@@ -1,16 +1,21 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import classes from './Participants.module.css'
+import classes from "./Participants.module.css";
+import { useSelector } from "react-redux";
+import { selectUser } from "src/redux/user";
 
 interface ParticipantProps {
   id: string;
   name: string;
   image: string;
   email: string;
+  onRemoveParticipant: any;
+  projectCreator: any;
 }
 
 const ParticipantItem = (props: ParticipantProps) => {
+  const user = useSelector(selectUser);
 
   return (
     <Card style={{ width: "18rem" }}>
@@ -20,8 +25,17 @@ const ParticipantItem = (props: ParticipantProps) => {
         <Card.Subtitle>{props.email}</Card.Subtitle>
       </Card.Body>
       <Card.Body>
-        <Button id={props.id} className={classes.btn} variant="outline-danger">Remove</Button>
-        <Card.Link  href="/user/:userId">Details</Card.Link>
+        {props.projectCreator === user.userId && (
+          <Button
+            id={props.id}
+            className={classes.btn}
+            variant="outline-danger"
+            onClick={props.onRemoveParticipant}
+          >
+            Remove
+          </Button>
+        )}
+        <Card.Link href={`/user/${props.id}`}>Details</Card.Link>
       </Card.Body>
     </Card>
   );
