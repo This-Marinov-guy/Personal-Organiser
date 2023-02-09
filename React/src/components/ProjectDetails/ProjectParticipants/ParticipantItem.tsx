@@ -1,9 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectUser } from "src/redux/user";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import classes from "./Participants.module.css";
-import { useSelector } from "react-redux";
-import { selectUser } from "src/redux/user";
 
 interface ParticipantProps {
   id: string;

@@ -1,17 +1,17 @@
 import React, { Fragment, useState } from "react";
 import * as yup from "yup";
 import { Formik } from "formik";
+import { useHttpClient } from "src/hooks/http-hook";
+import { useSelector } from "react-redux";
+import { selectUser } from "src/redux/user";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Input from "../UI/Input";
 import ImageInput from "../UI/ImageInput";
-import classes from "./AddProjectItem.module.css";
-import { useHttpClient } from "src/hooks/http-hook";
-import { useSelector } from "react-redux";
-import { selectUser } from "src/redux/user";
 import Loader from "../UI/Loader";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
+import classes from "./AddProjectItem.module.css";
 
 const schema = yup.object().shape({
   title: yup.string().required(),

@@ -1,16 +1,16 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
+import { useDispatch } from "react-redux";
+import { removeModal } from "src/redux/modal";
+import { useHttpClient } from "src/hooks/http-hook";
+import { useSelector } from "react-redux";
+import { selectUser } from "src/redux/user";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { SearchBarUsers } from "src/components/UI/SearchBar";
-import { useHttpClient } from "src/hooks/http-hook";
-import { useSelector } from "react-redux";
-import { selectUser } from "src/redux/user";
 import Loader from "src/components/UI/Loader";
 import classes from "./AddParticipantsPanel.module.css";
-import { useDispatch } from "react-redux";
-import { removeModal } from "src/redux/modal";
 
 const AddParticipantsPanel = (props: {
   projectId?: string;
@@ -18,18 +18,19 @@ const AddParticipantsPanel = (props: {
   setFormSubmitted?: Function;
   formSubmitted?: any;
 }) => {
-  const { loading, sendRequest } = useHttpClient();
-
   const [searchResults, setSeachResults] = useState([]);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
+
+  const { loading, sendRequest } = useHttpClient();
+  
+  const user = useSelector(selectUser);
+
+  const dispatch = useDispatch();
 
   const clickHandler = () => {
     setIsButtonClicked(true);
   };
 
-  const user = useSelector(selectUser);
-
-  const dispatch = useDispatch();
 
   const removeParticipantHandler = (event) => {
     setSeachResults(

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { animateScroll } from "react-scroll";
+import { useHttpClient } from "src/hooks/http-hook";
 import ChatMessage from "./ChatMessage";
 import SendMessage from "./SendMessage";
 import classes from "./PersonalChat.module.css";
-import { useHttpClient } from "src/hooks/http-hook";
 
 const PersonalChat = (props: { projectId: string }) => {
   const [chatMessages, setChatMessages] = useState([]);

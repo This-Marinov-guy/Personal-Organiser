@@ -1,9 +1,8 @@
 import React, { Fragment } from "react";
+import { useDispatch } from "react-redux";
+import { removeError } from "src/redux/error";
 import ReactDOM from "react-dom";
 import Alert from "react-bootstrap/Alert";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { removeError, selectError } from "src/redux/error";
 import classes from "./Overlay.module.css";
 
 const portalElement: any = document.getElementById("overlays");

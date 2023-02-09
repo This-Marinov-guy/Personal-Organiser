@@ -1,9 +1,10 @@
 .chat_window {
   margin: 6rem auto;
-  padding: 1em;
+  padding: 1rem;
   height: 90%;
   width: 70%;
-  box-shadow: 0.3rem 0.3rem 0.3rem 0.3rem lightblue,0.3rem 0.3rem 0.3rem 0.3rem lightblue;
+  box-shadow: 0.3rem 0.3rem 0.3rem 0.3rem lightblue,
+    0.3rem 0.3rem 0.3rem 0.3rem lightblue;
 }
 
 .chat_heading {
@@ -26,7 +27,7 @@
   overflow-y: auto;
 }
 
-.no_messages_alert{
+.no_messages_alert {
   margin: auto;
   padding: 10%;
   text-align: center;

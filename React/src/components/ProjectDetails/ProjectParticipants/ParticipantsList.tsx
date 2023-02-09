@@ -1,24 +1,23 @@
 import React, { Fragment, useState } from "react";
-import ParticipantItem from "./ParticipantItem";
-import { Heading } from "src/components/UI/Heading";
-import Row from "react-bootstrap/Row";
-import Card from "react-bootstrap/Card";
-import Modal from "src/components/UI/Modal";
-import Warning from "src/components/UI/Warning";
-import { SearchBarAuto } from "../../UI/SearchBar";
-import classes from "./Participants.module.css";
+import { useParams } from "react-router-dom";
+import { useHttpClient } from "src/hooks/http-hook";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  removeWarning,
   selectModal,
   selectWarning,
   showModal,
   showWarning,
 } from "src/redux/modal";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import AddParticipantsPanel from "./AddParticipantsPanel";
-import { useParams } from "react-router-dom";
-import { useHttpClient } from "src/hooks/http-hook";
+import ParticipantItem from "./ParticipantItem";
+import { SearchBarAuto } from "../../UI/SearchBar";
+import { Heading } from "src/components/UI/Heading";
+import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
+import Modal from "src/components/UI/Modal";
+import Warning from "src/components/UI/Warning";
+import classes from "./Participants.module.css";
 
 interface ParticipantsListprops {
   heading: string;
@@ -27,10 +26,10 @@ interface ParticipantsListprops {
 }
 
 const ParticipantsList = (props: ParticipantsListprops) => {
-  const { sendRequest } = useHttpClient();
-
   const [filter, setFilter] = useState("");
   const [participantId, setParticipantId] = useState();
+
+  const { sendRequest } = useHttpClient();
 
   const projectId = useParams<any>().projectId;
 

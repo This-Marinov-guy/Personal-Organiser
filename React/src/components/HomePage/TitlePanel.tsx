@@ -5,7 +5,7 @@ import classes from "./TitlePanel.module.css";
 const HomePanel = () => {
   return (
     <div className={classes.panel}>
-      <h1>Welcome to the HR Organiser</h1>
+      <h1>Welcome to the Project Organizer</h1>
       <p>Slide down to find more about us or join the program immediately</p>
       <div className={classes.buttons}>
         <Button href="/signup" variant="primary">

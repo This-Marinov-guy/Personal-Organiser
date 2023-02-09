@@ -1,17 +1,17 @@
 import React, { Fragment } from "react";
 import * as yup from "yup";
-import { Formik } from "formik";
+import { useDispatch } from "react-redux";
 import { useHttpClient } from "src/hooks/http-hook";
+import { Formik } from "formik";
+import { login } from "src/redux/user";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Input from "../UI/Input";
 import Row from "react-bootstrap/Row";
 import { Heading } from "../UI/Heading";
-import classes from "./Authentication.module.css";
 import Loader from "../UI/Loader";
 import ImageInput from "../UI/ImageInput";
-import { useDispatch } from "react-redux";
-import { login } from "src/redux/user";
+import classes from "./Authentication.module.css";
 
 const schema = yup.object().shape({
   name: yup.string().required(),

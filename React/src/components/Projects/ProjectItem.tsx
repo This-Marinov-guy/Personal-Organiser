@@ -1,8 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
-import { NavDropdown } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import classes from "./Project.module.css";
 
 interface ProjectProps {
   viewMode?: boolean;

@@ -1,12 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { logout, selectUser } from "src/redux/user";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { logout, selectUser } from "src/redux/user";
 
 const NavBar = () => {
   const dispatch = useDispatch();

@@ -4,12 +4,12 @@ import classes from "./InfoPanel.module.css";
 const InfoPanel = () => {
   return (
     <div className={classes.info_panel}>
-      <h4>This is your work HR. Here you can:</h4>
+      <h4>This is your Personal Organiser. Here you can:</h4>
       <div className={classes.info_divider}>
         <div className={classes.info_points}>
         <h6>As a project owner</h6>
-          <li>See all your business projects and the employees involved</li>
-          <li>Gain real time information about your workers</li>
+          <li>See all your projects and the participants involved</li>
+          <li>Gain real time information about your colleagues</li>
           <li>See agendas and schedules not only yours, but also others</li>
           <li>
             Modify working schedules real time that everyone you want to access

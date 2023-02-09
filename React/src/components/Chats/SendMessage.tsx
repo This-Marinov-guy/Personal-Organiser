@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectUser } from "src/redux/user";
+import { useHttpClient } from "src/hooks/http-hook";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Input from "../UI/Input";
 import classes from "./SendMessage.module.css";
-import { useSelector } from "react-redux";
-import { selectUser } from "src/redux/user";
-import { useHttpClient } from "src/hooks/http-hook";
 
 const SendMessage = (props: { projectId: string; onSubmit: Function }) => {
   const [message, setMessage] = useState();

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import PersonalChat from "./PersonalChat";
-import ChatBubble from "./ChatBubble";
-import classes from "./ChatsList.module.css";
-import { Heading } from "../UI/Heading";
 import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
 import { useParams } from "react-router-dom";
+import PersonalChat from "./PersonalChat";
+import ChatBubble from "./ChatBubble";
+import { Heading } from "../UI/Heading";
+import classes from "./ChatsList.module.css";
 
 const ChatsList = () => {
-  const { sendRequest } = useHttpClient();
-
   const [chatBubbles, setChatBubbles] = useState([]);
+
+  const { sendRequest } = useHttpClient();
 
   const user = useSelector(selectUser);
 

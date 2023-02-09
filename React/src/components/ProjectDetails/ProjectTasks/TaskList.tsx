@@ -1,24 +1,23 @@
 import React, { Fragment, useState } from "react";
+import { useParams } from "react-router-dom";
+import { selectUser } from "src/redux/user";
+import { useSelector, useDispatch } from "react-redux";
+import { useHttpClient } from "src/hooks/http-hook";
+import {
+  selectModal,
+  showModal,
+  showWarning,
+  selectWarning,
+} from "src/redux/modal";
 import TaskItem from "./TaskItem";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import { SearchBarAuto } from "../../UI/SearchBar";
-import { useSelector, useDispatch } from "react-redux";
-import { useHttpClient } from "src/hooks/http-hook";
-import classes from "./Tasks.module.css";
 import Warning from "src/components/UI/Warning";
 import Modal from "src/components/UI/Modal";
 import AddTaskItem from "./AddTaskItem";
-import {
-  selectModal,
-  showModal,
-  removeWarning,
-  showWarning,
-  selectWarning,
-} from "src/redux/modal";
 import { Heading } from "src/components/UI/Heading";
-import { useParams } from "react-router-dom";
-import { selectUser } from "src/redux/user";
+import classes from "./Tasks.module.css";
 
 interface TaskListprops {
   viewModeOnly?: boolean;

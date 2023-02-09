@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { login, logout, selectUser } from "./redux/user";
+import { useDispatch } from "react-redux";
+import { useHttpClient } from "./hooks/http-hook";
+import { selectErrorMsg } from "./redux/error";
 import Home from "./pages/Home";
 import NavBar from "./components/UI/NavBar";
 import Projects from "./pages/Projects";
@@ -10,15 +15,11 @@ import SignUp from "./pages/SignUp";
 import Chats from "./pages/Chats";
 import Error from "./components/UI/Error";
 import UserProfile from "./pages/UserProfile";
-import { useSelector } from "react-redux";
-import { login, logout, selectUser } from "./redux/user";
-import { useDispatch } from "react-redux";
-import { useHttpClient } from "./hooks/http-hook";
-import { selectErrorMsg } from "./redux/error";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   const dispatch = useDispatch();
+  
   const user = useSelector(selectUser);
   const errorMsg = useSelector(selectErrorMsg);
 

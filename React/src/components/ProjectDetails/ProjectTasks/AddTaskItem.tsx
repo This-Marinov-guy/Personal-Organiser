@@ -1,15 +1,15 @@
 import React, { Fragment, useEffect, useCallback, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Input from "src/components/UI/Input";
-import classes from "./AddTaskItem.module.css";
 import { useHttpClient } from "src/hooks/http-hook";
 import { useSelector } from "react-redux";
 import { selectUser } from "src/redux/user";
-import Loader from "src/components/UI/Loader";
-import Status from "src/components/UI/Status";
 import { useDispatch } from "react-redux";
 import { removeModal } from "src/redux/modal";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Input from "src/components/UI/Input";
+import Loader from "src/components/UI/Loader";
+import Status from "src/components/UI/Status";
+import classes from "./AddTaskItem.module.css";
 
 interface AddTaskItemProps {
   projectId: string;
@@ -20,8 +20,6 @@ interface AddTaskItemProps {
 }
 
 const AddTaskItem = (props: AddTaskItemProps) => {
-  const { loading, sendRequest } = useHttpClient();
-
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
   const [inputs, setInputs] = useState({
@@ -29,6 +27,12 @@ const AddTaskItem = (props: AddTaskItemProps) => {
     content: "",
     level: "1",
   });
+
+  const { loading, sendRequest } = useHttpClient();
+
+  const user = useSelector(selectUser);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (props.taskId) {
@@ -59,10 +63,6 @@ const AddTaskItem = (props: AddTaskItemProps) => {
   const clickHandler = () => {
     setIsButtonClicked(true);
   };
-
-  const user = useSelector(selectUser);
-
-  const dispatch = useDispatch();
 
   const changeFormInputHandler = (event) => {
     setInputs((prevState) => {

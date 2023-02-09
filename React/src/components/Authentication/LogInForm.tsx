@@ -1,14 +1,14 @@
 import React, { Fragment } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHttpClient } from "src/hooks/http-hook";
+import { login } from "src/redux/user";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Input from "../UI/Input";
 import { Heading } from "../UI/Heading";
-import { useHttpClient } from "src/hooks/http-hook";
 import Loader from "../UI/Loader";
 import classes from "./Authentication.module.css";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login } from "src/redux/user";
 
 const LogInForm = () => {
   const [loginFormValues, setLoginFormValues] = useState({
@@ -16,15 +16,16 @@ const LogInForm = () => {
     password: "",
   });
 
+  const { loading, sendRequest } = useHttpClient();
+
+  const dispatch = useDispatch();
+  
   const changeFormInputHandler = (event) => {
     setLoginFormValues((prevState) => {
       return { ...prevState, [event.target.name]: event.target.value };
     });
   };
 
-  const { loading, sendRequest } = useHttpClient();
-
-  const dispatch = useDispatch();
 
   return (
     <Fragment>

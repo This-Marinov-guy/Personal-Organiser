@@ -6,6 +6,7 @@ import classes from "./SearchBar.module.css";
 interface SearchBarProps {
   setSeachResults?: any;
   className?: any;
+  redirect?:boolean;
 }
 
 const SearchBarUsers = (props: SearchBarProps) => {
@@ -64,7 +65,7 @@ const SearchBarUsers = (props: SearchBarProps) => {
             .slice(0, 15)
             .map((user: { id: string; name: string }) => {
               return (
-                <span key={user.id} className={classes.search_item}>
+                <a href={props.redirect ? `/user/:${user.id}` : '*'} key={user.id} className={classes.search_item}>
                   <p
                     onClick={() => {
                       props.setSeachResults((prevState) => [
@@ -76,7 +77,7 @@ const SearchBarUsers = (props: SearchBarProps) => {
                   >
                     {user.name}
                   </p>
-                </span>
+                </a>
               );
             })}
         </div>

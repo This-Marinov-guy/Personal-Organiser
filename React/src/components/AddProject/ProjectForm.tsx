@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import AddTaskItem from "../ProjectDetails/ProjectTasks/AddTaskItem";
-import AddParticipantsPanel from "../ProjectDetails/ProjectParticipants/AddParticipantsPanel";
+import { useHistory } from "react-router-dom";
 import { Heading } from "../UI/Heading";
 import { SemiHeading } from "../UI/Heading";
+import AddTaskItem from "../ProjectDetails/ProjectTasks/AddTaskItem";
+import AddParticipantsPanel from "../ProjectDetails/ProjectParticipants/AddParticipantsPanel";
 import AddProjectItem from "./AddProjectItem";
 import classes from "./ProjectForm.module.css";
-import { useHistory } from "react-router-dom";
 
 const ProjectForm = () => {
   const [projectId, setProjectId] = useState();
