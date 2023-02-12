@@ -1,7 +1,5 @@
 .chat_window {
   margin: 6rem auto;
-  padding: 1rem;
-  height: 90%;
   width: 70%;
   box-shadow: 0.3rem 0.3rem 0.3rem 0.3rem lightblue,
     0.3rem 0.3rem 0.3rem 0.3rem lightblue;
@@ -19,9 +17,8 @@
 .chat_display {
   display: flex;
   flex-direction: column;
-  padding: 3%;
+  padding: 3% 3% 0;
   max-height: 40rem;
-  height: auto;
   width: 100%;
   background-color: white;
   overflow-y: auto;

@@ -58,7 +58,7 @@ const AddParticipantsPanel = (props: {
         }),
         {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + user.userId,
+          Authorization: "Bearer " + user.token,
         }
       );
       if (props.formSubmitted) {
@@ -67,6 +67,7 @@ const AddParticipantsPanel = (props: {
         });
       }
       dispatch(removeModal());
+      window.location.reload();
     } catch (err) {}
   };
 

@@ -11,9 +11,9 @@ const UserInfo = () => {
   const [currentUser, setCurrentUser] = useState<any>();
   const [userProjects, setUserProjects] = useState<any>();
   const [searchMode, setSearchMode] = useState<any>(false);
-  
+
   const { sendRequest } = useHttpClient();
-  
+
   const userId = useParams<any>().userId;
 
   useEffect(() => {
@@ -58,19 +58,24 @@ const UserInfo = () => {
           <p>Email: {currentUser.email}</p>
           <p>Age: {currentUser.age}</p>
         </div>
-        {searchMode ? (
-          <SearchBarUsers className={classes.searchbar} redirect={true}/>
-        ) : (
-          <OverlayTrigger
-            placement="right"
-            overlay={<Tooltip id={`tooltip-right`}>Tap to Search User</Tooltip>}
-          >
-            <i
-              className={classes.icon + " fa-solid fa-magnifying-glass"}
-              onClick={() => setSearchMode(true)}
-            ></i>
-          </OverlayTrigger>
-        )}
+        <div className={classes.searchbar}>
+          {searchMode ? (
+            <SearchBarUsers redirect={true} />
+          ) : (
+            <OverlayTrigger
+              placement="right"
+              overlay={
+                <Tooltip id={`tooltip-right`}>Tap to Search User</Tooltip>
+              }
+            >
+              <i
+                style={{ fontSize: "3rem" }}
+                className="fa-solid fa-magnifying-glass"
+                onClick={() => setSearchMode(true)}
+              ></i>
+            </OverlayTrigger>
+          )}
+        </div>
       </div>
       <ProjectList
         viewMode={true}

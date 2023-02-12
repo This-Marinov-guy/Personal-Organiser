@@ -1,17 +1,16 @@
-.chats_display{
-    margin-top: 5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-   
+.chats_display {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.chats_list{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 50px;
-    width: 80%;
-    overflow-x: auto;
+.chats_list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+  width: 80%;
+  overflow-x: auto;
 }

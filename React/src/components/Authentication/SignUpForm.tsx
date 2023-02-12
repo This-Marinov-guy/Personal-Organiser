@@ -64,7 +64,9 @@ const SignUpForm = () => {
               login({
                 userId: responseData.userId,
                 token: responseData.token,
-                expirationDate: new Date(new Date().getTime() + 36000000).toISOString()
+                expirationDate: new Date(
+                  new Date().getTime() + 36000000
+                ).toISOString(),
               })
             );
             console.log("responseData ", responseData);
@@ -153,6 +155,7 @@ const SignUpForm = () => {
               onChange={handleChange}
             />
             <Input
+              autoComplete="off"
               label="Password"
               type="password"
               name="password"

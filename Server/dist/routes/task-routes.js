@@ -1,9 +1,10 @@
 import express from "express";
 import { getTasksByProject, postFetchCurrentTask, postAddFirstTask, postAddDirectTask, patchUpdateTask, patchAbortTask, patchCompleteTask, } from "../controllers/task-controllers.js";
+import authRequest from "../middleware/check-auth.js";
 const taskRouter = express.Router();
-// taskRouter.use(authRequest);
-//routes with token protection
 taskRouter.get("/:projectId", getTasksByProject);
+taskRouter.use(authRequest);
+//routes with token protection
 taskRouter.post("/fetch-task/:projectId", postFetchCurrentTask);
 taskRouter.post("/add-task", postAddFirstTask);
 taskRouter.post("/add-task/:projectId", postAddDirectTask);

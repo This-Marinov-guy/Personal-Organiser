@@ -3,6 +3,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 
 interface InputProps {
+  autoComplete?: string;
   size?: number;
   as?: any;
   label?: string;
@@ -19,6 +20,7 @@ interface InputProps {
   isInvalid?: any;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onInput?: any;
+  onFocus?:any;
   onBlur?: any;
   accept?: string;
 }
@@ -33,6 +35,7 @@ const Input = (props: InputProps) => {
     >
       <Form.Label>{props.label}</Form.Label>
       <Form.Control
+        autoComplete={props.autoComplete}
         as={props.as}
         name={props.name}
         type={props.type}
@@ -43,6 +46,7 @@ const Input = (props: InputProps) => {
         placeholder={props.placeholder}
         onChange={props.onChange}
         onInput={props.onInput}
+        onFocus={props.onFocus}
         onBlur={props.onBlur}
         isValid={props.isValid}
         isInvalid={props.isInvalid}

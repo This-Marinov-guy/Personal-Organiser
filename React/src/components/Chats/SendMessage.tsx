@@ -7,7 +7,13 @@ import Button from "react-bootstrap/Button";
 import Input from "../UI/Input";
 import classes from "./SendMessage.module.css";
 
-const SendMessage = (props: { projectId: string; onSubmit: Function }) => {
+interface SendMessageProps {
+  projectId: string;
+  onSubmit: Function;
+  setIsTyping: Function;
+}
+
+const SendMessage = (props: SendMessageProps) => {
   const [message, setMessage] = useState();
 
   const { sendRequest } = useHttpClient();
@@ -30,7 +36,7 @@ const SendMessage = (props: { projectId: string; onSubmit: Function }) => {
         }),
         {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + user.userId,
+          Authorization: "Bearer " + user.token,
         }
       );
       props.onSubmit();
@@ -43,10 +49,17 @@ const SendMessage = (props: { projectId: string; onSubmit: Function }) => {
         <Form className={classes.send_message_display} onSubmit={submitHandler}>
           <div style={{ width: "80%" }}>
             <Input
+              autoComplete="off"
               type="text"
               name="text"
               placeholder="Message"
               onChange={changeHandler}
+              onFocus={() => {
+                props.setIsTyping(true);
+              }}
+              onBlur={() => {
+                props.setIsTyping(false);
+              }}
             />
           </div>
           <Button type="submit" variant="primary">

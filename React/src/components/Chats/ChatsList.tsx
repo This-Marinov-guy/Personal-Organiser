@@ -24,7 +24,7 @@ const ChatsList = () => {
           `http://localhost:5000/api/projects/my-projects/${user.userId}`
         );
         setChatBubbles(responseData.projects);
-        console.log(responseData.projects)
+        console.log(responseData.projects);
       } catch (err) {}
     };
     fetchProjectBubbles();
@@ -35,10 +35,16 @@ const ChatsList = () => {
       <Heading>Your chats</Heading>
       <div className={classes.chats_list}>
         {chatBubbles.map((project) => (
-          <ChatBubble key={project.id} name={project.title} src={project.image} to={`/chats/${project.id}`} />
+          <ChatBubble
+            key={project.id}
+            name={project.title}
+            src={project.image}
+            to={`/chats/${project.id}`}
+          />
         ))}
+
       </div>
-      <PersonalChat projectId={projectId}/>
+      <PersonalChat projectId={projectId} />
     </div>
   );
 };

@@ -46,7 +46,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
             }),
             {
               "Content-Type": "application/json",
-              Authorization : "Bearer " + user.token
+              Authorization: "Bearer " + user.token,
             }
           );
           setInputs({
@@ -88,7 +88,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         }),
         {
           "Content-Type": "application/json",
-          Authorization : "Bearer " + user.token
+          Authorization: "Bearer " + user.token,
         }
       );
       if (props.formSubmitted) {
@@ -113,7 +113,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         }),
         {
           "Content-Type": "application/json",
-          Authorization : "Bearer " + user.token
+          Authorization: "Bearer " + user.token,
         }
       );
       if (props.formSubmitted) {
@@ -122,6 +122,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         });
       }
       dispatch(removeModal());
+      window.location.reload();
     } catch (err) {}
   };
 
@@ -138,7 +139,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         }),
         {
           "Content-Type": "application/json",
-          Authorization : "Bearer " + user.token,
+          Authorization: "Bearer " + user.token,
         }
       );
       if (props.formSubmitted) {
@@ -147,6 +148,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
         });
       }
       dispatch(removeModal());
+      window.location.reload();
     } catch (err) {}
   };
 

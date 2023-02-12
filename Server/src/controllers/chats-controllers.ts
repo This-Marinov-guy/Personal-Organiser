@@ -5,7 +5,6 @@ import HttpError from "../models/Http-error.js";
 import Project from "../models/Project.js";
 import User from "../models/User.js";
 
-
 const getChatMessages = async (
   req: express.Request,
   res: express.Response,
@@ -19,8 +18,10 @@ const getChatMessages = async (
   const projectId = req.params.projectId;
 
   let project: any;
+  let participants: any;
   try {
     project = await Project.findById(projectId);
+    participants = await project.populate("participants");
   } catch (err) {
     return next(new HttpError("Fetching failed", 500));
   }
@@ -29,7 +30,13 @@ const getChatMessages = async (
     return next(new HttpError("Project chat does not exist", 500));
   }
 
-  res.json({ chat: project.chat.toObject({ getters: true }) });
+  res.json({
+    chat: project.chat.toObject({ getters: true }),
+    title: project.title,
+    participants: participants.participants.map((user) =>
+      user.toObject({ getters: true })
+    ),
+  });
 };
 
 const patchAddChatMessage = async (
@@ -70,7 +77,7 @@ const patchAddChatMessage = async (
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    console.log('chat', project.chat);
+    console.log("chat", project.chat);
     project.chat.push(message);
     await project.save({ session: sess });
     await sess.commitTransaction();

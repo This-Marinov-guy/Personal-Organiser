@@ -2,10 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHttpClient } from "src/hooks/http-hook";
 import ChatMessage from "./ChatMessage";
 import SendMessage from "./SendMessage";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import SomeoneTyping from "../UI/SomeoneTyping";
 import classes from "./PersonalChat.module.css";
 
 const PersonalChat = (props: { projectId: string }) => {
   const [chatMessages, setChatMessages] = useState([]);
+  const [chatTitle, setChatTitle] = useState();
+  const [chatParticipants, setChatParticipants] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
 
   const { sendRequest } = useHttpClient();
 
@@ -17,8 +22,12 @@ const PersonalChat = (props: { projectId: string }) => {
         `http://localhost:5000/api/chats/get-messages/${props.projectId}`
       );
       setChatMessages(responseData.chat);
-      messagesEndRef.current.scrollIntoView();
-      console.log("sent");
+      setChatTitle(responseData.title);
+      setChatParticipants(responseData.participants);
+      messagesEndRef.current.scroll({
+        top: messagesEndRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     } catch (err) {}
   };
 
@@ -31,10 +40,18 @@ const PersonalChat = (props: { projectId: string }) => {
   return (
     <div className={classes.chat_window}>
       <div className={classes.chat_heading}>
-        <h3>{new Date().toLocaleDateString("de-DE")}</h3>
-        <h3>Chat</h3>
+        <h3>Project: {chatTitle}</h3>
+        <h3>
+          <NavDropdown title="Participants" id="navbarScrollingDropdown">
+            {chatParticipants.map((user) => (
+              <NavDropdown.Item href={`/user/${user.id}`}>
+                {user.name + " " + user.surname}
+              </NavDropdown.Item>
+            ))}
+          </NavDropdown>
+        </h3>
       </div>
-      <div className={classes.chat_display}>
+      <div className={classes.chat_display} ref={messagesEndRef}>
         {chatMessages.length > 0 ? (
           chatMessages.map((message) => (
             <ChatMessage key={message.id} message={message} />
@@ -46,9 +63,13 @@ const PersonalChat = (props: { projectId: string }) => {
               : "Access one of the chat rooms by clicking the bubbles above"}
           </h4>
         )}
-        <div ref={messagesEndRef}></div>
+        {isTyping && <SomeoneTyping />}
       </div>
-      <SendMessage projectId={props.projectId} onSubmit={fetchChatMessages} />
+      <SendMessage
+        projectId={props.projectId}
+        onSubmit={fetchChatMessages}
+        setIsTyping={setIsTyping}
+      />
     </div>
   );
 };
