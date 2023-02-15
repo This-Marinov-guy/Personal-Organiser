@@ -11,7 +11,7 @@ export const useHttpClient = () => {
 
 
   const sendRequest = useCallback(
-    async (url, method = "GET", body = null, headers = {}) => {
+    async (url:string, method:string = "GET", body = null, headers = {}) => {
       dispatch(startLoading());
 
       try {

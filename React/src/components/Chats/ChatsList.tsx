@@ -9,13 +9,15 @@ import { Heading } from "../UI/Heading";
 import classes from "./ChatsList.module.css";
 
 const ChatsList = () => {
-  const [chatBubbles, setChatBubbles] = useState([]);
+  const [chatBubbles, setChatBubbles] = useState<
+    { id: string; title: string; image: string }[]
+  >([]);
 
   const { sendRequest } = useHttpClient();
 
   const user = useSelector(selectUser);
 
-  const projectId = useParams<any>().projectId;
+  const projectId = useParams<{ projectId: string }>().projectId;
 
   useEffect(() => {
     const fetchProjectBubbles = async () => {
@@ -24,7 +26,6 @@ const ChatsList = () => {
           `http://localhost:5000/api/projects/my-projects/${user.userId}`
         );
         setChatBubbles(responseData.projects);
-        console.log(responseData.projects);
       } catch (err) {}
     };
     fetchProjectBubbles();
@@ -42,7 +43,6 @@ const ChatsList = () => {
             to={`/chats/${project.id}`}
           />
         ))}
-
       </div>
       <PersonalChat projectId={projectId} />
     </div>

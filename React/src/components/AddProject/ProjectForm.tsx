@@ -8,7 +8,7 @@ import AddProjectItem from "./AddProjectItem";
 import classes from "./ProjectForm.module.css";
 
 const ProjectForm = () => {
-  const [projectId, setProjectId] = useState();
+  const [projectId, setProjectId] = useState<string>();
   const [formSubmitted, setFormSubmitted] = useState({
     projectForm: false,
     taskForm: false,

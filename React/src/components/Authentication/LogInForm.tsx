@@ -19,13 +19,12 @@ const LogInForm = () => {
   const { loading, sendRequest } = useHttpClient();
 
   const dispatch = useDispatch();
-  
-  const changeFormInputHandler = (event) => {
+
+  const changeFormInputHandler = (event: Record<string, any>) => {
     setLoginFormValues((prevState) => {
       return { ...prevState, [event.target.name]: event.target.value };
     });
   };
-
 
   return (
     <Fragment>
@@ -50,7 +49,9 @@ const LogInForm = () => {
               login({
                 userId: responseData.userId,
                 token: responseData.token,
-                expirationDate: new Date(new Date().getTime() + 36000000).toISOString()
+                expirationDate: new Date(
+                  new Date().getTime() + 36000000
+                ).toISOString(),
               })
             );
           } catch (err) {}

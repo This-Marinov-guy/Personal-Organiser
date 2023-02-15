@@ -22,12 +22,16 @@ const schema = yup.object().shape({
 const AddProjectItem = (props: {
   setProjectId?: Function;
   setFormSubmitted?: Function;
-  formSubmitted?: any;
+  formSubmitted?: {
+    projectForm: boolean;
+    taskForm: boolean;
+    participantForm: boolean;
+  };
 }) => {
   const { loading, sendRequest } = useHttpClient();
 
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [showPopover, setShowPopover] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
+  const [showPopover, setShowPopover] = useState<boolean>(false);
 
   const user = useSelector(selectUser);
 
@@ -36,7 +40,11 @@ const AddProjectItem = (props: {
       <Formik
         validationSchema={schema}
         validateOnChange={false}
-        onSubmit={async (values) => {
+        onSubmit={async (values: {
+          title: string;
+          description: string;
+          image: string;
+        }) => {
           try {
             const formData = new FormData();
             formData.append("creator", user.userId);
@@ -51,9 +59,15 @@ const AddProjectItem = (props: {
               { Authorization: "Bearer " + user.token }
             );
             props.setProjectId(responseData.projectId);
-            props.setFormSubmitted((prevState) => {
-              return { ...prevState, projectForm: true };
-            });
+            props.setFormSubmitted(
+              (prevState: {
+                projectForm: boolean;
+                taskForm: boolean;
+                participantForm: boolean;
+              }) => {
+                return { ...prevState, projectForm: true };
+              }
+            );
           } catch (err) {}
         }}
         initialValues={{

@@ -7,10 +7,14 @@ import SomeoneTyping from "../UI/SomeoneTyping";
 import classes from "./PersonalChat.module.css";
 
 const PersonalChat = (props: { projectId: string }) => {
-  const [chatMessages, setChatMessages] = useState([]);
-  const [chatTitle, setChatTitle] = useState();
-  const [chatParticipants, setChatParticipants] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
+  const [chatMessages, setChatMessages] = useState<
+    { id: string; message: string }[]
+  >([]);
+  const [chatTitle, setChatTitle] = useState<string>();
+  const [chatParticipants, setChatParticipants] = useState<
+    { id: string; name: string; surname: string }[]
+  >([]);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
   const { sendRequest } = useHttpClient();
 

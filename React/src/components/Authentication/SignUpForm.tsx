@@ -53,7 +53,6 @@ const SignUpForm = () => {
             formData.append("age", values.age);
             formData.append("email", values.email);
             formData.append("password", values.password);
-            console.log("data ", values);
             const responseData = await sendRequest(
               "http://localhost:5000/api/user/signup",
               "POST",
@@ -69,7 +68,6 @@ const SignUpForm = () => {
                 ).toISOString(),
               })
             );
-            console.log("responseData ", responseData);
           } catch (err) {}
         }}
         initialValues={{
