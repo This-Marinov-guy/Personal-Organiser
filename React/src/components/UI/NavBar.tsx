@@ -20,7 +20,7 @@ const NavBar = () => {
   return (
     <Navbar fixed="top" bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/">HR Organiser</Navbar.Brand>
+        <Navbar.Brand href="/"><i style={{fontSize:'1.8rem'}} className="fa-solid fa-diagram-project"></i></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           {user.token && (

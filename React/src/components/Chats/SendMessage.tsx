@@ -14,7 +14,7 @@ interface SendMessageProps {
 }
 
 const SendMessage = (props: SendMessageProps) => {
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState<string>();
 
   const { sendRequest } = useHttpClient();
 
@@ -39,6 +39,7 @@ const SendMessage = (props: SendMessageProps) => {
           Authorization: "Bearer " + user.token,
         }
       );
+      setMessage('')
       props.onSubmit();
     } catch (err) {}
   };
@@ -46,13 +47,14 @@ const SendMessage = (props: SendMessageProps) => {
   return (
     <Fragment>
       {props.projectId && (
-        <Form className={classes.send_message_display} onSubmit={submitHandler}>
+        <Form id='message' className={classes.send_message_display} onSubmit={submitHandler}>
           <div style={{ width: "80%" }}>
             <Input
               autoComplete="off"
               type="text"
               name="text"
               placeholder="Message"
+              value={message}
               onChange={changeHandler}
               onFocus={() => {
                 props.setIsTyping(true);
