@@ -1,6 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import path from "path";
@@ -59,6 +57,6 @@ mongoose
   .connect(process.env.DB_CONNECTION)
   .then(() => {
     console.log("Connected to DB");
-    app.listen(process.env.PORT);
+    app.listen(process.env.PORT || 5000);
   })
   .catch((err) => console.log("Failed to Connect ", err));

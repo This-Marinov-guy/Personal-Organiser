@@ -1,6 +1,8 @@
 {
   "signal": "SIGTERM",
   "env": {
+    "DB_CONNECTION": "mongodb+srv://vlady:vlady10029011@test4.twugcuc.mongodb.net/?retryWrites=true&w=majority",
+    "JWT_STRING": "Vladislav_Vladimirov_Marinov_9",
     "NODE_ENV": "development"
   },
   "ext": "ts",
