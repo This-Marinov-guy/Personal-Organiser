@@ -27,7 +27,7 @@ const Navigation = (props: NavigationProps) => {
 
   const dispatch = useDispatch();
 
-  const projectId = useParams<any>().projectId;
+  const projectId = useParams<{projectId:string}>().projectId;
 
   const history = useHistory();
 
@@ -46,7 +46,7 @@ const Navigation = (props: NavigationProps) => {
         }),
         {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + user.userId,
+          Authorization: "Bearer " + user.token,
         }
       );
       history.push("/");
@@ -59,7 +59,7 @@ const Navigation = (props: NavigationProps) => {
         `http://localhost:5000/api/projects/delete-project/${projectId}`,
         "DELETE",
         {},
-        { Authorization: "Bearer " + user.userId }
+        { Authorization: "Bearer " + user.token }
       );
       history.push("/");
     } catch (err) {}

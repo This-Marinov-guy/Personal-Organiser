@@ -15,10 +15,10 @@ const getChatMessages = async (
     return next(new HttpError("Invalid inputs, please check your data", 422));
   }
 
-  const projectId = req.params.projectId;
+  const projectId:string = req.params.projectId;
 
-  let project: any;
-  let participants: any;
+  let project;
+  let participants;
   try {
     project = await Project.findById(projectId);
     participants = await project.populate("participants");
@@ -53,8 +53,8 @@ const patchAddChatMessage = async (
   const projectId = req.params.projectId;
   const { senderId, text } = req.body;
 
-  let user: any;
-  let project: any;
+  let user;
+  let project;
   try {
     user = await User.findById(senderId);
     project = await Project.findById(projectId);

@@ -4,13 +4,15 @@ import Input from "./Input";
 import classes from "./SearchBar.module.css";
 
 interface SearchBarProps {
-  setSeachResults?: any;
-  redirect?:boolean;
+  setSeachResults?: Function;
+  redirect?: boolean;
 }
 
 const SearchBarUsers = (props: SearchBarProps) => {
-  const [filterSearches, setFilterSearches] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
+  const [filterSearches, setFilterSearches] = useState<
+    { id: string; name: string }[]
+  >([]);
+  const [allUsers, setAllUsers] = useState<{ id: string; name: string }[]>([]);
 
   const { sendRequest } = useHttpClient();
 
@@ -64,7 +66,11 @@ const SearchBarUsers = (props: SearchBarProps) => {
             .slice(0, 15)
             .map((user: { id: string; name: string }) => {
               return (
-                <a href={props.redirect && `/user/${user.id}`} key={user.id} className={classes.search_item}>
+                <a
+                  href={props.redirect && `/user/${user.id}`}
+                  key={user.id}
+                  className={classes.search_item}
+                >
                   <p
                     onClick={() => {
                       props.setSeachResults((prevState) => [

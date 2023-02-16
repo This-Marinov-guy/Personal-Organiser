@@ -8,9 +8,22 @@ import { SearchBarUsers } from "../UI/SearchBar";
 import classes from "./UserInfo.module.css";
 
 const UserInfo = () => {
-  const [currentUser, setCurrentUser] = useState<any>();
-  const [userProjects, setUserProjects] = useState<any>();
-  const [searchMode, setSearchMode] = useState<any>(false);
+  const [currentUser, setCurrentUser] = useState<{
+    id:string;
+    name: string;
+    surname: string;
+    email: string;
+    image: string;
+    age: number;
+  }>();
+  const [userProjects, setUserProjects] = useState<{
+    viewMode:boolean;
+    id: string;
+    title: string;
+    description: string;
+    image:string;
+  }[]>();
+  const [searchMode, setSearchMode] = useState<boolean>(false);
 
   const { sendRequest } = useHttpClient();
 

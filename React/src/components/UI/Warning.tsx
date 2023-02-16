@@ -7,7 +7,7 @@ import Loader from "./Loader";
 interface WarningProps {
   variant?: string;
   warning: string;
-  onClick: any;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>)    => void;
   submit_message?: string;
 }
 

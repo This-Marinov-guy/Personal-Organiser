@@ -23,7 +23,7 @@ const getTasksByProject = async (
   }
 
   res.json({
-    tasks: projectWithTasks.tasks.map((t: any) =>
+    tasks: projectWithTasks.tasks.map((t) =>
       t.toObject({ getters: true })
     ),
     projectCreator: projectWithTasks.creator,
@@ -38,8 +38,8 @@ const postFetchCurrentTask = async (
   const taskId = req.body.taskId;
   const projectId = req.params.projectId;
 
-  let project: any;
-  let targetTask: any;
+  let project;
+  let targetTask;
 
   try {
     project = await Project.findById(projectId);
@@ -78,7 +78,7 @@ const postAddFirstTask = async (
     level,
   };
 
-  let projectOfTask: any;
+  let projectOfTask;
   try {
     projectOfTask = await Project.findById(projectId);
   } catch (err) {
@@ -129,7 +129,7 @@ const postAddDirectTask = async (
     level,
   };
 
-  let projectOfTask: any;
+  let projectOfTask;
   try {
     projectOfTask = await Project.findById(projectId);
   } catch (err) {
@@ -170,8 +170,8 @@ const patchUpdateTask = async (
   const { taskId, title, content, level } = req.body;
   const projectId = req.params.projectId;
 
-  let project: any;
-  let targetTask: any;
+  let project;
+  let targetTask;
 
   try {
     project = await Project.findById(projectId);
@@ -207,8 +207,8 @@ const patchAbortTask = async (
   const { taskId } = req.body;
   const projectId = req.params.projectId;
 
-  let project: any;
-  let targetTask: any;
+  let project;
+  let targetTask;
 
   try {
     project = await Project.findById(projectId);
@@ -243,8 +243,8 @@ const patchCompleteTask = async (
   const { taskId } = req.body;
   const projectId = req.params.projectId;
 
-  let project: any;
-  let targetTask: any;
+  let project;
+  let targetTask;
 
   try {
     project = await Project.findById(projectId);

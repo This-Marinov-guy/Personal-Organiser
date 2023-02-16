@@ -6,9 +6,9 @@ import ParticipantsList from "src/components/ProjectDetails/ProjectParticipants/
 import { useHttpClient } from "src/hooks/http-hook";
 
 const ProjectDetails = () => {
-  const [currentPage, setCurrentPage] = useState("ProjectTasks");
-  const [projectTasks, setProjectTasks] = useState();
-  const [projectParticipants, setProjectParticipants] = useState();
+  const [currentPage, setCurrentPage] = useState<string>("ProjectTasks");
+  const [projectTasks, setProjectTasks] = useState<{}[]>();
+  const [projectParticipants, setProjectParticipants] = useState<[]>();
   const [projectCreator, setPojectCreator] = useState();
 
   const { sendRequest } = useHttpClient();
@@ -21,7 +21,6 @@ const ProjectDetails = () => {
         const responseData = await sendRequest(
           `http://localhost:5000/api/user/project-users/${projectId}`
         );
-        console.log(responseData);
        setProjectParticipants(responseData.users)
       } catch (err) {}
     };

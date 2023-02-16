@@ -16,10 +16,14 @@ const AddParticipantsPanel = (props: {
   projectId?: string;
   workAloneOption?: boolean;
   setFormSubmitted?: Function;
-  formSubmitted?: any;
+  formSubmitted?: {
+    projectForm: boolean;
+    taskForm: boolean;
+    participantForm: boolean;
+  };
 }) => {
-  const [searchResults, setSeachResults] = useState([]);
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [searchResults, setSeachResults] = useState<{id: string, name:string}[]>([]);
+  const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
 
   const { loading, sendRequest } = useHttpClient();
   

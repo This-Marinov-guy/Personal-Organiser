@@ -21,17 +21,23 @@ import classes from "./Participants.module.css";
 
 interface ParticipantsListprops {
   heading: string;
-  target: Array<any>;
-  projectCreator: any;
+  target: Array<{
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+    image: string;
+  }>;
+  projectCreator: string;
 }
 
 const ParticipantsList = (props: ParticipantsListprops) => {
-  const [filter, setFilter] = useState("");
-  const [participantId, setParticipantId] = useState();
+  const [filter, setFilter] = useState<string>();
+  const [participantId, setParticipantId] = useState<string>();
 
   const { sendRequest } = useHttpClient();
 
-  const projectId = useParams<any>().projectId;
+  const projectId = useParams<{ projectId: string }>().projectId;
 
   const modal = useSelector(selectModal);
   const warning = useSelector(selectWarning);
@@ -44,7 +50,7 @@ const ParticipantsList = (props: ParticipantsListprops) => {
 
   const removeParticipantHandler = async () => {
     try {
-      console.log(participantId)
+      console.log(participantId);
       const responseData = await sendRequest(
         `http://localhost:5000/api/projects/abort-project/${projectId}`,
         "PATCH",
@@ -55,7 +61,7 @@ const ParticipantsList = (props: ParticipantsListprops) => {
           "Content-Type": "application/json",
         }
       );
-      window.location.reload()
+      window.location.reload();
     } catch (err) {}
   };
 

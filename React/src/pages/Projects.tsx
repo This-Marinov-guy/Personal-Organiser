@@ -5,7 +5,7 @@ import { selectUser } from "src/redux/user";
 import ProjectList from "../components/Projects/ProjectList";
 
 const Projects = () => {
-  const [userProjects, setUserProjects] = useState();
+  const [userProjects, setUserProjects] = useState<{id:string, viewMode:boolean, title:string, description:string, image:string}[]>();
   
   const { sendRequest } = useHttpClient();
 

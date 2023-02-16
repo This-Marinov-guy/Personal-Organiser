@@ -9,18 +9,18 @@ import classes from "./ImageInput.module.css";
 
 interface ImageInputProps {
   id?: string;
-  value?: any;
+  value?: string;
   defaultValue?: string;
   errorMessage?: string;
-  isValid?: any;
-  isInvalid?: any;
+  isValid?: boolean;
+  isInvalid?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ImageInput = (props: ImageInputProps) => {
-  const [file, setFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState();
-  const [isValid, setIsValid] = useState(true);
+  const [file, setFile] = useState<File>();
+  const [previewUrl, setPreviewUrl] = useState<string>();
+  const [isValid, setIsValid] = useState<boolean>(true);
 
   const loading = useSelector(selectLoading);
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const ImageInput = (props: ImageInputProps) => {
       return;
     }
     dispatch(startLoading());
-    const fileReader: any = new FileReader();
+    const fileReader:any = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
     };

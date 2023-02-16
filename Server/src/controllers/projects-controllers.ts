@@ -45,8 +45,8 @@ const getProjectByUserId = async (
     );
   }
 
-  if (!userWithProjects || userWithProjects.projects.length === 0) {
-    return next(new HttpError("User has no projects", 404));
+  if (!userWithProjects) {
+    return next(new HttpError("No such user", 404));
   }
 
   res.json({
@@ -68,7 +68,7 @@ const postAddProject = async (
 
   const { creator, title, description } = req.body;
 
-  let user: any;
+  let user;
   try {
     user = await User.findById(creator);
   } catch (err) {
@@ -82,7 +82,7 @@ const postAddProject = async (
     status: "active",
     title,
     description,
-    image: "http://localhost:5000/" + req.file.path,
+    image: req.file.path,
     tasks: [],
     participants: [user],
     chat: [],
@@ -126,7 +126,7 @@ const postAddParticipants = async (
     );
   }
 
-  let project: any;
+  let project;
   try {
     project = await Project.findById(projectId);
   } catch (err) {
@@ -146,7 +146,7 @@ const postAddParticipants = async (
     const sess = await mongoose.startSession();
     sess.startTransaction();
     for (let i = 0; i < participants.length; i++) {
-      let participant: any;
+      let participant;
       participant = await User.findById(participants[i].id);
       participant.projects.push(project);
       participant.projects = participant.projects.filter((value, index) => {
@@ -198,8 +198,8 @@ const patchAbortProject = async (
   const userId = req.body.userId;
   const projectId = req.params.projectId;
 
-  let currentUser: any;
-  let project: any;
+  let currentUser;
+  let project;
   try {
     project = await Project.findById(projectId);
     currentUser = await User.findById(userId);
@@ -237,9 +237,7 @@ const deleteProject = async (
   next: express.NextFunction
 ) => {
   const projectId = req.params.projectId;
-  console.log(projectId);
-
-  let project: any;
+  let project;
   try {
     project = await Project.findByIdAndDelete(projectId);
   } catch (err) {
@@ -249,7 +247,7 @@ const deleteProject = async (
   if (!project) {
     return next(new HttpError("Could not find a project with such id", 404));
   }
-
+ 
   fs.unlink(project.image, (err) => {
     console.log(err);
   });

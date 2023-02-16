@@ -52,7 +52,7 @@ const postAddProject = async (req, res, next) => {
         status: "active",
         title,
         description,
-        image: "http://localhost:5000/" + req.file.path,
+        image: req.file.path,
         tasks: [],
         participants: [user],
         chat: [],
@@ -167,7 +167,6 @@ const patchAbortProject = async (req, res, next) => {
 };
 const deleteProject = async (req, res, next) => {
     const projectId = req.params.projectId;
-    console.log(projectId);
     let project;
     try {
         project = await Project.findByIdAndDelete(projectId);
@@ -178,6 +177,7 @@ const deleteProject = async (req, res, next) => {
     if (!project) {
         return next(new HttpError("Could not find a project with such id", 404));
     }
+    console.log(project.image);
     fs.unlink(project.image, (err) => {
         console.log(err);
     });

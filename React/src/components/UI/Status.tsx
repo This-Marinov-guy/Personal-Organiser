@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import classes from "./Status.module.css";
 
 const Status = (props: { level: string; children?: string }) => {
-  const [importancyColor, setimportancyColor] = useState("#00e100");
+  const [importancyColor, setimportancyColor] = useState<string>("#00e100");
 
   useEffect(() => {
     switch (props.level) {

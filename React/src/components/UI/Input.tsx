@@ -15,13 +15,13 @@ interface InputProps {
   value?: string;
   defaultValue?: string;
   placeholder?: string;
-  errorMessage?: any;
-  isValid?: any;
-  isInvalid?: any;
+  errorMessage?: string;
+  isValid?: boolean;
+  isInvalid?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onInput?: any;
-  onFocus?:any;
-  onBlur?: any;
+  onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   accept?: string;
 }
 

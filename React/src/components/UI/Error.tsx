@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import Alert from "react-bootstrap/Alert";
 import classes from "./Overlay.module.css";
 
-const portalElement: any = document.getElementById("overlays");
+const portalElement = document.getElementById("overlays");
 
 const Error = (props: { errorMessage: string }) => {
   const dispatch = useDispatch();

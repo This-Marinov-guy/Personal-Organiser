@@ -11,7 +11,7 @@ interface ParticipantProps {
   image: string;
   email: string;
   onRemoveParticipant: any;
-  projectCreator: any;
+  projectCreator: string;
 }
 
 const ParticipantItem = (props: ParticipantProps) => {

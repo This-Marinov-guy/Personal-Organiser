@@ -8,11 +8,11 @@ import classes from "./Project.module.css";
 interface ProjectListprops {
   viewMode?: boolean;
   heading: string;
-  target: Array<any>;
+  target: Array<{viewMode:boolean, id:string, title:string, description:string, image:string}>;
 }
 
 const ProjectList = (props: ProjectListprops) => {
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState<string>();
 
   return (
     <Fragment>
