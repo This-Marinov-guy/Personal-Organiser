@@ -46,7 +46,7 @@ const AddParticipantsPanel = (props: {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/projects/add-participants",
+        `${process.env.REACT_APP_URL}/projects/add-participants`,
         "POST",
         JSON.stringify({
           projectId: props.projectId,

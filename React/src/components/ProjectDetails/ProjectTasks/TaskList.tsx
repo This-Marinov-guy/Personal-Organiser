@@ -56,7 +56,7 @@ const TaskList = (props: TaskListprops) => {
   const abortTaskHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/tasks/abort-task/${projectId}`,
+        `${process.env.REACT_APP_URL}/tasks/abort-task/${projectId}`,
         "PATCH",
         JSON.stringify({
           taskId: taskId,
@@ -73,7 +73,7 @@ const TaskList = (props: TaskListprops) => {
   const completeTaskHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/tasks/complete-task/${projectId}`,
+        `${process.env.REACT_APP_URL}/tasks/complete-task/${projectId}`,
         "PATCH",
         JSON.stringify({
           taskId: taskId,

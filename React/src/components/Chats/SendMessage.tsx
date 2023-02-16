@@ -28,7 +28,7 @@ const SendMessage = (props: SendMessageProps) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/chats/add-message/${props.projectId}`,
+        `${process.env.REACT_APP_URL}/chats/add-message/${props.projectId}`,
         "PATCH",
         JSON.stringify({
           senderId: user.userId,

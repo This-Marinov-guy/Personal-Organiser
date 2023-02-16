@@ -53,7 +53,7 @@ const AddProjectItem = (props: {
             formData.append("image", values.image);
 
             const responseData = await sendRequest(
-              "http://localhost:5000/api/projects/add-project",
+              `${process.env.REACT_APP_URL}/projects/add-project`,
               "POST",
               formData,
               { Authorization: "Bearer " + user.token }

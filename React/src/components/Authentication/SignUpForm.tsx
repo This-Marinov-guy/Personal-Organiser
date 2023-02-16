@@ -54,7 +54,7 @@ const SignUpForm = () => {
             formData.append("email", values.email);
             formData.append("password", values.password);
             const responseData = await sendRequest(
-              "http://localhost:5000/api/user/signup",
+             `${process.env.REACT_APP_URL}/user/signup`,
               "POST",
               formData
             );

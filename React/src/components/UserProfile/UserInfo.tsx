@@ -33,7 +33,7 @@ const UserInfo = () => {
     const fetchCurrentUser = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/user/${userId}`
+          `${process.env.REACT_APP_URL}/user/${userId}`
         );
         setCurrentUser(responseData.user);
       } catch (err) {
@@ -47,7 +47,7 @@ const UserInfo = () => {
     const fetchPlaces = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/projects/my-projects/${currentUser.id}`
+          `${process.env.REACT_APP_URL}/projects/my-projects/${currentUser.id}`
         );
         setUserProjects(responseData.projects);
       } catch (err) {}

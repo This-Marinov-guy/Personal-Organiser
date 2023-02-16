@@ -19,7 +19,7 @@ const ProjectDetails = () => {
     const fetchParticipants = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/user/project-users/${projectId}`
+          `${process.env.REACT_APP_URL}/user/project-users/${projectId}`
         );
        setProjectParticipants(responseData.users)
       } catch (err) {}
@@ -31,7 +31,7 @@ const ProjectDetails = () => {
     const fetchTasks = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/tasks/${projectId}`
+          `${process.env.REACT_APP_URL}/tasks/${projectId}`
         );
         setProjectTasks(responseData.tasks.sort((a, b) => b.level - a.level));
         setPojectCreator(responseData.projectCreator);

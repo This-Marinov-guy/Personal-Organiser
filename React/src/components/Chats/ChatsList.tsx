@@ -23,7 +23,7 @@ const ChatsList = () => {
     const fetchProjectBubbles = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/projects/my-projects/${user.userId}`
+          `${process.env.REACT_APP_URL}/projects/my-projects/${user.userId}`
         );
         setChatBubbles(responseData.projects);
       } catch (err) {}

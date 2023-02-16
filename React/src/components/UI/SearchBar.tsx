@@ -20,7 +20,7 @@ const SearchBarUsers = (props: SearchBarProps) => {
     const fetchAllUsers = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/user/search/all-users"
+          `${process.env.REACT_APP_URL}/user/search/all-users`
         );
         setAllUsers(
           responseData.users.map((user) => {

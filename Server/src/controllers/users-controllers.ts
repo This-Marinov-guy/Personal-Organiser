@@ -99,7 +99,7 @@ const signup = async (
     name,
     surname,
     age,
-    image: "http://localhost:5000/" + req.file.path,
+    image: "https://project-organiser.herokuapp.com/" + req.file.path,
     email,
     password: hashedPassword,
     projects: [],

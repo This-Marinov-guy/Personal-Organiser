@@ -52,7 +52,7 @@ const ParticipantsList = (props: ParticipantsListprops) => {
     try {
       console.log(participantId);
       const responseData = await sendRequest(
-        `http://localhost:5000/api/projects/abort-project/${projectId}`,
+        `${process.env.REACT_APP_URL}/projects/abort-project/${projectId}`,
         "PATCH",
         JSON.stringify({
           userId: participantId,

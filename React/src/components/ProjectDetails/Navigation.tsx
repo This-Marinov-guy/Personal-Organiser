@@ -39,7 +39,7 @@ const Navigation = (props: NavigationProps) => {
   const abortprojectHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/projects/abort-project/${projectId}`,
+        `${process.env.REACT_APP_URL}/projects/abort-project/${projectId}`,
         "PATCH",
         JSON.stringify({
           userId: user.userId,
@@ -56,7 +56,7 @@ const Navigation = (props: NavigationProps) => {
   const deleteProjectHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/projects/delete-project/${projectId}`,
+        `${process.env.REACT_APP_URL}/projects/delete-project/${projectId}`,
         "DELETE",
         {},
         { Authorization: "Bearer " + user.token }

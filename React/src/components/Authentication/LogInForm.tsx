@@ -35,7 +35,7 @@ const LogInForm = () => {
           event.preventDefault();
           try {
             const responseData = await sendRequest(
-              "http://localhost:5000/api/user/login",
+              `${process.env.REACT_APP_URL}/user/login`,
               "POST",
               JSON.stringify({
                 email: loginFormValues.email,

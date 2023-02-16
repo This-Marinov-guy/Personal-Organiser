@@ -39,7 +39,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
       const fetchCurrentTask = async () => {
         try {
           const responseData = await sendRequest(
-            `http://localhost:5000/api/tasks/fetch-task/${props.projectId}`,
+            `${process.env.REACT_APP_URL}/tasks/fetch-task/${props.projectId}`,
             "POST",
             JSON.stringify({
               taskId: props.taskId,
@@ -77,7 +77,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/tasks/add-task",
+        `${process.env.REACT_APP_URL}/tasks/add-task`,
         "POST",
         JSON.stringify({
           projectId: props.projectId,
@@ -103,7 +103,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
   const addDirectTaskSubmitHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/tasks/add-task/${props.projectId}`,
+        `${process.env.REACT_APP_URL}/tasks/add-task/${props.projectId}`,
         "POST",
         JSON.stringify({
           creator: user.userId,
@@ -129,7 +129,7 @@ const AddTaskItem = (props: AddTaskItemProps) => {
   const editTaskSubmitHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/tasks/edit-task/${props.projectId}`,
+        `${process.env.REACT_APP_URL}/tasks/edit-task/${props.projectId}`,
         "PATCH",
         JSON.stringify({
           taskId: props.taskId,

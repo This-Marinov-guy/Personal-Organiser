@@ -23,7 +23,7 @@ const PersonalChat = (props: { projectId: string }) => {
   const fetchChatMessages = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/chats/get-messages/${props.projectId}`
+        `${process.env.REACT_APP_URL}/chats/get-messages/${props.projectId}`
       );
       setChatMessages(responseData.chat);
       setChatTitle(responseData.title);
