@@ -219,7 +219,6 @@ const patchAbortProject = async (
     const sess = await mongoose.startSession();
     sess.startTransaction();
     currentUser.projects.pull(project);
-    console.log('hello');
     project.participants.pull(currentUser);
     await currentUser.save();
     await project.save();

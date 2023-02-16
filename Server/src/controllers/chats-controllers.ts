@@ -77,7 +77,6 @@ const patchAddChatMessage = async (
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    console.log("chat", project.chat);
     project.chat.push(message);
     await project.save({ session: sess });
     await sess.commitTransaction();
