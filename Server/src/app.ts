@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
+import dotenv from 'dotenv';
+dotenv.config
 import mongoose from "mongoose";
 import path from "path";
 import HttpError from "./models/Http-error.js";
@@ -44,7 +46,9 @@ app.use((req, res, next) => {
 });
 
 // error handling
-app.use((error, req, res, next) => {
+app.use((error:any, req: express.Request,
+  res: express.Response,
+  next: express.NextFunction) => {
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
@@ -57,6 +61,8 @@ mongoose
   .connect(process.env.DB_CONNECTION)
   .then(() => {
     console.log("Connected to DB");
-    app.listen(process.env.PORT || 5000);
+    app.listen(process.env.PORT || 80);
+    console.log(`Runnig on port ${process.env.PORT || 80}`);
+    
   })
   .catch((err) => console.log("Failed to Connect ", err));

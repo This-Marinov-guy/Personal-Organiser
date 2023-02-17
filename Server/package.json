@@ -2,11 +2,16 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.ts",
-  "type": "module",
+  "main": "app.ts",
+  "engines": {
+    "node": "16.15.0"
+  },
   "scripts": {
-    "start": "node src/app.js",
-    "postinstall": "tsc"
+    "start": "node dist/app.js",
+    "postinstall": "tsc && mv -i -v public dist/ && rm -v -rf src",
+    "watch-node": "nodemon dist/app.js",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "keywords": [],
   "author": "",

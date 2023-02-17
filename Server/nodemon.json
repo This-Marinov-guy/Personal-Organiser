@@ -1,9 +1,6 @@
 {
-  "signal": "SIGTERM",
-  "env": {
-    "DB_CONNECTION": "mongodb+srv://vlady:vlady10029011@test4.twugcuc.mongodb.net/?retryWrites=true&w=majority",
-    "JWT_STRING": "Vladislav_Vladimirov_Marinov_9"
-  },
-  "ext": "ts",
-  "exec": "ts-node -- src/app.ts"
+  "watch": ["src"],
+  "ext": ".ts,.js",
+  "ignore": [],
+  "exec": "npx ts-node ./src/app.ts"
 }
