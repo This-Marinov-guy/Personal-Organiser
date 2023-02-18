@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node Server/app.js",
+    "start": "node app.js",
     "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
   "keywords": [],
