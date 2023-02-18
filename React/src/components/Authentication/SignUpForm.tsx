@@ -56,7 +56,7 @@ const SignUpForm = () => {
             const responseData = await sendRequest(
              `${process.env.REACT_APP_URL}/user/signup`,
               "POST",
-              formData
+              formData,
             );
 
             dispatch(

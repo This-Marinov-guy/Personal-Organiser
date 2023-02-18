@@ -35,7 +35,6 @@ const getUsers = async (
     users = await User.find({}, "-password");
   } catch (err) {
     console.log(err);
-    
     const error = new HttpError("Could not fetch users", 500);
     return next(error);
   }
@@ -99,7 +98,7 @@ const signup = async (
     name,
     surname,
     age,
-    image: "https://project-organiser.herokuapp.com/" + req.file.path,
+    image: "https://project-organiser.herokuapp.com/",
     email,
     password: hashedPassword,
     projects: [],

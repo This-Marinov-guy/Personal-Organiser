@@ -26,4 +26,7 @@ h1 {
     height: 5rem;
     width: 8rem;
   }
+  .panel{
+    margin: 20% auto
+  }
 }
