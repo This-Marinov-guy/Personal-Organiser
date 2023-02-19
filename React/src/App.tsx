@@ -103,7 +103,7 @@ const App = () => {
   }
 
   return (
-    <HashRouter basename="/React">
+    <HashRouter>
       <NavBar />
       {error && <Error errorMessage={errorMsg} />}
       {routes}
