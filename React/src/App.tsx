@@ -19,7 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   const dispatch = useDispatch();
-  
+
   const user = useSelector(selectUser);
   const errorMsg = useSelector(selectErrorMsg);
 
@@ -103,7 +103,7 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/React">
       <NavBar />
       {error && <Error errorMessage={errorMsg} />}
       {routes}
