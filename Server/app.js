@@ -1,9 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-dotenv.config;
+dotenv.config();
 import mongoose from "mongoose";
-import { fileURLToPath } from "url";
 import cors from "cors";
 import path from "path";
 import HttpError from "./models/Http-error.js";
@@ -17,7 +16,6 @@ const app = express();
 //external packages setup
 
 app.use(express.json);
-app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
