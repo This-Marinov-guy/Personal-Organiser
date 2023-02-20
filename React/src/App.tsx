@@ -103,7 +103,7 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter  basename="/React">
+    <BrowserRouter>
       <NavBar />
       {error && <Error errorMessage={errorMsg} />}
       {routes}
