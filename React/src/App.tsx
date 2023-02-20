@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { login, logout, selectUser } from "./redux/user";
 import { useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   const dispatch = useDispatch();
-
+  
   const user = useSelector(selectUser);
   const errorMsg = useSelector(selectErrorMsg);
 
@@ -103,11 +103,11 @@ const App = () => {
   }
 
   return (
-    <HashRouter>
+    <BrowserRouter  basename="/React">
       <NavBar />
       {error && <Error errorMessage={errorMsg} />}
       {routes}
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
