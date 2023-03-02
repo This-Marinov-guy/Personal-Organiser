@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "deploy": "git add . && git commit -m Heroku && git push heroku main"
+    "deploy": "git add . && git commit -am Heroku && git push heroku main"
   },
   "keywords": [],
   "author": "",
