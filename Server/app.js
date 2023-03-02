@@ -40,7 +40,6 @@ app.use("/uploads/images", express.static(path.join("uploads", "images")));
 //   })
 // );
 
-
 //routes
 app.use("/api/user", userRouter);
 app.use("/api/projects", projectRouter);
@@ -63,8 +62,11 @@ app.use((error, req, res, next) => {
 });
 
 //db connection
+mongoose.set("strictQuery", true);
 mongoose
-  .connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@test4.twugcuc.mongodb.net/?retryWrites=true&w=majority`)
+  .connect(
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@test4.twugcuc.mongodb.net/?retryWrites=true&w=majority`
+  )
   .then(() => {
     console.log("Connected to DB");
     app.listen(process.env.PORT || 80);
