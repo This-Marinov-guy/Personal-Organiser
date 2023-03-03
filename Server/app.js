@@ -15,10 +15,10 @@ const app = express();
 
 //external packages setup
 
-app.use(express.json);
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
+app.use(express.static(path.join("public")));
 
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -46,11 +46,15 @@ app.use("/api/projects", projectRouter);
 app.use("/api/tasks", taskRouter);
 app.use("/api/chats", chatRouter);
 
+
+app.use((req, res, next)=> {
+  res.sendFile(path.resolve('public', 'index.html'))
+})
 //no page found
-app.use((req, res, next) => {
-  const error = new HttpError("Page not found", 404);
-  return next(error);
-});
+// app.use((req, res, next) => {
+//   const error = new HttpError("Page not found", 404);
+//   return next(error);
+// });
 
 // error handling
 app.use((error, req, res, next) => {
