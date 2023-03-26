@@ -84,7 +84,7 @@ const signup = async (req, res, next) => {
     name,
     surname,
     age,
-    image: "https://project-organiser.herokuapp.com/",
+    image: req.file.location,
     email,
     password: hashedPassword,
     projects: [],
@@ -162,5 +162,6 @@ const login = async (req, res, next) => {
     .status(201)
     .json({ userId: existingUser.id, email: existingUser.email, token: token });
 };
+
 
 export { signup, login, getUsers, getCurrentUser, getUsersByProject };

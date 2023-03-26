@@ -63,7 +63,7 @@ const TaskList = (props: TaskListprops) => {
         }),
         {
           "Content-Type": "application/json",
-          Authorization : "Bearer " + user.token
+          Authorization: "Bearer " + user.token,
         }
       );
       window.location.reload();
@@ -80,7 +80,7 @@ const TaskList = (props: TaskListprops) => {
         }),
         {
           "Content-Type": "application/json",
-          Authorization : "Bearer " + user.token
+          Authorization: "Bearer " + user.token,
         }
       );
       window.location.reload();
@@ -159,9 +159,11 @@ const TaskList = (props: TaskListprops) => {
                   />
                 );
               })}
-           {!props.viewModeOnly && <Card className={classes.icon}>
-              <i className={"fa-solid fa-plus"} onClick={addHandler}></i>
-            </Card>}
+            {!props.viewModeOnly && (
+              <Card className={classes.icon}>
+                <i className={"fa-solid fa-plus"} onClick={addHandler}></i>
+              </Card>
+            )}
           </Row>
         ) : (
           <p style={{ textAlign: "center" }}>No tasks with such criteria</p>

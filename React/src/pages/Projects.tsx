@@ -5,8 +5,16 @@ import { selectUser } from "src/redux/user";
 import ProjectList from "../components/Projects/ProjectList";
 
 const Projects = () => {
-  const [userProjects, setUserProjects] = useState<{id:string, viewMode:boolean, title:string, description:string, image:string}[]>();
-  
+  const [userProjects, setUserProjects] = useState<
+    {
+      id: string;
+      viewMode: boolean;
+      title: string;
+      description: string;
+      image: string;
+    }[]
+  >();
+
   const { sendRequest } = useHttpClient();
 
   const user = useSelector(selectUser);
@@ -18,12 +26,17 @@ const Projects = () => {
           `${process.env.REACT_APP_URL}/projects/my-projects/${user.userId}`
         );
         setUserProjects(responseData.projects);
-      } catch (err) {        
-      }
+      } catch (err) {}
     };
     fetchPlaces();
   }, [sendRequest]);
-  return <ProjectList target={userProjects} heading={"All Projects"} />;
+  return (
+    <ProjectList
+      viewMode={false}
+      target={userProjects}
+      heading={"All Projects"}
+    />
+  );
 };
 
 export default Projects;

@@ -13,7 +13,7 @@ interface ProjectProps {
 const ProjectItem = (props: ProjectProps) => {
   return (
     <Card style={{ width: props.viewMode ? "10rem" : "18rem" }}>
-      <Card.Img variant="top" src={process.env.REACT_APP_IMAGE_URL + props.image} />
+      <Card.Img variant="top" src={props.image} />
       <Card.Body>
         <Card.Title>{props.title}</Card.Title>
         <Card.Text>{props.description}</Card.Text>

@@ -8,11 +8,17 @@ import classes from "./Project.module.css";
 interface ProjectListprops {
   viewMode?: boolean;
   heading: string;
-  target: Array<{viewMode:boolean, id:string, title:string, description:string, image:string}>;
+  target: Array<{
+    viewMode: boolean;
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+  }>;
 }
 
 const ProjectList = (props: ProjectListprops) => {
-  const [filter, setFilter] = useState<string>();
+  const [filter, setFilter] = useState<string>("");
 
   return (
     <Fragment>
@@ -29,7 +35,7 @@ const ProjectList = (props: ProjectListprops) => {
             className={classes.projects_display + " g-4"}
           >
             {props.target
-              .filter((value: any) => {
+              .filter((value) => {
                 return value.title.toLowerCase().includes(filter.toLowerCase());
               })
               .map((project) => {

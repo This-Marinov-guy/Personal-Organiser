@@ -40,7 +40,7 @@ const SearchBarUsers = (props: SearchBarProps) => {
   const filterHandler = (event: any) => {
     const searchWord = event.target.value;
     const newFilter = allUsers.filter((user: any) => {
-      return user.name.toLowerCase().includes(searchWord.toLowerCase());
+      return user.name?.toLowerCase().includes(searchWord?.toLowerCase());
     });
     setFilterSearches(newFilter);
   };

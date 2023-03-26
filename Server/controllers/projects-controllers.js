@@ -70,7 +70,7 @@ const postAddProject = async (req, res, next) => {
     status: "active",
     title,
     description,
-    image: req.file.path,
+    image: req.file.location,
     tasks: [],
     participants: [user],
     chat: [],
@@ -221,10 +221,6 @@ const deleteProject = async (req, res, next) => {
   if (!project) {
     return next(new HttpError("Could not find a project with such id", 404));
   }
-
-  fs.unlink(project.image, (err) => {
-    console.log(err);
-  });
 
   res.status(200).json({ message: "Project deleted" });
 };
