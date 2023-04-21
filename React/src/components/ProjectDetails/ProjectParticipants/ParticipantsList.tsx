@@ -94,7 +94,7 @@ const ParticipantsList = (props: ParticipantsListprops) => {
           >
             {props.target
               .filter((value: any) => {
-                return value.name.toLowerCase().includes(filter.toLowerCase());
+                return value.name.includes(filter);
               })
               .map((participant) => {
                 return (

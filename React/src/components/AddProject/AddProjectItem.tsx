@@ -132,25 +132,25 @@ const AddProjectItem = (props: {
                     handleChange(event);
                   }}
                 />
-                {loading && isButtonClicked ? (
-                  <Loader />
-                ) : (
-                  <OverlayTrigger
-                    show={showPopover}
-                    placement={"bottom"}
-                    overlay={
-                      <Popover id={"popover-positioned-top"}>
-                        <Popover.Header as="h3">
-                          {"Before Proceeding"}
-                        </Popover.Header>
-                        <Popover.Body>
-                          Be aware that once submitted a project cannot be
-                          edited - only its tasks and participants! This is to
-                          avoid confusion among participants
-                        </Popover.Body>
-                      </Popover>
-                    }
-                  >
+                <OverlayTrigger
+                  show={showPopover}
+                  placement={"bottom"}
+                  overlay={
+                    <Popover id={"popover-positioned-top"}>
+                      <Popover.Header as="h3">
+                        {"Before Proceeding"}
+                      </Popover.Header>
+                      <Popover.Body>
+                        Be aware that once submitted a project cannot be edited
+                        - only its tasks and participants! This is to avoid
+                        confusion among participants
+                      </Popover.Body>
+                    </Popover>
+                  }
+                >
+                  {loading && isButtonClicked ? (
+                    <Loader />
+                  ) : (
                     <Button
                       className={classes.form_btn}
                       type="submit"
@@ -158,10 +158,10 @@ const AddProjectItem = (props: {
                         setShowPopover(false);
                       }}
                     >
-                      Submit form
+                      Add Project
                     </Button>
-                  </OverlayTrigger>
-                )}
+                  )}
+                </OverlayTrigger>
               </Fragment>
             )}
           </Form>
